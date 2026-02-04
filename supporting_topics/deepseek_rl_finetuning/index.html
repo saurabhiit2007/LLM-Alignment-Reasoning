@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -309,7 +309,7 @@
   
   
   <span class="md-ellipsis">
-    Direct Rewards Policy Optimization (DRPO Offline)
+    Direct Rewards Policy Optimization (DRPO)
     
   </span>
   
@@ -327,58 +327,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../methods/decoupled_rpo/" class="md-nav__link">
+      <a href="../../methods/grpo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Decoupled Rewards Policy Optimization (DRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../methods/guided_rpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Guided Rewards Policy Optimization (GRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../methods/grouped_relative_po_deepseek/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Grouped Relative Policy Optimization (Deepseek GRPO)
+    Group Relative Policy Optimization (GRPO)
     
   </span>
   
@@ -421,7 +375,7 @@
   
   
   <span class="md-ellipsis">
-    Advanced Topics
+    Supporting Topics
     
   </span>
   
@@ -432,7 +386,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Advanced Topics
+            Supporting Topics
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1063,7 +1017,7 @@
 <hr />
 <h3 id="2-the-grpo-algorithm-overview">2. The GRPO Algorithm: Overview<a class="headerlink" href="#2-the-grpo-algorithm-overview" title="Permanent link">&para;</a></h3>
 <p>This section gives a summary of the core optimisation algorithm used in DeepSeek-R1, namely Grouped Relative Policy Optimization (GRPO).<br />
-<strong>For full mathematical details and derivation see the dedicated <a href="../../methods/grouped_relative_po_deepseek/">GRPO Algorithm</a> .</strong></p>
+<strong>For full mathematical details and derivation see the dedicated <a href="../../methods/grpo/">GRPO Algorithm</a> .</strong></p>
 <h4 id="21-intuition">2.1 Intuition<a class="headerlink" href="#21-intuition" title="Permanent link">&para;</a></h4>
 <ul>
 <li>Instead of using a value network (critic) as in PPO, GRPO works by sampling multiple candidate outputs for each prompt and comparing their performance <strong>within the group</strong> (via ranking).  </li>

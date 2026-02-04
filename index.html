@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -376,7 +376,7 @@
   
   
   <span class="md-ellipsis">
-    Direct Rewards Policy Optimization (DRPO Offline)
+    Direct Rewards Policy Optimization (DRPO)
     
   </span>
   
@@ -394,58 +394,12 @@
   
   
     <li class="md-nav__item">
-      <a href="methods/decoupled_rpo/" class="md-nav__link">
+      <a href="methods/grpo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Decoupled Rewards Policy Optimization (DRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="methods/guided_rpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Guided Rewards Policy Optimization (GRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="methods/grouped_relative_po_deepseek/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Grouped Relative Policy Optimization (Deepseek GRPO)
+    Group Relative Policy Optimization (GRPO)
     
   </span>
   
@@ -486,7 +440,7 @@
   
   
   <span class="md-ellipsis">
-    Advanced Topics
+    Supporting Topics
     
   </span>
   
@@ -497,7 +451,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Advanced Topics
+            Supporting Topics
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -508,7 +462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="advanced_topics/kl_penalty/" class="md-nav__link">
+      <a href="supporting_topics/kl_penalty/" class="md-nav__link">
         
   
   
@@ -531,7 +485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="advanced_topics/deepseek_rl_finetuning/" class="md-nav__link">
+      <a href="supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
         
   
   
@@ -554,7 +508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="advanced_topics/rewards_hacking/" class="md-nav__link">
+      <a href="supporting_topics/rewards_hacking/" class="md-nav__link">
         
   
   
@@ -697,12 +651,12 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
 <td>Aligns model outputs with human preferences without a full RL loop.</td>
 </tr>
 <tr>
-<td><a href="methods/decoupled_rpo/">DRPO</a></td>
+<td><a href="./methods/decoupled_rpo.md">DRPO</a></td>
 <td>Decoupled Reward Policy Optimization</td>
 <td>Separates reward modeling from policy updates for improved stability.</td>
 </tr>
 <tr>
-<td><a href="methods/guided_rpo/">GRPO</a></td>
+<td><a href="./methods/guided_rpo.md">GRPO</a></td>
 <td>Guided Relative Policy Optimization</td>
 <td>Incorporates pairwise comparisons or structured guidance during training.</td>
 </tr>
@@ -712,7 +666,7 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
 <td>Uses pre-collected reward data to guide policy updates without live RL interaction.</td>
 </tr>
 <tr>
-<td><a href="methods/guided_rpo/">Guided RPO</a></td>
+<td><a href="./methods/guided_rpo.md">Guided RPO</a></td>
 <td>Guided Reward Policy Optimization</td>
 <td>Combines structured guidance with pairwise preference learning for improved alignment.</td>
 </tr>
@@ -725,9 +679,9 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
 <h2 id="advanced-topics">Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permanent link">&para;</a></h2>
 <p>In addition to the main methods, the repository also explores advanced topics related to RL fine-tuning:</p>
 <ul>
-<li><a href="advanced_topics/kl_penalty/">KL Penalty in Policy Optimization</a> – Techniques to stabilize learning by penalizing deviations from reference policies.  </li>
-<li><a href="advanced_topics/rewards_hacking/">Reward Hacking</a> – Understanding how misaligned rewards can lead to unintended behaviors.  </li>
-<li><a href="advanced_topics/deepseek_rl_finetuning/">DeepSeek RL Details</a> – In-depth insights into the DeepSeek approach to LLM alignment.</li>
+<li><a href="supporting_topics/kl_penalty/">KL Penalty in Policy Optimization</a> – Techniques to stabilize learning by penalizing deviations from reference policies.  </li>
+<li><a href="supporting_topics/rewards_hacking/">Reward Hacking</a> – Understanding how misaligned rewards can lead to unintended behaviors.  </li>
+<li><a href="supporting_topics/deepseek_rl_finetuning/">DeepSeek RL Details</a> – In-depth insights into the DeepSeek approach to LLM alignment.</li>
 </ul>
 <hr />
 

@@ -32,8 +32,8 @@ This repository covers the following key RL-based fine-tuning methods:
 
 In addition to the main methods, the repository also explores advanced topics related to RL fine-tuning:
 
-- [KL Penalty in Policy Optimization](./advanced_topics/kl_penalty.md) – Techniques to stabilize learning by penalizing deviations from reference policies.  
-- [Reward Hacking](./advanced_topics/rewards_hacking.md) – Understanding how misaligned rewards can lead to unintended behaviors.  
-- [DeepSeek RL Details](./advanced_topics/deepseek_rl_finetuning.md) – In-depth insights into the DeepSeek approach to LLM alignment.
+- [KL Penalty in Policy Optimization](supporting_topics/kl_penalty.md) – Techniques to stabilize learning by penalizing deviations from reference policies.  
+- [Reward Hacking](supporting_topics/rewards_hacking.md) – Understanding how misaligned rewards can lead to unintended behaviors.  
+- [DeepSeek RL Details](supporting_topics/deepseek_rl_finetuning.md) – In-depth insights into the DeepSeek approach to LLM alignment.
 
 ---

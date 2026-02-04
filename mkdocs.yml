@@ -24,13 +24,10 @@ nav:
   - Methods:
       - Proximal Policy Optimization (PPO): methods/ppo.md
       - Direct Policy Optimization (DPO): methods/dpo.md
-      - Direct Rewards Policy Optimization (DRPO Offline): methods/drpo.md
-      - Decoupled Rewards Policy Optimization (DRPO): methods/decoupled_rpo.md
-      - Guided Rewards Policy Optimization (GRPO): methods/guided_rpo.md
-      - Grouped Relative Policy Optimization (Deepseek GRPO): methods/grouped_relative_po_deepseek.md
-  - Advanced Topics:
-      - KL Penalty: advanced_topics/kl_penalty.md
-      - Deepseek RL Fine-tuning: advanced_topics/deepseek_rl_finetuning.md
-      - Rewards Hacking: advanced_topics/rewards_hacking.md
-      - Loop (Apple 2025): advanced_topics/loop.md
+      - Direct Rewards Policy Optimization (DRPO): methods/drpo.md
+      - Group Relative Policy Optimization (GRPO): methods/grpo.md
+  - Supporting Topics:
+      - KL Penalty: supporting_topics/kl_penalty.md
+      - Deepseek RL Fine-tuning: supporting_topics/deepseek_rl_finetuning.md
+      - Rewards Hacking: supporting_topics/rewards_hacking.md
   - References: references.md

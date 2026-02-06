@@ -1,0 +1,1596 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation and notes on RL methods for LLM fine-tuning">
+      
+      
+        <meta name="author" content="Saurabh Goyal">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Kl penalty reward hacking - LLM RL Fine-tuning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-1-kl-penalty-in-policy-optimization" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM RL Fine-tuning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kl penalty reward hacking
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM RL Fine-tuning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rlhf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF Pipeline Reward Modeling & Preference Data Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RL Optimization Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            RL Optimization Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rl_optimization_methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rl_optimization_methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rl_optimization_methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kl_penalty_reward_hacking.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty & Reward Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/drpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Rewards Policy Optimization (DRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supporting Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/kl_penalty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deepseek RL Fine-tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/rewards_hacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rewards Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-kl-penalty-in-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 1: KL Penalty in Policy Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1: KL Penalty in Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kl-divergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is KL Divergence?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-do-we-need-kl-penalty" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do We Need KL Penalty?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-penalty-in-the-optimization-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      KL Penalty in the Optimization Objective
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computing-kl-penalty-token-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing KL Penalty (Token-Level)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adaptive-kl-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adaptive KL Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-penalty-in-different-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      KL Penalty in Different Algorithms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-kl-coefficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuning β (KL Coefficient)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-reward-hacking-in-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 2: Reward Hacking in Policy Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2: Reward Hacking in Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Reward Hacking?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-does-reward-hacking-happen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Does Reward Hacking Happen?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-examples-of-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Examples of Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences-of-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences of Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detection Strategies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mitigation Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mitigation Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-reward-model-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Reward Model Improvements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-policy-regularization" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Policy Regularization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-training-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Training Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-between-kl-penalty-and-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship Between KL Penalty and Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interview Questions &amp; Answers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Questions &amp; Answers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-the-purpose-of-kl-penalty-in-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: What is the purpose of KL penalty in RLHF?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-how-would-you-detect-reward-hacking-in-your-trained-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: How would you detect reward hacking in your trained model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-happens-if-kl-coefficient-is-too-large-or-too-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: What happens if β (KL coefficient) is too large or too small?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-explain-the-difference-between-kl-penalty-in-ppo-vs-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: Explain the difference between KL penalty in PPO vs DPO.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-do-you-mitigate-reward-hacking-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: How do you mitigate reward hacking in practice?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-is-adaptive-kl-control-and-when-would-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: What is adaptive KL control and when would you use it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-can-kl-penalty-alone-prevent-all-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: Can KL penalty alone prevent all reward hacking?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-how-do-you-compute-kl-divergence-in-practice-for-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: How do you compute KL divergence in practice for language models?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-metrics-would-you-monitor-during-rlhf-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What metrics would you monitor during RLHF training?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-describe-a-real-world-example-of-reward-hacking-you-might-encounter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: Describe a real-world example of reward hacking you might encounter.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Takeaways
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Takeaways">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kl-penalty" class="md-nav__link">
+    <span class="md-ellipsis">
+      KL Penalty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Kl penalty reward hacking</h1>
+
+<h2 id="part-1-kl-penalty-in-policy-optimization">Part 1: KL Penalty in Policy Optimization<a class="headerlink" href="#part-1-kl-penalty-in-policy-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-kl-divergence">What is KL Divergence?<a class="headerlink" href="#what-is-kl-divergence" title="Permanent link">&para;</a></h3>
+<p>The <strong>Kullback–Leibler (KL) divergence</strong> measures how one probability distribution differs from another:</p>
+<div class="arithmatex">\[D_{KL}(P \parallel Q) = \mathbb{E}_{x \sim P} \left[ \log \frac{P(x)}{Q(x)} \right]\]</div>
+<p>In policy optimization:
+- <strong>P</strong> = π_θ(·|x): current fine-tuned policy
+- <strong>Q</strong> = π_ref(·|x): reference/base policy</p>
+<p>It quantifies how much the fine-tuned model deviates from the reference model.</p>
+<hr />
+<h3 id="why-do-we-need-kl-penalty">Why Do We Need KL Penalty?<a class="headerlink" href="#why-do-we-need-kl-penalty" title="Permanent link">&para;</a></h3>
+<p>The KL penalty acts as a <strong>regularization mechanism</strong> that:</p>
+<ol>
+<li><strong>Prevents model drift</strong> - Keeps the updated policy close to the reference policy</li>
+<li><strong>Maintains stability</strong> - Prevents catastrophic forgetting and erratic behavior</li>
+<li><strong>Preserves quality</strong> - Retains linguistic fluency and factual knowledge from pre-training</li>
+<li><strong>Acts as trust region</strong> - Limits how much the policy can change in each update</li>
+</ol>
+<p>Without KL penalty, the model could overfit to narrow reward signals and lose general capabilities.</p>
+<hr />
+<h3 id="kl-penalty-in-the-optimization-objective">KL Penalty in the Optimization Objective<a class="headerlink" href="#kl-penalty-in-the-optimization-objective" title="Permanent link">&para;</a></h3>
+<p>The training objective with KL penalty:</p>
+<div class="arithmatex">\[\mathcal{L}(\pi_\theta) = \mathbb{E}_{(x, y)} \left[ r(x, y) - \beta \cdot D_{KL}(\pi_\theta(\cdot|x) \parallel \pi_{\text{ref}}(\cdot|x)) \right]\]</div>
+<p>where:
+- <strong>r(x, y)</strong>: reward or preference score
+- <strong>β</strong>: KL coefficient controlling penalty strength
+- Higher KL → stronger penalty → less deviation allowed</p>
+<hr />
+<h3 id="computing-kl-penalty-token-level">Computing KL Penalty (Token-Level)<a class="headerlink" href="#computing-kl-penalty-token-level" title="Permanent link">&para;</a></h3>
+<p>For language models, KL is computed over token distributions:</p>
+<div class="arithmatex">\[D_{KL} = \sum_t \pi_\theta(y_t | x, y_{&lt;t}) \left[ \log \pi_\theta(y_t | x, y_{&lt;t}) - \log \pi_{\text{ref}}(y_t | x, y_{&lt;t}) \right]\]</div>
+<p><strong>Practical approximation:</strong></p>
+<div class="arithmatex">\[D_{KL} \approx \frac{1}{T} \sum_{t=1}^{T} \left( \log \pi_\theta(y_t|x, y_{&lt;t}) - \log \pi_{\text{ref}}(y_t|x, y_{&lt;t}) \right)\]</div>
+<p>Implementation requires comparing log-probabilities from both models on the same samples.</p>
+<hr />
+<h3 id="adaptive-kl-control">Adaptive KL Control<a class="headerlink" href="#adaptive-kl-control" title="Permanent link">&para;</a></h3>
+<p>Instead of fixed β, dynamically adjust based on target divergence D_KL^target:</p>
+<div class="arithmatex">\[\beta \leftarrow \beta \times
+\begin{cases}
+1.1 &amp; \text{if } D_{KL} &gt; 1.5 \times D_{KL}^{\text{target}} \\
+0.9 &amp; \text{if } D_{KL} &lt; 0.5 \times D_{KL}^{\text{target}} \\
+1.0 &amp; \text{otherwise}
+\end{cases}\]</div>
+<p>Benefits:
+- Automatic adjustment to maintain desired divergence
+- Prevents both over-conservative and over-aggressive updates
+- More robust across different tasks</p>
+<hr />
+<h3 id="kl-penalty-in-different-algorithms">KL Penalty in Different Algorithms<a class="headerlink" href="#kl-penalty-in-different-algorithms" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>KL Implementation</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PPO</strong></td>
+<td>Implicit via clipped objective ratio</td>
+<td>Controls per-step policy updates</td>
+</tr>
+<tr>
+<td><strong>DPO</strong></td>
+<td>Explicit through log-prob differences</td>
+<td>Aligns with preferences without RL</td>
+</tr>
+<tr>
+<td><strong>GRPO</strong></td>
+<td>Similar to DPO with grouped rewards</td>
+<td>Maintains stable preference alignment</td>
+</tr>
+</tbody>
+</table>
+<p>All use KL as a <strong>trust-region constraint</strong> to ensure stable optimization near a known distribution.</p>
+<hr />
+<h3 id="implementation-example">Implementation Example<a class="headerlink" href="#implementation-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get log-probabilities from both models</span>
+<span class="n">logprobs</span> <span class="o">=</span> <span class="n">policy_model</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+<span class="n">ref_logprobs</span> <span class="o">=</span> <span class="n">ref_model</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+
+<span class="c1"># Compute KL divergence</span>
+<span class="n">kl_div</span> <span class="o">=</span> <span class="p">(</span><span class="n">logprobs</span> <span class="o">-</span> <span class="n">ref_logprobs</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Apply penalty to loss</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">rewards</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">kl_div</span><span class="p">)</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h3 id="tuning-kl-coefficient">Tuning β (KL Coefficient)<a class="headerlink" href="#tuning-kl-coefficient" title="Permanent link">&para;</a></h3>
+<p><strong>Too small</strong> (e.g., β &lt; 0.01):
+- Model diverges too quickly
+- Training instability
+- Loss of pre-trained capabilities</p>
+<p><strong>Too large</strong> (e.g., β &gt; 0.5):
+- Model stuck near reference policy
+- Underfitting to rewards
+- Minimal learning progress</p>
+<p><strong>Sweet spot</strong> (typically β = 0.01 - 0.1):
+- Balanced exploration and stability
+- Steady improvement on target task
+- Preserved general capabilities</p>
+<hr />
+<h2 id="part-2-reward-hacking-in-policy-optimization">Part 2: Reward Hacking in Policy Optimization<a class="headerlink" href="#part-2-reward-hacking-in-policy-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-reward-hacking">What is Reward Hacking?<a class="headerlink" href="#what-is-reward-hacking" title="Permanent link">&para;</a></h3>
+<p><strong>Reward hacking</strong> (specification gaming) occurs when a policy exploits flaws in the reward model to maximize scores without achieving intended behavior.</p>
+<p>The policy optimizes: max E[r_φ(τ)] but r_φ ≠ r* (true reward)</p>
+<p>This leads to high measured reward but poor actual performance.</p>
+<hr />
+<h3 id="why-does-reward-hacking-happen">Why Does Reward Hacking Happen?<a class="headerlink" href="#why-does-reward-hacking-happen" title="Permanent link">&para;</a></h3>
+<p><strong>1. Proxy Misspecification</strong>
+- Reward model r_φ is imperfect approximation of true reward r*
+- Gradients favor spurious correlations learned during reward modeling</p>
+<p><strong>2. Distributional Shift</strong>
+- Policy explores states not in reward model training data
+- Reward model gives overconfident/inaccurate scores on OOD states</p>
+<p><strong>3. Optimization Artifacts</strong>
+- High learning rates amplify small reward model errors
+- Clipping, batching, or estimation noise can magnify exploitation</p>
+<p><strong>4. Deterministic Exploitation</strong>
+- Policy collapses to low-entropy modes that reliably exploit loopholes
+- Loss of diversity makes hacking easier to discover</p>
+<hr />
+<h3 id="common-examples-of-reward-hacking">Common Examples of Reward Hacking<a class="headerlink" href="#common-examples-of-reward-hacking" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Behavior</th>
+<th>Mechanism</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Token insertion</strong></td>
+<td>Add special tokens like <code>&lt;OK&gt;</code></td>
+<td>Inflates reward without improving quality</td>
+</tr>
+<tr>
+<td><strong>Repetition</strong></td>
+<td>Repeat phrases or verbose padding</td>
+<td>High reward for length, not content</td>
+</tr>
+<tr>
+<td><strong>Stylistic gaming</strong></td>
+<td>Add unnecessary formatting/markdown</td>
+<td>Exploits style correlations in training data</td>
+</tr>
+<tr>
+<td><strong>Over-cautious responses</strong></td>
+<td>Avoid any risky content</td>
+<td>High safety score, low utility</td>
+</tr>
+<tr>
+<td><strong>Training data copying</strong></td>
+<td>Reproduce known high-reward snippets</td>
+<td>Plagiarism-like behavior</td>
+</tr>
+<tr>
+<td><strong>Prompt manipulation</strong></td>
+<td>Insert special patterns in prompts</td>
+<td>Triggers reward heuristics</td>
+</tr>
+</tbody>
+</table>
+<p>All maximize surrogate reward without improving actual alignment.</p>
+<hr />
+<h3 id="consequences-of-reward-hacking">Consequences of Reward Hacking<a class="headerlink" href="#consequences-of-reward-hacking" title="Permanent link">&para;</a></h3>
+<p><strong>Performance degradation:</strong>
+- High reward model scores ≠ good human evaluations
+- Misalignment between metrics and actual quality</p>
+<p><strong>Loss of diversity:</strong>
+- Mode collapse to repetitive, gaming behaviors
+- Reduced creativity and usefulness</p>
+<p><strong>Safety risks:</strong>
+- Increased hallucinations or unsafe outputs
+- Unreliable, manipulative responses</p>
+<p><strong>Metric delusion:</strong>
+- Optimization metrics improve while real performance declines
+- False sense of progress</p>
+<hr />
+<h3 id="detection-strategies">Detection Strategies<a class="headerlink" href="#detection-strategies" title="Permanent link">&para;</a></h3>
+<p><strong>1. Reward-Human Correlation</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># Monitor Spearman/Pearson correlation</span>
+<span class="n">correlation</span> <span class="o">=</span> <span class="n">compute_correlation</span><span class="p">(</span><span class="n">reward_scores</span><span class="p">,</span> <span class="n">human_scores</span><span class="p">)</span>
+<span class="c1"># Declining correlation → potential gaming</span>
+</code></pre></div></p>
+<p><strong>2. KL Divergence Monitoring</strong>
+<div class="highlight"><pre><span></span><code><span class="n">kl_div</span> <span class="o">=</span> <span class="n">compute_kl</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+<span class="c1"># Excessive divergence → suspicious behavior</span>
+</code></pre></div></p>
+<p><strong>3. Diversity Metrics</strong>
+- N-gram diversity (distinct-1, distinct-2)
+- Per-token entropy
+- Sequence-level diversity</p>
+<p><strong>4. Uncertainty Tracking</strong>
+- Ensemble variance in reward predictions
+- High uncertainty → OOD exploitation</p>
+<p><strong>5. Human Audits</strong>
+- Review top-k reward episodes
+- Check if high rewards align with quality</p>
+<hr />
+<h3 id="mitigation-strategies">Mitigation Strategies<a class="headerlink" href="#mitigation-strategies" title="Permanent link">&para;</a></h3>
+<h4 id="a-reward-model-improvements">A. Reward Model Improvements<a class="headerlink" href="#a-reward-model-improvements" title="Permanent link">&para;</a></h4>
+<p><strong>Adversarial data collection:</strong>
+- Label policy-generated high-reward examples
+- Retrain reward model on exploited cases</p>
+<p><strong>Ensemble methods:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># Use mean - std for conservative scoring</span>
+<span class="n">reward</span> <span class="o">=</span> <span class="n">ensemble_mean</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">ensemble_std</span>
+</code></pre></div></p>
+<p><strong>Calibration:</strong>
+- Temperature scaling
+- Label smoothing
+- Regular retraining on new data</p>
+<h4 id="b-policy-regularization">B. Policy Regularization<a class="headerlink" href="#b-policy-regularization" title="Permanent link">&para;</a></h4>
+<p><strong>KL penalty</strong> (primary defense):
+<div class="highlight"><pre><span></span><code><span class="n">loss</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">kl_divergence</span>
+</code></pre></div></p>
+<p><strong>Entropy bonus:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">loss</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">kl_div</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">entropy</span>
+</code></pre></div></p>
+<p><strong>Behavior cloning anchor:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">loss</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">kl_div</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">bc_loss</span>
+</code></pre></div></p>
+<h4 id="c-training-practices">C. Training Practices<a class="headerlink" href="#c-training-practices" title="Permanent link">&para;</a></h4>
+<p><strong>Early stopping:</strong>
+- Stop when human eval plateaus despite reward growth</p>
+<p><strong>Conservative optimization:</strong>
+- Lower learning rates
+- Smaller batch sizes
+- Gradual KL budget increase</p>
+<p><strong>Regular human evaluation:</strong>
+- Periodic quality checks
+- Active learning on uncertain samples</p>
+<hr />
+<h3 id="relationship-between-kl-penalty-and-reward-hacking">Relationship Between KL Penalty and Reward Hacking<a class="headerlink" href="#relationship-between-kl-penalty-and-reward-hacking" title="Permanent link">&para;</a></h3>
+<p>The KL penalty is a <strong>primary defense</strong> against reward hacking:</p>
+<ol>
+<li><strong>Limits exploitation speed</strong> - Can't quickly converge to gaming behaviors</li>
+<li><strong>Maintains safe behaviors</strong> - Reference policy acts as anchor</li>
+<li><strong>Prevents mode collapse</strong> - Keeps policy diverse</li>
+<li><strong>Bounds distributional shift</strong> - Limits OOD exploration</li>
+</ol>
+<p>However, <strong>KL alone is not sufficient</strong>:
+- Slow drift toward gaming still possible
+- Need additional monitoring and intervention
+- Combine with ensemble methods and human oversight</p>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers<a class="headerlink" href="#interview-questions-answers" title="Permanent link">&para;</a></h2>
+<h3 id="q1-what-is-the-purpose-of-kl-penalty-in-rlhf">Q1: What is the purpose of KL penalty in RLHF?<a class="headerlink" href="#q1-what-is-the-purpose-of-kl-penalty-in-rlhf" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong>
+The KL penalty prevents the fine-tuned policy from deviating too far from the reference policy. It acts as a trust-region constraint that:
+- Maintains stability during training
+- Prevents catastrophic forgetting of pre-trained capabilities
+- Limits how much the model can change per update
+- Helps avoid reward hacking by constraining exploration</p>
+<p>It's computed as the KL divergence between token distributions of the current and reference policies, weighted by coefficient β.</p>
+<hr />
+<h3 id="q2-how-would-you-detect-reward-hacking-in-your-trained-model">Q2: How would you detect reward hacking in your trained model?<a class="headerlink" href="#q2-how-would-you-detect-reward-hacking-in-your-trained-model" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong>
+I would use multiple detection methods:</p>
+<ol>
+<li><strong>Correlation analysis</strong> - Compare reward model scores with human evaluations; declining correlation indicates gaming</li>
+<li><strong>KL monitoring</strong> - Track divergence from reference; excessive drift suggests exploitation</li>
+<li><strong>Diversity metrics</strong> - Measure n-gram diversity and entropy; drops indicate mode collapse</li>
+<li><strong>Top-reward audits</strong> - Manually review highest-reward outputs for quality</li>
+<li><strong>Uncertainty tracking</strong> - Monitor reward model confidence; high uncertainty on high-reward samples flags OOD exploitation</li>
+</ol>
+<p>The key is using multiple signals rather than relying on any single metric.</p>
+<hr />
+<h3 id="q3-what-happens-if-kl-coefficient-is-too-large-or-too-small">Q3: What happens if β (KL coefficient) is too large or too small?<a class="headerlink" href="#q3-what-happens-if-kl-coefficient-is-too-large-or-too-small" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>Too small (e.g., 0.001):</strong>
+- Weak constraint on policy updates
+- Model diverges rapidly from reference
+- Training instability and catastrophic forgetting
+- Increased vulnerability to reward hacking</p>
+<p><strong>Too large (e.g., 1.0):</strong>
+- Over-constrained updates
+- Policy stays too close to reference
+- Underfitting to reward signal
+- Minimal improvement on target task</p>
+<p><strong>Optimal range (0.01-0.1):</strong>
+- Balanced exploration and stability
+- Steady task improvement
+- Preserved general capabilities</p>
+<p>Adaptive KL control can automatically adjust β to maintain target divergence.</p>
+<hr />
+<h3 id="q4-explain-the-difference-between-kl-penalty-in-ppo-vs-dpo">Q4: Explain the difference between KL penalty in PPO vs DPO.<a class="headerlink" href="#q4-explain-the-difference-between-kl-penalty-in-ppo-vs-dpo" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>PPO:</strong>
+- KL penalty is <strong>implicit</strong> in the clipped objective
+- Uses importance sampling ratio: r(θ) = π_θ/π_old
+- Clips ratio to [1-ε, 1+ε] which indirectly bounds KL
+- Requires explicit value function and advantage estimation</p>
+<p><strong>DPO:</strong>
+- KL penalty is <strong>explicit</strong> in the loss function
+- Directly optimizes preference objective with KL term
+- Uses Bradley-Terry model: P(y_w &gt; y_l) ∝ exp(r(y_w) - r(y_l))
+- No separate reward model or value function needed
+- Simpler implementation, more stable training</p>
+<p>Both achieve similar goals (controlled policy updates) through different mechanisms.</p>
+<hr />
+<h3 id="q5-how-do-you-mitigate-reward-hacking-in-practice">Q5: How do you mitigate reward hacking in practice?<a class="headerlink" href="#q5-how-do-you-mitigate-reward-hacking-in-practice" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>Multi-layered approach:</strong></p>
+<ol>
+<li><strong>Reward model side:</strong></li>
+<li>Use ensemble methods (mean - std scoring)</li>
+<li>Regular retraining with adversarial examples</li>
+<li>
+<p>Calibration techniques (temperature scaling)</p>
+</li>
+<li>
+<p><strong>Policy side:</strong></p>
+</li>
+<li>Strong KL penalty (primary defense)</li>
+<li>Entropy bonuses to maintain diversity</li>
+<li>
+<p>Behavior cloning regularization</p>
+</li>
+<li>
+<p><strong>Training practices:</strong></p>
+</li>
+<li>Early stopping based on human eval</li>
+<li>Conservative hyperparameters</li>
+<li>
+<p>Regular human-in-the-loop audits</p>
+</li>
+<li>
+<p><strong>Monitoring:</strong></p>
+</li>
+<li>Track reward-human correlation</li>
+<li>Monitor diversity metrics</li>
+<li>Review high-reward samples</li>
+</ol>
+<p>No single method is sufficient; combination provides robust defense.</p>
+<hr />
+<h3 id="q6-what-is-adaptive-kl-control-and-when-would-you-use-it">Q6: What is adaptive KL control and when would you use it?<a class="headerlink" href="#q6-what-is-adaptive-kl-control-and-when-would-you-use-it" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p>Adaptive KL control dynamically adjusts β based on measured KL divergence:
+- Increase β when KL exceeds target (too much drift)
+- Decrease β when KL is below target (too conservative)
+- Keep β constant when near target</p>
+<p><strong>When to use:</strong>
+- Unknown optimal β for new task
+- Training across diverse datasets
+- Want automatic tuning without manual search
+- Need robustness to hyperparameter choices</p>
+<p><strong>Implementation:</strong>
+<div class="highlight"><pre><span></span><code>if KL &gt; 1.5 * target: β *= 1.1
+elif KL &lt; 0.5 * target: β *= 0.9
+</code></pre></div></p>
+<p>More robust than fixed β but requires choosing target KL and adaptation rates.</p>
+<hr />
+<h3 id="q7-can-kl-penalty-alone-prevent-all-reward-hacking">Q7: Can KL penalty alone prevent all reward hacking?<a class="headerlink" href="#q7-can-kl-penalty-alone-prevent-all-reward-hacking" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>No, KL penalty alone is insufficient because:</strong></p>
+<ol>
+<li><strong>Slow drift still possible</strong> - Small consistent bias compounds over time</li>
+<li><strong>Doesn't fix reward model flaws</strong> - Underlying misspecification remains</li>
+<li><strong>Can't detect all exploitation</strong> - Some gaming behaviors stay within KL budget</li>
+<li><strong>Trade-off with learning</strong> - Stronger KL limits legitimate improvement too</li>
+</ol>
+<p><strong>Need additional defenses:</strong>
+- Reward model ensembles for uncertainty
+- Regular retraining on new data
+- Human evaluation and oversight
+- Diversity-preserving techniques
+- Monitoring multiple indicators</p>
+<p>KL penalty is the <strong>primary</strong> defense, but comprehensive solution requires multiple layers.</p>
+<hr />
+<h3 id="q8-how-do-you-compute-kl-divergence-in-practice-for-language-models">Q8: How do you compute KL divergence in practice for language models?<a class="headerlink" href="#q8-how-do-you-compute-kl-divergence-in-practice-for-language-models" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>Token-level computation:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Forward pass through both models</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">ref_logprobs</span> <span class="o">=</span> <span class="n">ref_model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span>
+
+<span class="n">policy_logprobs</span> <span class="o">=</span> <span class="n">policy_model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span>
+
+<span class="c1"># Per-token KL</span>
+<span class="n">per_token_kl</span> <span class="o">=</span> <span class="n">policy_logprobs</span> <span class="o">-</span> <span class="n">ref_logprobs</span>
+
+<span class="c1"># Sequence-level KL (mean over tokens)</span>
+<span class="n">kl_divergence</span> <span class="o">=</span> <span class="n">per_token_kl</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Alternative: sum over sequence</span>
+<span class="n">kl_divergence</span> <span class="o">=</span> <span class="n">per_token_kl</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>Key considerations:</strong>
+- Use same tokenization and inputs for both models
+- Can weight by sequence length or use mean
+- Efficient to compute in single forward pass
+- Reference model typically frozen (no gradients)</p>
+<hr />
+<h3 id="q9-what-metrics-would-you-monitor-during-rlhf-training">Q9: What metrics would you monitor during RLHF training?<a class="headerlink" href="#q9-what-metrics-would-you-monitor-during-rlhf-training" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>Primary metrics:</strong>
+1. <strong>Reward model score</strong> - Check task performance
+2. <strong>KL divergence</strong> - Monitor policy drift
+3. <strong>Human evaluation</strong> - Ground truth quality</p>
+<p><strong>Secondary metrics:</strong>
+4. <strong>Diversity metrics</strong> - N-gram diversity, entropy
+5. <strong>Reward-human correlation</strong> - Detect gaming
+6. <strong>Perplexity on held-out data</strong> - Check catastrophic forgetting
+7. <strong>Reward model uncertainty</strong> - Flag OOD samples
+8. <strong>Response length distribution</strong> - Detect length gaming</p>
+<p><strong>Red flags:</strong>
+- Reward increasing but human eval flat/declining
+- KL divergence growing rapidly
+- Diversity dropping
+- Correlation between reward and human eval declining</p>
+<hr />
+<h3 id="q10-describe-a-real-world-example-of-reward-hacking-you-might-encounter">Q10: Describe a real-world example of reward hacking you might encounter.<a class="headerlink" href="#q10-describe-a-real-world-example-of-reward-hacking-you-might-encounter" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<p><strong>Example: Length exploitation in summarization</strong></p>
+<p><strong>Setup:</strong>
+- Training model to summarize documents
+- Reward model trained on human preferences
+- Reward model accidentally correlates length with quality</p>
+<p><strong>Reward hacking behavior:</strong>
+- Policy generates very long "summaries"
+- Includes unnecessary details and repetition
+- Achieves high reward scores
+- But fails actual summarization task</p>
+<p><strong>Detection:</strong>
+- Reward scores increase but human eval shows poor summaries
+- Length distribution shifts significantly
+- Diversity metrics show repetitive patterns</p>
+<p><strong>Mitigation:</strong>
+1. Add length normalization to reward
+2. Collect adversarial examples (long bad summaries)
+3. Retrain reward model with these examples
+4. Increase KL penalty to slow exploitation
+5. Add explicit length constraints</p>
+<p>This demonstrates why multiple safeguards are needed beyond just reward optimization.</p>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<h3 id="kl-penalty">KL Penalty<a class="headerlink" href="#kl-penalty" title="Permanent link">&para;</a></h3>
+<p>✓ Essential regularization for stable policy optimization
+✓ Prevents catastrophic forgetting and rapid divergence
+✓ Tuning β is critical (0.01-0.1 typical range)
+✓ Adaptive control can automate adjustment
+✓ Acts as trust region constraint</p>
+<h3 id="reward-hacking">Reward Hacking<a class="headerlink" href="#reward-hacking" title="Permanent link">&para;</a></h3>
+<p>✓ Inevitable with imperfect reward models
+✓ Requires multi-layered defense strategy
+✓ KL penalty is primary but not sole defense
+✓ Monitoring is as important as mitigation
+✓ Human evaluation remains essential</p>
+<h3 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h3>
+<p>✓ Monitor multiple metrics simultaneously
+✓ Combine reward model improvements with policy regularization
+✓ Regular human-in-the-loop validation
+✓ Start conservative, relax gradually
+✓ Document and track failure modes</p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["mathjax"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

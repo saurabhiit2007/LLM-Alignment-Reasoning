@@ -1,0 +1,3367 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation and notes on RL methods for LLM fine-tuning">
+      
+      
+        <meta name="author" content="Saurabh Goyal">
+      
+      
+      
+        <link rel="prev" href="../ppo/">
+      
+      
+        <link rel="next" href="../grpo/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Direct Policy Optimization (DPO) - LLM RL Fine-tuning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#direct-preference-optimization-dpo-reinforcement-learning-free-alignment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM RL Fine-tuning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Direct Policy Optimization (DPO)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM RL Fine-tuning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rlhf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF Pipeline Reward Modeling & Preference Data Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RL Optimization Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            RL Optimization Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-big-picture-from-rlhf-to-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Big Picture: From RLHF to DPO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-intuitive-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Intuitive Understanding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-data-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Training Data and Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-dpo-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. DPO Formulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. DPO Formulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-the-core-objective-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1. The Core Objective Function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-intuition-behind-the-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2. Intuition Behind the Objective
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-implementation-details-and-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3. Implementation Details and Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4. Key Takeaways
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Implementation Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Implementation Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-pseudocode" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1. Pseudocode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-complete-training-script-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2. Complete Training Script Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-why-dpo-instead-of-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Why DPO Instead of PPO?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-limitations-and-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Limitations and Challenges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Limitations and Challenges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-limited-preference-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      📉 1. Limited Preference Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-generalization-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 2. Generalization Gaps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-reference-model-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚖️ 3. Reference Model Sensitivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-no-explicit-reward-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 4. No Explicit Reward Signal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-human-preference-inconsistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎭 5. Human Preference Inconsistency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-mode-collapse" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 6. Mode Collapse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-expensive-inference-during-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⏱️ 7. Expensive Inference During Training
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-variants-and-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Variants and Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Variants and Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-ipo-identity-preference-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1. IPO (Identity Preference Optimization)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-kto-kahneman-tversky-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.2. KTO (Kahneman-Tversky Optimization)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-iterative-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.3. Iterative DPO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-online-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4. Online DPO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-practical-tips-for-success" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Practical Tips for Success
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Summary Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-dpo-interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Common DPO Interview Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Common DPO Interview Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-conceptual-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Conceptual Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Conceptual Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-what-is-dpo-and-why-was-it-introduced" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is DPO and why was it introduced?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-explain-the-dpo-objective-function-and-its-intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Explain the DPO objective function and its intuition.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-what-role-does-the-reference-model-play-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. What role does the reference model play in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-how-does-dpo-differ-from-ppo-based-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. How does DPO differ from PPO-based RLHF?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-what-is-the-implicit-reward-model-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What is the "implicit reward model" in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-implementation-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Implementation Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Implementation Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6-walk-through-how-you-would-implement-dpo-training-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Walk through how you would implement DPO training from scratch.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-what-are-important-hyperparameters-in-dpo-and-how-do-you-tune-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What are important hyperparameters in DPO and how do you tune them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-how-do-you-handle-sequences-of-different-lengths-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. How do you handle sequences of different lengths in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-what-numerical-stability-issues-can-arise-in-dpo-and-how-do-you-address-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What numerical stability issues can arise in DPO and how do you address them?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-what-happens-if-you-set-to-0-or-to-infinity" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. What happens if you set β to 0 or to infinity?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-how-would-you-debug-a-dpo-model-thats-not-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. How would you debug a DPO model that's not learning?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-can-you-explain-the-connection-between-dpo-and-the-bradley-terry-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Can you explain the connection between DPO and the Bradley-Terry model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-how-does-dpo-handle-the-exploration-exploitation-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. How does DPO handle the exploration-exploitation trade-off?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-compare-dpo-with-other-alignment-methods-rlhf-rlaif-constitutional-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Compare DPO with other alignment methods: RLHF, RLAIF, Constitutional AI.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-what-are-some-failure-modes-of-dpo-and-how-would-you-detect-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What are some failure modes of DPO and how would you detect them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-how-would-you-adapt-dpo-for-multi-objective-alignment-eg-helpfulness-and-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. How would you adapt DPO for multi-objective alignment (e.g., helpfulness AND safety)?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-what-research-directions-or-improvements-are-being-explored-for-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. What research directions or improvements are being explored for DPO?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practicalsystem-design-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical/System Design Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical/System Design Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#18-how-would-you-set-up-a-dpo-training-pipeline-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. How would you set up a DPO training pipeline in production?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-what-computational-resources-would-you-need-for-dpo-training-on-a-7b-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. What computational resources would you need for DPO training on a 7B model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-how-would-you-evaluate-if-dpo-training-was-successful" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. How would you evaluate if DPO training was successful?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-fire-questions-for-phone-screens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick-Fire Questions for Phone Screens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick-Fire Questions for Phone Screens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-in-one-sentence-what-is-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: In one sentence, what is DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-doesnt-dpo-need-a-reward-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: Why doesn't DPO need a reward model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-does-control-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: What does β control in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-whats-the-main-advantage-of-dpo-over-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: What's the main advantage of DPO over PPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-whats-a-common-failure-mode-of-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: What's a common failure mode of DPO?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-coding-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonus: Coding Challenge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Additional Resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Additional Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#papers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Papers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Repositories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tutorials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kl_penalty_reward_hacking.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty & Reward Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../methods/drpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Rewards Policy Optimization (DRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supporting Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../supporting_topics/kl_penalty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deepseek RL Fine-tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../supporting_topics/rewards_hacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rewards Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-big-picture-from-rlhf-to-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Big Picture: From RLHF to DPO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-intuitive-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Intuitive Understanding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-data-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Training Data and Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-dpo-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. DPO Formulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. DPO Formulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-the-core-objective-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1. The Core Objective Function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-intuition-behind-the-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2. Intuition Behind the Objective
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-implementation-details-and-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3. Implementation Details and Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4. Key Takeaways
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Implementation Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Implementation Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-pseudocode" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1. Pseudocode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-complete-training-script-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2. Complete Training Script Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-why-dpo-instead-of-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Why DPO Instead of PPO?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-limitations-and-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Limitations and Challenges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Limitations and Challenges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-limited-preference-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      📉 1. Limited Preference Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-generalization-gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 2. Generalization Gaps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-reference-model-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚖️ 3. Reference Model Sensitivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-no-explicit-reward-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧩 4. No Explicit Reward Signal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-human-preference-inconsistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎭 5. Human Preference Inconsistency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-mode-collapse" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 6. Mode Collapse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-expensive-inference-during-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⏱️ 7. Expensive Inference During Training
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-variants-and-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Variants and Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Variants and Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-ipo-identity-preference-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1. IPO (Identity Preference Optimization)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-kto-kahneman-tversky-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.2. KTO (Kahneman-Tversky Optimization)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-iterative-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.3. Iterative DPO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-online-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4. Online DPO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-practical-tips-for-success" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Practical Tips for Success
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Summary Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-dpo-interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Common DPO Interview Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Common DPO Interview Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-conceptual-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Conceptual Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Conceptual Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-what-is-dpo-and-why-was-it-introduced" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is DPO and why was it introduced?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-explain-the-dpo-objective-function-and-its-intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Explain the DPO objective function and its intuition.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-what-role-does-the-reference-model-play-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. What role does the reference model play in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-how-does-dpo-differ-from-ppo-based-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. How does DPO differ from PPO-based RLHF?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-what-is-the-implicit-reward-model-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What is the "implicit reward model" in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-implementation-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Implementation Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Implementation Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6-walk-through-how-you-would-implement-dpo-training-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Walk through how you would implement DPO training from scratch.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-what-are-important-hyperparameters-in-dpo-and-how-do-you-tune-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What are important hyperparameters in DPO and how do you tune them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-how-do-you-handle-sequences-of-different-lengths-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. How do you handle sequences of different lengths in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-what-numerical-stability-issues-can-arise-in-dpo-and-how-do-you-address-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. What numerical stability issues can arise in DPO and how do you address them?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-what-happens-if-you-set-to-0-or-to-infinity" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. What happens if you set β to 0 or to infinity?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-how-would-you-debug-a-dpo-model-thats-not-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. How would you debug a DPO model that's not learning?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-can-you-explain-the-connection-between-dpo-and-the-bradley-terry-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Can you explain the connection between DPO and the Bradley-Terry model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-how-does-dpo-handle-the-exploration-exploitation-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. How does DPO handle the exploration-exploitation trade-off?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-compare-dpo-with-other-alignment-methods-rlhf-rlaif-constitutional-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Compare DPO with other alignment methods: RLHF, RLAIF, Constitutional AI.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-what-are-some-failure-modes-of-dpo-and-how-would-you-detect-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. What are some failure modes of DPO and how would you detect them?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-how-would-you-adapt-dpo-for-multi-objective-alignment-eg-helpfulness-and-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. How would you adapt DPO for multi-objective alignment (e.g., helpfulness AND safety)?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-what-research-directions-or-improvements-are-being-explored-for-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. What research directions or improvements are being explored for DPO?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practicalsystem-design-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical/System Design Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical/System Design Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#18-how-would-you-set-up-a-dpo-training-pipeline-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. How would you set up a DPO training pipeline in production?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-what-computational-resources-would-you-need-for-dpo-training-on-a-7b-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. What computational resources would you need for DPO training on a 7B model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-how-would-you-evaluate-if-dpo-training-was-successful" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. How would you evaluate if DPO training was successful?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-fire-questions-for-phone-screens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick-Fire Questions for Phone Screens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick-Fire Questions for Phone Screens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-in-one-sentence-what-is-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: In one sentence, what is DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-doesnt-dpo-need-a-reward-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: Why doesn't DPO need a reward model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-does-control-in-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: What does β control in DPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-whats-the-main-advantage-of-dpo-over-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: What's the main advantage of DPO over PPO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-whats-a-common-failure-mode-of-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: What's a common failure mode of DPO?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-coding-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bonus: Coding Challenge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Additional Resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Additional Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#papers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Papers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Repositories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tutorials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="direct-preference-optimization-dpo-reinforcement-learning-free-alignment">🧩 Direct Preference Optimization (DPO) — Reinforcement Learning-Free Alignment<a class="headerlink" href="#direct-preference-optimization-dpo-reinforcement-learning-free-alignment" title="Permanent link">&para;</a></h1>
+<h3 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h3>
+<p><strong>Direct Preference Optimization (DPO)</strong> is an algorithm designed to fine-tune <strong>Large Language Models (LLMs)</strong> using human preference data — <em>without requiring a separate reward model or reinforcement learning (RL) loop</em>.</p>
+<p>It directly learns from pairs of preferred and rejected responses, offering a simpler and more stable alternative to <strong>Proximal Policy Optimization (PPO)</strong> in the <strong>Reinforcement Learning from Human Feedback (RLHF)</strong> pipeline.</p>
+<p><strong>Key Innovation</strong>: DPO reparameterizes the reward model implicitly within the policy, allowing direct optimization of preferences without the complexity of traditional RLHF.</p>
+<hr />
+<h3 id="2-the-big-picture-from-rlhf-to-dpo">2. The Big Picture: From RLHF to DPO<a class="headerlink" href="#2-the-big-picture-from-rlhf-to-dpo" title="Permanent link">&para;</a></h3>
+<p>While traditional RLHF involves three stages — Supervised Fine-Tuning (SFT), Reward Model (RM) Training, and PPO Fine-Tuning — DPO <strong>collapses</strong> the latter two into a single, direct optimization step.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>PPO-Based RLHF</th>
+<th>DPO-Based Alignment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1️⃣ SFT</td>
+<td>Train base LLM on human demonstrations</td>
+<td>✅ Same</td>
+</tr>
+<tr>
+<td>2️⃣ RM</td>
+<td>Train reward model on preference pairs</td>
+<td>❌ Not needed</td>
+</tr>
+<tr>
+<td>3️⃣ RL</td>
+<td>Fine-tune using PPO + rewards</td>
+<td>✅ Replaced by DPO objective</td>
+</tr>
+</tbody>
+</table>
+<p>This makes DPO <strong>computationally lighter</strong>, <strong>easier to implement</strong>, and <strong>more stable</strong>.</p>
+<hr />
+<h3 id="3-intuitive-understanding">3. Intuitive Understanding<a class="headerlink" href="#3-intuitive-understanding" title="Permanent link">&para;</a></h3>
+<p>Imagine training an assistant:</p>
+<ul>
+<li><strong>PPO:</strong> The assistant writes an answer → a teacher scores it numerically (via a reward model) → updates happen using RL.</li>
+<li><strong>DPO:</strong> The assistant sees two answers for the same question — one good, one bad — and learns which is better <strong>directly</strong>.</li>
+</ul>
+<p>Thus, DPO <strong>bypasses numeric rewards</strong> and learns preferences directly from comparative judgments.</p>
+<p><strong>Analogy</strong>: Instead of grading papers with numbers (60% vs 85%), DPO is like telling the model "this answer is better than that one" — simpler and more aligned with how humans naturally provide feedback.</p>
+<hr />
+<h3 id="4-training-data-and-setup">4. Training Data and Setup<a class="headerlink" href="#4-training-data-and-setup" title="Permanent link">&para;</a></h3>
+<p>Each DPO training example consists of a triplet: <span class="arithmatex">\((x, y_w, y_l)\)</span></p>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\(x\)</span>: Prompt or input query</li>
+<li><span class="arithmatex">\(y_w\)</span>: Preferred (chosen/winner) response</li>
+<li><span class="arithmatex">\(y_l\)</span>: Less preferred (rejected/loser) response</li>
+</ul>
+<p>The model learns to assign <strong>higher probability</strong> to <span class="arithmatex">\(y_w\)</span> than <span class="arithmatex">\(y_l\)</span>, while staying close to a <strong>reference model</strong> <span class="arithmatex">\(\pi_{\text{ref}}\)</span> (usually the SFT model) to prevent overfitting and maintain general capabilities.</p>
+<p><strong>Data Collection Methods:</strong>
+- Human annotators compare two responses and select the better one
+- AI feedback (e.g., constitutional AI)
+- Synthetic preference pairs from stronger models
+- Majority voting among multiple annotators</p>
+<hr />
+<h3 id="5-dpo-formulation">5. DPO Formulation<a class="headerlink" href="#5-dpo-formulation" title="Permanent link">&para;</a></h3>
+<h4 id="51-the-core-objective-function">5.1. The Core Objective Function<a class="headerlink" href="#51-the-core-objective-function" title="Permanent link">&para;</a></h4>
+<p>DPO reframes preference optimization as a <strong>direct likelihood-ratio objective</strong>, eliminating the need for an explicit reward model or reinforcement learning loop. The resulting <strong>closed-form objective</strong> is:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{DPO}}(\theta) = -\mathbb{E}_{(x, y_w, y_l)} \left[
+\log \sigma \left(
+\beta \left[
+\log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)}
+\right]
+\right)
+\right]
+\]</div>
+<p>Or equivalently:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{DPO}}(\theta) = -\mathbb{E}_{(x, y_w, y_l)} \left[
+\log \sigma \left(
+\beta \Big[
+(\log \pi_\theta(y_w|x) - \log \pi_{\text{ref}}(y_w|x)) - (\log \pi_\theta(y_l|x) - \log \pi_{\text{ref}}(y_l|x))
+\Big]
+\right)
+\right]
+\]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\(\pi_\theta\)</span>: Trainable policy model (the model being fine-tuned)</li>
+<li><span class="arithmatex">\(\pi_{\text{ref}}\)</span>: Frozen reference model (often the SFT model)</li>
+<li><span class="arithmatex">\(\sigma\)</span>: Sigmoid function <span class="arithmatex">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span></li>
+<li><span class="arithmatex">\(\beta\)</span>: Inverse temperature hyperparameter controlling the tradeoff between alignment strength and faithfulness to the reference model</li>
+</ul>
+<hr />
+<h4 id="52-intuition-behind-the-objective">5.2. Intuition Behind the Objective<a class="headerlink" href="#52-intuition-behind-the-objective" title="Permanent link">&para;</a></h4>
+<p>The objective encourages the model to <strong>increase the likelihood ratio</strong> of preferred responses <span class="arithmatex">\(y_w\)</span> relative to dispreferred ones <span class="arithmatex">\(y_l\)</span>, while <strong>regularizing</strong> against divergence from the reference policy.</p>
+<p><strong>Breaking it down:</strong></p>
+<ol>
+<li><strong>Log-likelihood ratios</strong>: <span class="arithmatex">\(\log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)}\)</span> measures how much more likely <span class="arithmatex">\(\pi_\theta\)</span> makes <span class="arithmatex">\(y_w\)</span> compared to the reference</li>
+<li><strong>Preference margin</strong>: The difference between winner and loser ratios creates a margin that the model tries to maximize</li>
+<li><strong>Sigmoid function</strong>: Converts the margin into a probability, making the loss continuous and differentiable</li>
+<li><strong>Beta parameter</strong>: Controls how aggressively to deviate from the reference model</li>
+</ol>
+<p><strong>Connection to Reward Modeling</strong>: This can be interpreted as <strong>implicitly performing reward-based optimization</strong>, with the <em>implicit reward function</em> defined as:</p>
+<div class="arithmatex">\[
+r(x, y) = \beta \log \frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)}
+\]</div>
+<p>This formulation shows that DPO optimizes the same relative preferences that PPO would learn from a reward model — but in a <strong>single forward pass</strong>, without explicit reward modeling or KL penalty terms. Hence the popular phrase:</p>
+<blockquote>
+<p>"Your language model is secretly a reward model."</p>
+</blockquote>
+<hr />
+<h4 id="53-implementation-details-and-best-practices">5.3. Implementation Details and Best Practices<a class="headerlink" href="#53-implementation-details-and-best-practices" title="Permanent link">&para;</a></h4>
+<p><strong>Core Implementation Steps:</strong></p>
+<ol>
+<li><strong>Reference model is frozen</strong> — do not allow gradient flow into <span class="arithmatex">\(\pi_{\text{ref}}\)</span></li>
+<li><strong>Sequence-level log-probabilities</strong> — compute <span class="arithmatex">\(\log \pi(y|x)\)</span> as the sum of token log-probabilities:
+   <span class="arithmatex">\(<span class="arithmatex">\(\log \pi(y|x) = \sum_{t=1}^{T} \log \pi(y_t|x, y_{&lt;t})\)</span>\)</span></li>
+<li><strong>Length normalization</strong> (optional) — useful if <span class="arithmatex">\(y_w\)</span> and <span class="arithmatex">\(y_l\)</span> differ significantly in length:
+   <span class="arithmatex">\(<span class="arithmatex">\(\log \pi(y|x)_{\text{normalized}} = \frac{1}{|y|} \sum_{t=1}^{T} \log \pi(y_t|x, y_{&lt;t})\)</span>\)</span></li>
+</ol>
+<p><strong>Numerical Stability:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅ CORRECT - numerically stable</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">((</span><span class="n">logp_chosen</span> <span class="o">-</span> <span class="n">logp_chosen_ref</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">logp_rejected</span> <span class="o">-</span> <span class="n">logp_rejected_ref</span><span class="p">))</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># ❌ WRONG - numerically unstable</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># Can cause NaN with extreme values</span>
+</code></pre></div>
+<p><strong>Hyperparameter Tuning:</strong></p>
+<ul>
+<li><strong>β (beta)</strong>: </li>
+<li>Higher β → more aggressive divergence from reference (stronger alignment, higher risk of mode collapse)</li>
+<li>Lower β → stays closer to reference (more conservative, safer)</li>
+<li>Typical values: <strong>0.1–0.5</strong></li>
+<li>
+<p>Start with 0.1 and increase if model isn't learning preferences strongly enough</p>
+</li>
+<li>
+<p><strong>Learning rate</strong>: Typically 1e-6 to 5e-6 (lower than standard fine-tuning)</p>
+</li>
+<li><strong>Batch size</strong>: 32-128 pairs (depends on GPU memory)</li>
+<li><strong>Epochs</strong>: 1-3 epochs over preference data (more can lead to overfitting)</li>
+</ul>
+<p><strong>Additional Best Practices:</strong></p>
+<ul>
+<li><strong>Consistent tokenization</strong> — ensure both <span class="arithmatex">\(\pi_\theta\)</span> and <span class="arithmatex">\(\pi_{\text{ref}}\)</span> use the same tokenizer and decoding setup</li>
+<li><strong>Regularization monitoring</strong> — track KL divergence between <span class="arithmatex">\(\pi_\theta\)</span> and <span class="arithmatex">\(\pi_{\text{ref}}\)</span> to prevent over-drift:
+  <span class="arithmatex">\(<span class="arithmatex">\(\text{KL}(\pi_\theta || \pi_{\text{ref}}) = \mathbb{E}_y \left[ \log \frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)} \right]\)</span>\)</span></li>
+<li><strong>Gradient clipping</strong> — use gradient norm clipping (e.g., max norm = 1.0) to prevent training instability</li>
+<li><strong>Mixed precision training</strong> — use fp16/bf16 for memory efficiency</li>
+<li><strong>Checkpoint the reference model</strong> — save the SFT model before starting DPO training</li>
+</ul>
+<hr />
+<h4 id="54-key-takeaways">5.4. Key Takeaways<a class="headerlink" href="#54-key-takeaways" title="Permanent link">&para;</a></h4>
+<ul>
+<li>DPO avoids explicit reward models and RL optimization loops</li>
+<li>It implicitly aligns model preferences through likelihood ratios</li>
+<li>The β parameter provides a smooth knob between <em>faithfulness</em> and <em>alignment strength</em></li>
+<li>Simpler, more stable, and often more data-efficient than PPO while achieving comparable alignment</li>
+<li>The implicit reward formulation connects DPO back to traditional reward-based RLHF</li>
+</ul>
+<hr />
+<h3 id="6-implementation-example">6. Implementation Example<a class="headerlink" href="#6-implementation-example" title="Permanent link">&para;</a></h3>
+<h4 id="61-pseudocode">6.1. Pseudocode<a class="headerlink" href="#61-pseudocode" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_dpo_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ref_model</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute DPO loss for a batch of preference pairs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: Trainable policy model (π_θ)</span>
+<span class="sd">        ref_model: Frozen reference model (π_ref)</span>
+<span class="sd">        batch: Dict with keys &#39;prompt&#39;, &#39;chosen&#39;, &#39;rejected&#39;</span>
+<span class="sd">        beta: Temperature parameter</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        loss: DPO loss value</span>
+<span class="sd">        metrics: Dict with accuracy and margin statistics</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prompts</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;prompt&#39;</span><span class="p">]</span>
+    <span class="n">chosen</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;chosen&#39;</span><span class="p">]</span>
+    <span class="n">rejected</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;rejected&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Compute log probabilities for chosen responses</span>
+    <span class="n">logp_chosen</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">chosen</span><span class="p">)</span>
+    <span class="n">logp_chosen_ref</span> <span class="o">=</span> <span class="n">ref_model</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">chosen</span><span class="p">)</span>
+
+    <span class="c1"># Compute log probabilities for rejected responses</span>
+    <span class="n">logp_rejected</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">rejected</span><span class="p">)</span>
+    <span class="n">logp_rejected_ref</span> <span class="o">=</span> <span class="n">ref_model</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">rejected</span><span class="p">)</span>
+
+    <span class="c1"># Compute the preference logits</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">logp_chosen</span> <span class="o">-</span> <span class="n">logp_chosen_ref</span><span class="p">)</span> <span class="o">-</span> 
+        <span class="p">(</span><span class="n">logp_rejected</span> <span class="o">-</span> <span class="n">logp_rejected_ref</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># DPO loss: negative log-sigmoid</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="c1"># Compute metrics</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">logits</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">margin</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s1">&#39;margin&#39;</span><span class="p">:</span> <span class="n">margin</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+        <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">metrics</span>
+
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">preference_dataloader</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="n">compute_dpo_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ref_model</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="c1"># Log metrics</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loss: </span><span class="si">{</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Accuracy: </span><span class="si">{</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="62-complete-training-script-structure">6.2. Complete Training Script Structure<a class="headerlink" href="#62-complete-training-script-structure" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DPOTrainer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">5e-7</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+        <span class="c1"># Freeze reference model</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_log_probs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute sequence log probabilities.&quot;&quot;&quot;</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">)</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># Shift for next-token prediction</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">input_ids</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># Targets</span>
+
+        <span class="c1"># Compute log probabilities</span>
+        <span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">selected_log_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+            <span class="n">log_probs</span><span class="p">,</span> 
+            <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="n">index</span><span class="o">=</span><span class="n">labels</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Mask padding tokens</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+        <span class="n">sequence_log_probs</span> <span class="o">=</span> <span class="p">(</span><span class="n">selected_log_probs</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sequence_log_probs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Single training step.&quot;&quot;&quot;</span>
+        <span class="c1"># Get log probs for chosen and rejected</span>
+        <span class="n">logp_chosen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;chosen_ids&#39;</span><span class="p">],</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;chosen_mask&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">logp_chosen_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;chosen_ids&#39;</span><span class="p">],</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;chosen_mask&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">logp_rejected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;rejected_ids&#39;</span><span class="p">],</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;rejected_mask&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">logp_rejected_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_log_probs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;rejected_ids&#39;</span><span class="p">],</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;rejected_mask&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Compute DPO loss</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">logp_chosen</span> <span class="o">-</span> <span class="n">logp_chosen_ref</span><span class="p">)</span> <span class="o">-</span> 
+            <span class="p">(</span><span class="n">logp_rejected</span> <span class="o">-</span> <span class="n">logp_rejected_ref</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="p">(</span><span class="n">logits</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Full training loop.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+            <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">total_acc</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_step</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="mf">1.0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+                <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">total_acc</span> <span class="o">+=</span> <span class="n">acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+                <span class="n">pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span>
+                    <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">acc</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">})</span>
+
+            <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+            <span class="n">avg_acc</span> <span class="o">=</span> <span class="n">total_acc</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> - Loss: </span><span class="si">{</span><span class="n">avg_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Acc: </span><span class="si">{</span><span class="n">avg_acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h3 id="7-why-dpo-instead-of-ppo">7. Why DPO Instead of PPO?<a class="headerlink" href="#7-why-dpo-instead-of-ppo" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>PPO-Based RLHF</th>
+<th>DPO-Based Alignment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Reward Model</strong></td>
+<td>Requires separate RM</td>
+<td>Not needed (implicit)</td>
+</tr>
+<tr>
+<td><strong>RL Loop</strong></td>
+<td>Yes (policy + value optimization)</td>
+<td>No (direct optimization)</td>
+</tr>
+<tr>
+<td><strong>KL Penalty</strong></td>
+<td>Manually tuned, added to objective</td>
+<td>Implicitly handled via reference</td>
+</tr>
+<tr>
+<td><strong>Training Stability</strong></td>
+<td>Sensitive to hyperparameters</td>
+<td>More stable</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>High (policy, RM, value, critic)</td>
+<td>Low (policy + reference only)</td>
+</tr>
+<tr>
+<td><strong>Data Efficiency</strong></td>
+<td>Uses scalar rewards</td>
+<td>Uses preference pairs directly</td>
+</tr>
+<tr>
+<td><strong>Computation Cost</strong></td>
+<td>Expensive (4 models: policy, old policy, reward, value)</td>
+<td>Lightweight (2 models: policy, ref)</td>
+</tr>
+<tr>
+<td><strong>Hyperparameters</strong></td>
+<td>Many (LR, KL coeff, clip ratio, GAE)</td>
+<td>Few (β, LR)</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>Complex (needs RL framework)</td>
+<td>Simple (supervised learning style)</td>
+</tr>
+<tr>
+<td><strong>Training Time</strong></td>
+<td>Slower (multiple forward passes)</td>
+<td>Faster (single forward pass)</td>
+</tr>
+<tr>
+<td><strong>Memory Usage</strong></td>
+<td>Higher</td>
+<td>Lower</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to use PPO:</strong>
+- You have a well-defined scalar reward function
+- You need to optimize for multiple objectives simultaneously
+- You want fine-grained control over exploration</p>
+<p><strong>When to use DPO:</strong>
+- You have preference data (comparisons)
+- You want simpler, more stable training
+- You have limited computational resources
+- You're doing initial preference alignment</p>
+<hr />
+<h3 id="8-limitations-and-challenges">8. Limitations and Challenges<a class="headerlink" href="#8-limitations-and-challenges" title="Permanent link">&para;</a></h3>
+<h4 id="1-limited-preference-data">📉 1. Limited Preference Data<a class="headerlink" href="#1-limited-preference-data" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: High-quality pairwise preference datasets are expensive and time-consuming to collect at scale.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Use AI feedback (constitutional AI, self-critique)
+- Bootstrap from smaller high-quality datasets
+- Active learning to select most informative pairs
+- Synthetic data generation from stronger models</p>
+<h4 id="2-generalization-gaps">🔄 2. Generalization Gaps<a class="headerlink" href="#2-generalization-gaps" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: DPO may overfit to the specific distribution of preferences in training data and underperform on unseen prompt styles or domains.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Diverse preference data covering multiple domains
+- Regularization techniques (dropout, weight decay)
+- Ensemble methods with multiple reference models
+- Continual learning approaches</p>
+<h4 id="3-reference-model-sensitivity">⚖️ 3. Reference Model Sensitivity<a class="headerlink" href="#3-reference-model-sensitivity" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: If the reference model is too weak (far from optimal) or too strong (already aligned), DPO optimization can become unstable or ineffective.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Ensure reference model is well-trained with SFT
+- Monitor KL divergence during training
+- Adaptive β scheduling based on KL metrics
+- Use iterative DPO with periodic reference model updates</p>
+<h4 id="4-no-explicit-reward-signal">🧩 4. No Explicit Reward Signal<a class="headerlink" href="#4-no-explicit-reward-signal" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: Without continuous reward signals, DPO can struggle to explore novel solutions or provide fine-grained feedback on partial correctness.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Combine with outcome-based rewards for specific tasks
+- Use multi-stage training (DPO → PPO for refinement)
+- Process rewards for intermediate steps
+- Hybrid approaches like RLAIF</p>
+<h4 id="5-human-preference-inconsistency">🎭 5. Human Preference Inconsistency<a class="headerlink" href="#5-human-preference-inconsistency" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: Human annotators may disagree or be inconsistent, and biases in preference data can be amplified by the model.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Multiple annotators with consensus mechanisms
+- Quality control and annotator training
+- Bias detection and mitigation techniques
+- Incorporate uncertainty estimates in preferences</p>
+<h4 id="6-mode-collapse">🎯 6. Mode Collapse<a class="headerlink" href="#6-mode-collapse" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: With high β values, the model may collapse to a narrow distribution that only produces certain types of responses.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Start with low β and gradually increase
+- Monitor output diversity metrics
+- Use regularization terms for diversity
+- Periodic evaluation on diverse test sets</p>
+<h4 id="7-expensive-inference-during-training">⏱️ 7. Expensive Inference During Training<a class="headerlink" href="#7-expensive-inference-during-training" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: Need to run both policy and reference models for each training example, doubling inference cost.</p>
+<p><strong>Mitigation Strategies</strong>:
+- Batch processing to maximize throughput
+- Model distillation to create smaller reference model
+- Cache reference model outputs for static datasets
+- Mixed precision training</p>
+<hr />
+<h3 id="9-variants-and-extensions">9. Variants and Extensions<a class="headerlink" href="#9-variants-and-extensions" title="Permanent link">&para;</a></h3>
+<h4 id="91-ipo-identity-preference-optimization">9.1. IPO (Identity Preference Optimization)<a class="headerlink" href="#91-ipo-identity-preference-optimization" title="Permanent link">&para;</a></h4>
+<p><strong>Modification</strong>: Uses a simpler loss without the sigmoid:</p>
+<div class="arithmatex">\[\mathcal{L}_{\text{IPO}} = \mathbb{E}_{(x, y_w, y_l)} \left[ \left( \log \frac{\pi_\theta(y_w|x)}{\pi_\theta(y_l|x)} - \tau \right)^2 \right]\]</div>
+<p><strong>Advantage</strong>: More stable gradients, less sensitive to β</p>
+<h4 id="92-kto-kahneman-tversky-optimization">9.2. KTO (Kahneman-Tversky Optimization)<a class="headerlink" href="#92-kto-kahneman-tversky-optimization" title="Permanent link">&para;</a></h4>
+<p><strong>Modification</strong>: Uses binary feedback (good/bad) instead of pairwise comparisons</p>
+<p><strong>Use case</strong>: When you only have thumbs up/down data, not explicit comparisons</p>
+<h4 id="93-iterative-dpo">9.3. Iterative DPO<a class="headerlink" href="#93-iterative-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>Modification</strong>: Periodically update the reference model with the current policy</p>
+<p><strong>Advantage</strong>: Allows the model to improve beyond the initial SFT baseline</p>
+<h4 id="94-online-dpo">9.4. Online DPO<a class="headerlink" href="#94-online-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>Modification</strong>: Generate new preference pairs on-the-fly during training</p>
+<p><strong>Advantage</strong>: More data-efficient and can adapt to model's current capabilities</p>
+<hr />
+<h3 id="10-practical-tips-for-success">10. Practical Tips for Success<a class="headerlink" href="#10-practical-tips-for-success" title="Permanent link">&para;</a></h3>
+<p><strong>Data Preparation:</strong>
+1. Filter low-quality or ambiguous preference pairs
+2. Balance chosen/rejected distributions across different topics
+3. Ensure prompts are diverse and representative
+4. Include both easy and hard examples</p>
+<p><strong>Training:</strong>
+1. Always start with a well-trained SFT model as reference
+2. Begin with conservative β (0.1) and increase gradually
+3. Monitor both training metrics and sample outputs
+4. Use early stopping based on validation set performance
+5. Track KL divergence to avoid over-optimization</p>
+<p><strong>Evaluation:</strong>
+1. Test on held-out preference pairs (accuracy metric)
+2. Human evaluation on diverse prompts
+3. Compare outputs with reference model to assess improvement
+4. Check for degradation on general capabilities (benchmarks)
+5. Test for biases and failure modes</p>
+<hr />
+<h3 id="11-summary-table">11. Summary Table<a class="headerlink" href="#11-summary-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Policy Model (LLM)</strong></td>
+<td>Learns preferences directly</td>
+<td><code>Llama-2-7B</code>, <code>GPT-3</code></td>
+</tr>
+<tr>
+<td><strong>Reference Model</strong></td>
+<td>Provides baseline probabilities</td>
+<td>SFT model (frozen)</td>
+</tr>
+<tr>
+<td><strong>DPO Objective</strong></td>
+<td>Increases likelihood of preferred responses</td>
+<td>Log-sigmoid loss</td>
+</tr>
+<tr>
+<td><strong>β Parameter</strong></td>
+<td>Controls proximity to reference</td>
+<td>0.1-0.5</td>
+</tr>
+<tr>
+<td><strong>Preference Data</strong></td>
+<td>Triplets of (prompt, chosen, rejected)</td>
+<td>Human comparisons, AI feedback</td>
+</tr>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Align behavior with human preferences</td>
+<td>Stable, lightweight alignment</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="common-dpo-interview-questions">🎯 Common DPO Interview Questions<a class="headerlink" href="#common-dpo-interview-questions" title="Permanent link">&para;</a></h2>
+<h3 id="basic-conceptual-questions">Basic Conceptual Questions<a class="headerlink" href="#basic-conceptual-questions" title="Permanent link">&para;</a></h3>
+<h4 id="1-what-is-dpo-and-why-was-it-introduced">1. What is DPO and why was it introduced?<a class="headerlink" href="#1-what-is-dpo-and-why-was-it-introduced" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>: DPO (Direct Preference Optimization) is a method for aligning LLMs with human preferences without requiring a separate reward model or RL loop. It was introduced to simplify the RLHF pipeline by directly optimizing the policy model on preference pairs, making training more stable, simpler to implement, and computationally cheaper than PPO-based approaches.</p>
+<p><strong>Key points to mention</strong>:
+- Eliminates need for reward model training
+- Avoids complexity of RL optimization
+- More stable and data-efficient
+- Equivalent to optimizing an implicit reward model</p>
+<hr />
+<h4 id="2-explain-the-dpo-objective-function-and-its-intuition">2. Explain the DPO objective function and its intuition.<a class="headerlink" href="#2-explain-the-dpo-objective-function-and-its-intuition" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>: The DPO loss is:</p>
+<div class="arithmatex">\[\mathcal{L}_{\text{DPO}} = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( \beta \left[ \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right] \right) \right]\]</div>
+<p><strong>Intuition</strong>: 
+- The term <span class="arithmatex">\(\log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)}\)</span> measures how much more the policy prefers <span class="arithmatex">\(y_w\)</span> compared to reference
+- Taking the difference between winner and loser creates a margin
+- Sigmoid converts this to a probability
+- The loss encourages maximizing this margin, making preferred responses more likely
+- β controls how aggressively to diverge from reference</p>
+<hr />
+<h4 id="3-what-role-does-the-reference-model-play-in-dpo">3. What role does the reference model play in DPO?<a class="headerlink" href="#3-what-role-does-the-reference-model-play-in-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>: The reference model (usually the SFT model) serves multiple critical roles:</p>
+<ol>
+<li><strong>Regularization</strong>: Prevents the policy from diverging too far and losing general capabilities</li>
+<li><strong>Implicit KL constraint</strong>: The log-ratio formulation creates an implicit KL penalty without explicit computation</li>
+<li><strong>Baseline</strong>: Provides a starting point for measuring improvement</li>
+<li><strong>Stability</strong>: Keeps training stable by anchoring the policy to a known good model</li>
+</ol>
+<p><strong>Important</strong>: The reference model is <strong>frozen</strong> during DPO training (no gradient updates).</p>
+<hr />
+<h4 id="4-how-does-dpo-differ-from-ppo-based-rlhf">4. How does DPO differ from PPO-based RLHF?<a class="headerlink" href="#4-how-does-dpo-differ-from-ppo-based-rlhf" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>PPO-RLHF</th>
+<th>DPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stages</strong></td>
+<td>3 (SFT, RM, PPO)</td>
+<td>2 (SFT, DPO)</td>
+</tr>
+<tr>
+<td><strong>Reward Model</strong></td>
+<td>Explicit, separately trained</td>
+<td>Implicit in the policy</td>
+</tr>
+<tr>
+<td><strong>Optimization</strong></td>
+<td>RL with value functions</td>
+<td>Direct supervised learning</td>
+</tr>
+<tr>
+<td><strong>KL Penalty</strong></td>
+<td>Manual tuning required</td>
+<td>Implicitly handled</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>High (4 models)</td>
+<td>Low (2 models)</td>
+</tr>
+<tr>
+<td><strong>Stability</strong></td>
+<td>Sensitive to hyperparams</td>
+<td>More stable</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key insight</strong>: DPO realizes that you can directly optimize preferences without ever computing explicit reward values.</p>
+<hr />
+<h4 id="5-what-is-the-implicit-reward-model-in-dpo">5. What is the "implicit reward model" in DPO?<a class="headerlink" href="#5-what-is-the-implicit-reward-model-in-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>: DPO implicitly defines a reward function as:</p>
+<div class="arithmatex">\[r(x, y) = \beta \log \frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)}\]</div>
+<p>This means the policy model itself acts as a reward model — higher likelihood ratio indicates higher reward. This is why people say "your language model is secretly a reward model." The Bradley-Terry preference model is optimized under this implicit reward without explicitly computing reward values.</p>
+<hr />
+<h3 id="technical-implementation-questions">Technical Implementation Questions<a class="headerlink" href="#technical-implementation-questions" title="Permanent link">&para;</a></h3>
+<h4 id="6-walk-through-how-you-would-implement-dpo-training-from-scratch">6. Walk through how you would implement DPO training from scratch.<a class="headerlink" href="#6-walk-through-how-you-would-implement-dpo-training-from-scratch" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Step 1: Load SFT model and create reference copy</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;sft_model&quot;</span><span class="p">)</span>
+<span class="n">ref_model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;sft_model&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">ref_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Step 2: Prepare preference data</span>
+<span class="c1"># Each example: (prompt, chosen_response, rejected_response)</span>
+
+<span class="c1"># Step 3: Compute log probabilities</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_log_probs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prompt_ids</span><span class="p">,</span> <span class="n">response_ids</span><span class="p">):</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">prompt_ids</span><span class="p">,</span> <span class="n">response_ids</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">logits</span><span class="p">[:,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt_ids</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">token_log_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">log_probs</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">response_ids</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">token_log_probs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Step 4: Compute DPO loss</span>
+<span class="n">logp_chosen</span> <span class="o">=</span> <span class="n">get_log_probs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">chosen</span><span class="p">)</span>
+<span class="n">logp_rejected</span> <span class="o">=</span> <span class="n">get_log_probs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">rejected</span><span class="p">)</span>
+<span class="n">logp_chosen_ref</span> <span class="o">=</span> <span class="n">get_log_probs</span><span class="p">(</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">chosen</span><span class="p">)</span>
+<span class="n">logp_rejected_ref</span> <span class="o">=</span> <span class="n">get_log_probs</span><span class="p">(</span><span class="n">ref_model</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">rejected</span><span class="p">)</span>
+
+<span class="n">logits</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">((</span><span class="n">logp_chosen</span> <span class="o">-</span> <span class="n">logp_chosen_ref</span><span class="p">)</span> <span class="o">-</span> 
+                 <span class="p">(</span><span class="n">logp_rejected</span> <span class="o">-</span> <span class="n">logp_rejected_ref</span><span class="p">))</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Step 5: Backprop and optimize</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h4 id="7-what-are-important-hyperparameters-in-dpo-and-how-do-you-tune-them">7. What are important hyperparameters in DPO and how do you tune them?<a class="headerlink" href="#7-what-are-important-hyperparameters-in-dpo-and-how-do-you-tune-them" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<ol>
+<li><strong>β (beta)</strong>: Most critical parameter</li>
+<li>Controls tradeoff between alignment and reference adherence</li>
+<li>Start with 0.1, increase to 0.3-0.5 if learning is weak</li>
+<li>Too high → mode collapse, too low → insufficient learning</li>
+<li>
+<p>Monitor: KL divergence, output diversity</p>
+</li>
+<li>
+<p><strong>Learning rate</strong>: Typically 1e-6 to 5e-6</p>
+</li>
+<li>Lower than standard fine-tuning</li>
+<li>Use warmup and cosine decay</li>
+<li>
+<p>Monitor: training loss curve, gradient norms</p>
+</li>
+<li>
+<p><strong>Batch size</strong>: 32-128 preference pairs</p>
+</li>
+<li>Larger is better for stability</li>
+<li>
+<p>Limited by GPU memory</p>
+</li>
+<li>
+<p><strong>Number of epochs</strong>: 1-3</p>
+</li>
+<li>More can lead to overfitting</li>
+<li>
+<p>Monitor validation preference accuracy</p>
+</li>
+<li>
+<p><strong>Gradient clipping</strong>: Max norm of 1.0</p>
+</li>
+<li>Prevents instability from extreme examples</li>
+</ol>
+<hr />
+<h4 id="8-how-do-you-handle-sequences-of-different-lengths-in-dpo">8. How do you handle sequences of different lengths in DPO?<a class="headerlink" href="#8-how-do-you-handle-sequences-of-different-lengths-in-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>: </p>
+<p><strong>Problem</strong>: Longer sequences have lower log probabilities (more tokens to multiply), which can bias the model.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li>
+<p><strong>Length normalization</strong> (most common):
+<div class="highlight"><pre><span></span><code><span class="n">sequence_log_prob</span> <span class="o">=</span> <span class="n">token_log_probs</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">num_tokens</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Padding and masking</strong>:
+<div class="highlight"><pre><span></span><code><span class="c1"># Mask padding tokens when computing log probs</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_ids</span> <span class="o">!=</span> <span class="n">pad_token_id</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="n">sequence_log_prob</span> <span class="o">=</span> <span class="p">(</span><span class="n">token_log_probs</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Truncation</strong>: Truncate to max length, but ensure both chosen and rejected are treated equally</p>
+</li>
+<li>
+<p><strong>Length penalty in preference data</strong>: Include length as a feature when collecting preferences</p>
+</li>
+</ol>
+<p><strong>Trade-off</strong>: Length normalization makes probabilities comparable but may reduce the model's ability to learn about appropriate response length.</p>
+<hr />
+<h4 id="9-what-numerical-stability-issues-can-arise-in-dpo-and-how-do-you-address-them">9. What numerical stability issues can arise in DPO and how do you address them?<a class="headerlink" href="#9-what-numerical-stability-issues-can-arise-in-dpo-and-how-do-you-address-them" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Issues</strong>:</p>
+<ol>
+<li><strong>Sigmoid overflow</strong>: For large logits, <code>log(sigmoid(x))</code> can produce NaN</li>
+<li><strong>Log probability underflow</strong>: Very long sequences have very negative log probs</li>
+<li><strong>Division by zero</strong>: In length normalization</li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li>
+<p><strong>Use logsigmoid</strong>:
+<div class="highlight"><pre><span></span><code><span class="c1"># ✅ Stable</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># ❌ Unstable</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Clip log probabilities</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">logp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">logp</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Use mixed precision carefully</strong>:
+<div class="highlight"><pre><span></span><code><span class="c1"># Use fp32 for loss computation even if training in fp16</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">compute_dpo_loss</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Gradient clipping</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+</ol>
+<hr />
+<h3 id="advanced-questions">Advanced Questions<a class="headerlink" href="#advanced-questions" title="Permanent link">&para;</a></h3>
+<h4 id="10-what-happens-if-you-set-to-0-or-to-infinity">10. What happens if you set β to 0 or to infinity?<a class="headerlink" href="#10-what-happens-if-you-set-to-0-or-to-infinity" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>β → 0</strong>:
+- Loss becomes insensitive to preference margin
+- Model barely updates from reference
+- No alignment happens
+- Equivalent to just copying the reference model</p>
+<p><strong>β → ∞</strong>:
+- Model tries to maximize probability ratio without bound
+- Leads to mode collapse
+- Model produces only a few high-probability responses
+- Loses diversity and general capabilities
+- May ignore reference model completely</p>
+<p><strong>Mathematical insight</strong>: β controls the temperature of the implicit reward model. Low temperature (high β) makes decisions deterministic; high temperature (low β) makes them uniform.</p>
+<hr />
+<h4 id="11-how-would-you-debug-a-dpo-model-thats-not-learning">11. How would you debug a DPO model that's not learning?<a class="headerlink" href="#11-how-would-you-debug-a-dpo-model-thats-not-learning" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Diagnostic steps</strong>:</p>
+<ol>
+<li>
+<p><strong>Check preference accuracy on training data</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">logits</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</code></pre></div>
+If &lt;50%, model is learning opposite of preferences → check data labels</p>
+</li>
+<li>
+<p><strong>Verify reference model is frozen</strong>:
+<div class="highlight"><pre><span></span><code><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ref_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Check log probability magnitudes</strong>:</p>
+</li>
+<li>Should be negative (e.g., -50 to -200 for typical sequences)</li>
+<li>
+<p>If close to 0 or positive → tokenization issue</p>
+</li>
+<li>
+<p><strong>Monitor margin between chosen and rejected</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">margin</span> <span class="o">=</span> <span class="p">(</span><span class="n">logp_chosen</span> <span class="o">-</span> <span class="n">logp_rejected</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</code></pre></div>
+Should be increasing over training</p>
+</li>
+<li>
+<p><strong>Inspect actual samples</strong>: Compare model outputs with chosen/rejected</p>
+</li>
+<li>Are rejected responses actually worse?</li>
+<li>
+<p>Is the preference signal clear?</p>
+</li>
+<li>
+<p><strong>Reduce β</strong>: Try β=0.01 to see if model can learn anything</p>
+</li>
+<li>
+<p><strong>Check data quality</strong>:</p>
+</li>
+<li>Are preferences consistent?</li>
+<li>
+<p>Is there sufficient diversity?</p>
+</li>
+<li>
+<p><strong>Verify gradient flow</strong>: Check if gradients are too small or too large</p>
+</li>
+</ol>
+<hr />
+<h4 id="12-can-you-explain-the-connection-between-dpo-and-the-bradley-terry-model">12. Can you explain the connection between DPO and the Bradley-Terry model?<a class="headerlink" href="#12-can-you-explain-the-connection-between-dpo-and-the-bradley-terry-model" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p>The <strong>Bradley-Terry model</strong> assumes:</p>
+<div class="arithmatex">\[P(y_w \succ y_l | x) = \frac{e^{r(x,y_w)}}{e^{r(x,y_w)} + e^{r(x,y_l)}} = \sigma(r(x,y_w) - r(x,y_l))\]</div>
+<p>where <span class="arithmatex">\(r\)</span> is a reward function.</p>
+<p><strong>DPO's key insight</strong>: Instead of learning <span class="arithmatex">\(r\)</span> explicitly (which requires a separate reward model), DPO reparameterizes it as:</p>
+<div class="arithmatex">\[r(x,y) = \beta \log \frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)}\]</div>
+<p>Substituting this into Bradley-Terry gives:</p>
+<div class="arithmatex">\[P(y_w \succ y_l | x) = \sigma \left( \beta \left[ \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right] \right)\]</div>
+<p>This is exactly the DPO objective! DPO optimizes the Bradley-Terry model without explicitly computing rewards.</p>
+<hr />
+<h4 id="13-how-does-dpo-handle-the-exploration-exploitation-trade-off">13. How does DPO handle the exploration-exploitation trade-off?<a class="headerlink" href="#13-how-does-dpo-handle-the-exploration-exploitation-trade-off" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Challenge</strong>: DPO doesn't have explicit exploration like PPO (no entropy bonus, no on-policy sampling).</p>
+<p><strong>Implicit exploration mechanisms</strong>:</p>
+<ol>
+<li><strong>Reference model anchoring</strong>: Prevents complete exploitation by keeping model near reference</li>
+<li><strong>β parameter</strong>: Lower β → more exploration (closer to reference)</li>
+<li><strong>Preference data diversity</strong>: Wide variety of prompts and responses provides implicit exploration</li>
+</ol>
+<p><strong>Limitations</strong>:
+- Can't actively explore regions not covered by preference data
+- May underperform in sparse reward settings where PPO would excel</p>
+<p><strong>Mitigations</strong>:
+- Use online DPO (generate new comparisons during training)
+- Iterative DPO with periodic reference updates
+- Combine with outcome-based rewards for specific tasks
+- Best-of-N sampling to create more diverse preference pairs</p>
+<hr />
+<h4 id="14-compare-dpo-with-other-alignment-methods-rlhf-rlaif-constitutional-ai">14. Compare DPO with other alignment methods: RLHF, RLAIF, Constitutional AI.<a class="headerlink" href="#14-compare-dpo-with-other-alignment-methods-rlhf-rlaif-constitutional-ai" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Data Source</th>
+<th>Training</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DPO</strong></td>
+<td>Human preference pairs</td>
+<td>Direct optimization</td>
+<td>Simple, stable, efficient</td>
+<td>Requires pairwise comparisons</td>
+</tr>
+<tr>
+<td><strong>RLHF (PPO)</strong></td>
+<td>Human reward labels</td>
+<td>RL with reward model</td>
+<td>Flexible, exploratory</td>
+<td>Complex, unstable, expensive</td>
+</tr>
+<tr>
+<td><strong>RLAIF</strong></td>
+<td>AI-generated preferences</td>
+<td>Same as DPO/RLHF</td>
+<td>Scalable, no human labor</td>
+<td>Quality depends on AI feedback</td>
+</tr>
+<tr>
+<td><strong>Constitutional AI</strong></td>
+<td>AI self-critique</td>
+<td>Multiple rounds of DPO</td>
+<td>Principled, scalable</td>
+<td>Requires good constitution</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:
+- RLAIF can use DPO as the optimization method
+- Constitutional AI typically uses DPO in practice
+- All methods can use the same SFT → alignment pipeline structure</p>
+<hr />
+<h4 id="15-what-are-some-failure-modes-of-dpo-and-how-would-you-detect-them">15. What are some failure modes of DPO and how would you detect them?<a class="headerlink" href="#15-what-are-some-failure-modes-of-dpo-and-how-would-you-detect-them" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>1. Mode Collapse</strong>:
+- <strong>Symptom</strong>: Model produces repetitive, similar outputs
+- <strong>Detection</strong>: Measure output diversity (unique n-grams, self-BLEU)
+- <strong>Fix</strong>: Lower β, add diversity regularization</p>
+<p><strong>2. Reward Hacking</strong>:
+- <strong>Symptom</strong>: Model exploits quirks in preference data (e.g., always chooses longer responses)
+- <strong>Detection</strong>: Manual inspection, check for systematic patterns
+- <strong>Fix</strong>: Better preference data, diverse prompts</p>
+<p><strong>3. Forgetting</strong>:
+- <strong>Symptom</strong>: Model loses capabilities from SFT (worse on benchmarks)
+- <strong>Detection</strong>: Evaluate on standard tasks (MMLU, HumanEval)
+- <strong>Fix</strong>: Lower β, include capability-maintaining examples</p>
+<p><strong>4. Preference Amplification</strong>:
+- <strong>Symptom</strong>: Model becomes overly sycophantic or biased
+- <strong>Detection</strong>: Red-teaming, bias evaluation
+- <strong>Fix</strong>: Balanced preference data, debiasing techniques</p>
+<p><strong>5. Distribution Shift</strong>:
+- <strong>Symptom</strong>: Model performs well on training distribution but poorly on new prompts
+- <strong>Detection</strong>: Evaluation on diverse held-out set
+- <strong>Fix</strong>: More diverse training data, regularization</p>
+<p><strong>Monitoring metrics</strong>:
+- KL divergence from reference
+- Output diversity metrics
+- Benchmark performance
+- Sample quality (human eval)
+- Preference accuracy on validation set</p>
+<hr />
+<h4 id="16-how-would-you-adapt-dpo-for-multi-objective-alignment-eg-helpfulness-and-safety">16. How would you adapt DPO for multi-objective alignment (e.g., helpfulness AND safety)?<a class="headerlink" href="#16-how-would-you-adapt-dpo-for-multi-objective-alignment-eg-helpfulness-and-safety" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Approaches</strong>:</p>
+<ol>
+<li>
+<p><strong>Weighted preferences</strong>:
+<div class="highlight"><pre><span></span><code><span class="c1"># Different β for different objectives</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">beta_helpful</span> <span class="o">*</span> <span class="n">helpful_margin</span> <span class="o">+</span> <span class="n">beta_safe</span> <span class="o">*</span> <span class="n">safety_margin</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Constrained DPO</strong>:</p>
+</li>
+<li>Optimize helpfulness with DPO</li>
+<li>
+<p>Add hard constraint for safety (reject unsafe samples)</p>
+</li>
+<li>
+<p><strong>Multi-task DPO</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">loss</span> <span class="o">=</span> <span class="n">loss_helpful</span> <span class="o">+</span> <span class="n">lambda_safe</span> <span class="o">*</span> <span class="n">loss_safe</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Hierarchical preferences</strong>:</p>
+</li>
+<li>First optimize for safety (must-have)</li>
+<li>
+<p>Then optimize for helpfulness among safe responses</p>
+</li>
+<li>
+<p><strong>Pareto optimization</strong>:</p>
+</li>
+<li>Sample from Pareto front of multiple objectives</li>
+<li>Use multi-objective optimization techniques</li>
+</ol>
+<p><strong>Practical recommendation</strong>: Start with simple weighted approach, monitor trade-offs, adjust weights based on validation metrics for each objective.</p>
+<hr />
+<h4 id="17-what-research-directions-or-improvements-are-being-explored-for-dpo">17. What research directions or improvements are being explored for DPO?<a class="headerlink" href="#17-what-research-directions-or-improvements-are-being-explored-for-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Active research areas</strong>:</p>
+<ol>
+<li><strong>Online/Iterative DPO</strong>: Generate preferences on-the-fly</li>
+<li><strong>Uncertainty quantification</strong>: Model epistemic uncertainty in preferences</li>
+<li><strong>Active learning</strong>: Select most informative preference pairs</li>
+<li><strong>Multi-modal DPO</strong>: Extend to vision-language models</li>
+<li><strong>Theoretical analysis</strong>: Understanding convergence properties, sample complexity</li>
+<li><strong>Hybrid approaches</strong>: Combining DPO with outcome-based rewards</li>
+<li><strong>Efficient variants</strong>: Reducing memory/compute requirements</li>
+<li><strong>Robustness</strong>: Handling noisy or adversarial preferences</li>
+</ol>
+<p><strong>Recent improvements</strong>:
+- IPO (Identity PO): Simpler loss formulation
+- KTO (Kahneman-Tversky Optimization): Binary feedback instead of pairs
+- Group DPO: Multiple annotators with disagreement modeling
+- RLHF-V: Verifier-based approaches combined with DPO</p>
+<hr />
+<h3 id="practicalsystem-design-questions">Practical/System Design Questions<a class="headerlink" href="#practicalsystem-design-questions" title="Permanent link">&para;</a></h3>
+<h4 id="18-how-would-you-set-up-a-dpo-training-pipeline-in-production">18. How would you set up a DPO training pipeline in production?<a class="headerlink" href="#18-how-would-you-set-up-a-dpo-training-pipeline-in-production" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Pipeline stages</strong>:</p>
+<ol>
+<li><strong>Data Collection</strong>:</li>
+<li>UI for annotators to compare responses</li>
+<li>Quality control mechanisms (inter-annotator agreement)</li>
+<li>
+<p>Data versioning and tracking</p>
+</li>
+<li>
+<p><strong>Data Preprocessing</strong>:</p>
+</li>
+<li>Tokenization with consistent settings</li>
+<li>Filtering low-quality pairs</li>
+<li>Train/val/test splits</li>
+<li>
+<p>Data augmentation (optional)</p>
+</li>
+<li>
+<p><strong>Training Infrastructure</strong>:</p>
+</li>
+<li>Distributed training setup (DDP/FSDP)</li>
+<li>Mixed precision training</li>
+<li>Checkpoint management</li>
+<li>
+<p>Logging and monitoring (W&amp;B, TensorBoard)</p>
+</li>
+<li>
+<p><strong>Evaluation</strong>:</p>
+</li>
+<li>Automated metrics (preference accuracy, KL divergence)</li>
+<li>Human evaluation pipeline</li>
+<li>Benchmark testing</li>
+<li>
+<p>A/B testing framework</p>
+</li>
+<li>
+<p><strong>Deployment</strong>:</p>
+</li>
+<li>Model optimization (quantization, pruning)</li>
+<li>Serving infrastructure</li>
+<li>Monitoring and feedback loop</li>
+<li>Continuous improvement</li>
+</ol>
+<p><strong>Code structure</strong>:
+<div class="highlight"><pre><span></span><code>dpo_pipeline/
+├── data/
+│   ├── collect.py
+│   ├── preprocess.py
+│   └── dataset.py
+├── models/
+│   ├── dpo_trainer.py
+│   └── reference_model.py
+├── training/
+│   ├── train.py
+│   └── config.yaml
+├── evaluation/
+│   ├── metrics.py
+│   └── eval.py
+└── deployment/
+    ├── serve.py
+    └── monitor.py
+</code></pre></div></p>
+<hr />
+<h4 id="19-what-computational-resources-would-you-need-for-dpo-training-on-a-7b-model">19. What computational resources would you need for DPO training on a 7B model?<a class="headerlink" href="#19-what-computational-resources-would-you-need-for-dpo-training-on-a-7b-model" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Memory requirements</strong>:</p>
+<ul>
+<li><strong>Model weights</strong>: 7B × 2 bytes (fp16) = 14GB</li>
+<li><strong>Two models</strong> (policy + reference): 28GB</li>
+<li><strong>Gradients</strong>: 14GB (policy only)</li>
+<li><strong>Optimizer states</strong> (Adam): 28GB (fp32 moments)</li>
+<li><strong>Activations</strong>: 4-8GB (depends on sequence length and batch size)</li>
+<li><strong>Total</strong>: ~80-90GB minimum</li>
+</ul>
+<p><strong>Hardware options</strong>:</p>
+<ol>
+<li><strong>Single GPU</strong>: A100 80GB</li>
+<li>Batch size: 8-16 pairs</li>
+<li>
+<p>Training time: 2-4 days for 1 epoch on 100k pairs</p>
+</li>
+<li>
+<p><strong>Multi-GPU</strong>: 4× A100 40GB</p>
+</li>
+<li>Batch size: 32-64 pairs (distributed)</li>
+<li>
+<p>Training time: 12-24 hours for 1 epoch</p>
+</li>
+<li>
+<p><strong>Optimizations</strong>:</p>
+</li>
+<li>Gradient checkpointing: -40% memory, +20% time</li>
+<li>Parameter-efficient fine-tuning (LoRA): -60% memory</li>
+<li>Flash Attention: -20% memory, +30% speed</li>
+<li>Mixed precision: -50% memory</li>
+</ol>
+<p><strong>Cost estimate</strong> (cloud GPU rental):
+- Single A100: ~$2-3/hour × 48 hours = <span class="arithmatex">\(96-144
+- With optimizations: ~\)</span>50-80 per training run</p>
+<hr />
+<h4 id="20-how-would-you-evaluate-if-dpo-training-was-successful">20. How would you evaluate if DPO training was successful?<a class="headerlink" href="#20-how-would-you-evaluate-if-dpo-training-was-successful" title="Permanent link">&para;</a></h4>
+<p><strong>Answer</strong>:</p>
+<p><strong>Quantitative metrics</strong>:</p>
+<ol>
+<li><strong>Preference accuracy</strong>: % of validation pairs where model ranks winner higher</li>
+<li>
+<p>Target: &gt;60-70% (random is 50%)</p>
+</li>
+<li>
+<p><strong>Win rate</strong>: A/B test against reference model</p>
+</li>
+<li>
+<p>Target: &gt;55-60% wins in human eval</p>
+</li>
+<li>
+<p><strong>KL divergence</strong>: How much policy diverged from reference</p>
+</li>
+<li>
+<p>Monitor: Should be positive but bounded (e.g., &lt;5)</p>
+</li>
+<li>
+<p><strong>Benchmark performance</strong>: Check capability retention</p>
+</li>
+<li>MMLU, HellaSwag, HumanEval, TruthfulQA</li>
+<li>Should not degrade &gt;2-3% from reference</li>
+</ol>
+<p><strong>Qualitative evaluation</strong>:</p>
+<ol>
+<li><strong>Sample quality</strong>: Manual inspection of outputs</li>
+<li>
+<p>Helpfulness, correctness, style</p>
+</li>
+<li>
+<p><strong>Edge cases</strong>: Test failure modes</p>
+</li>
+<li>
+<p>Refusals, hallucinations, biases</p>
+</li>
+<li>
+<p><strong>User studies</strong>: Real users compare models</p>
+</li>
+<li>
+<p>Engagement metrics, satisfaction scores</p>
+</li>
+<li>
+<p><strong>Red teaming</strong>: Adversarial testing for safety</p>
+</li>
+</ol>
+<p><strong>Success criteria example</strong>:
+<div class="highlight"><pre><span></span><code>✅ Preference accuracy &gt; 65% on validation
+✅ Win rate &gt; 60% in human eval  
+✅ KL divergence &lt; 3
+✅ MMLU score within 2% of reference
+✅ No new failure modes identified
+✅ User satisfaction increased by 10%
+</code></pre></div></p>
+<hr />
+<h3 id="quick-fire-questions-for-phone-screens">Quick-Fire Questions for Phone Screens<a class="headerlink" href="#quick-fire-questions-for-phone-screens" title="Permanent link">&para;</a></h3>
+<h4 id="q1-in-one-sentence-what-is-dpo">Q1: In one sentence, what is DPO?<a class="headerlink" href="#q1-in-one-sentence-what-is-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>A</strong>: DPO is a method that directly optimizes LLMs on preference pairs without needing a separate reward model or RL, making alignment simpler and more stable.</p>
+<h4 id="q2-why-doesnt-dpo-need-a-reward-model">Q2: Why doesn't DPO need a reward model?<a class="headerlink" href="#q2-why-doesnt-dpo-need-a-reward-model" title="Permanent link">&para;</a></h4>
+<p><strong>A</strong>: Because it implicitly defines the reward as the log-ratio of policy to reference probabilities, so the model itself acts as the reward model.</p>
+<h4 id="q3-what-does-control-in-dpo">Q3: What does β control in DPO?<a class="headerlink" href="#q3-what-does-control-in-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>A</strong>: β controls how aggressively the model diverges from the reference model — higher β means stronger alignment but higher risk of mode collapse.</p>
+<h4 id="q4-whats-the-main-advantage-of-dpo-over-ppo">Q4: What's the main advantage of DPO over PPO?<a class="headerlink" href="#q4-whats-the-main-advantage-of-dpo-over-ppo" title="Permanent link">&para;</a></h4>
+<p><strong>A</strong>: Simplicity and stability — DPO eliminates the complexity of RL training while achieving comparable alignment results.</p>
+<h4 id="q5-whats-a-common-failure-mode-of-dpo">Q5: What's a common failure mode of DPO?<a class="headerlink" href="#q5-whats-a-common-failure-mode-of-dpo" title="Permanent link">&para;</a></h4>
+<p><strong>A</strong>: Mode collapse with high β values, where the model produces only a narrow set of similar responses and loses diversity.</p>
+<hr />
+<h3 id="bonus-coding-challenge">Bonus: Coding Challenge<a class="headerlink" href="#bonus-coding-challenge" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: Implement the core DPO loss function.</p>
+<p><strong>Solution</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dpo_loss</span><span class="p">(</span>
+    <span class="n">policy_logp_chosen</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">policy_logp_rejected</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">ref_logp_chosen</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">ref_logp_rejected</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute DPO loss given log probabilities.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        policy_logp_chosen: Log P(y_w|x) under policy</span>
+<span class="sd">        policy_logp_rejected: Log P(y_l|x) under policy</span>
+<span class="sd">        ref_logp_chosen: Log P(y_w|x) under reference</span>
+<span class="sd">        ref_logp_rejected: Log P(y_l|x) under reference</span>
+<span class="sd">        beta: Temperature parameter</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        loss: Scalar DPO loss</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute log ratios</span>
+    <span class="n">chosen_ratio</span> <span class="o">=</span> <span class="n">policy_logp_chosen</span> <span class="o">-</span> <span class="n">ref_logp_chosen</span>
+    <span class="n">rejected_ratio</span> <span class="o">=</span> <span class="n">policy_logp_rejected</span> <span class="o">-</span> <span class="n">ref_logp_rejected</span>
+
+    <span class="c1"># Compute logits (preference margin)</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">chosen_ratio</span> <span class="o">-</span> <span class="n">rejected_ratio</span><span class="p">)</span>
+
+    <span class="c1"># DPO loss: negative log-sigmoid</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">loss</span>
+
+
+<span class="c1"># Example usage</span>
+<span class="n">policy_logp_chosen</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">50.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">45.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">55.0</span><span class="p">])</span>
+<span class="n">policy_logp_rejected</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">55.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">60.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">65.0</span><span class="p">])</span>
+<span class="n">ref_logp_chosen</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">48.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">47.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">52.0</span><span class="p">])</span>
+<span class="n">ref_logp_rejected</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">53.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">58.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">63.0</span><span class="p">])</span>
+
+<span class="n">loss</span> <span class="o">=</span> <span class="n">dpo_loss</span><span class="p">(</span><span class="n">policy_logp_chosen</span><span class="p">,</span> <span class="n">policy_logp_rejected</span><span class="p">,</span> 
+                <span class="n">ref_logp_chosen</span><span class="p">,</span> <span class="n">ref_logp_rejected</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DPO Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Extension</strong>: Implement length normalization and accuracy computation.</p>
+<hr />
+<h2 id="additional-resources">📚 Additional Resources<a class="headerlink" href="#additional-resources" title="Permanent link">&para;</a></h2>
+<h3 id="papers">Papers<a class="headerlink" href="#papers" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Original DPO Paper</strong>: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model" (Rafailov et al., 2023)</li>
+<li><strong>IPO</strong>: "A General Theoretical Paradigm to Understand Learning from Human Preferences" (Azar et al., 2023)</li>
+<li><strong>KTO</strong>: "KTO: Model Alignment as Prospect Theoretic Optimization" (Ethayarajh et al., 2024)</li>
+</ul>
+<h3 id="code-repositories">Code Repositories<a class="headerlink" href="#code-repositories" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Hugging Face TRL</strong>: Full DPO implementation with examples</li>
+<li><strong>Anthropic</strong>: Constitutional AI paper with DPO variants</li>
+<li><strong>OpenAI</strong>: InstructGPT paper describing RLHF baseline</li>
+</ul>
+<h3 id="tutorials">Tutorials<a class="headerlink" href="#tutorials" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Hugging Face blog on DPO</li>
+<li>Understanding RLHF vs DPO (Nathan Lambert's blog)</li>
+<li>Practical guide to preference optimization</li>
+</ul>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>DPO represents a major simplification in LLM alignment:</p>
+<p>✅ <strong>No reward model needed</strong> — implicit in the policy
+✅ <strong>No RL complexity</strong> — direct supervised learning style
+✅ <strong>Stable training</strong> — fewer hyperparameters to tune
+✅ <strong>Computationally efficient</strong> — only 2 models instead of 4
+✅ <strong>Easy to implement</strong> — can be done in ~50 lines of code
+✅ <strong>Effective</strong> — achieves comparable results to PPO</p>
+<p><strong>When to use DPO</strong>: You have preference data and want a simple, stable alignment method.</p>
+<p><strong>When to use PPO</strong>: You need fine-grained control, explicit exploration, or have a well-defined scalar reward.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["mathjax"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

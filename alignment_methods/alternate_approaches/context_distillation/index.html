@@ -14,19 +14,17 @@
       
       
       
-        <link rel="next" href="alignment_methods/rlhf/rlhf_pipeline/">
       
-      
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
-        <title>LLM RL Fine-tuning</title>
+        <title>Reinforcement Learning for Fine-Tuning Large Language Models - LLM RL Fine-tuning</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
       
       
 
@@ -45,7 +43,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +78,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -100,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Reinforcement Learning for Fine-Tuning Large Language Models
             
           </span>
         </div>
@@ -178,7 +176,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -193,32 +191,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -229,53 +205,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-rl-based-fine-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why RL-Based Fine-Tuning?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Methods Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#advanced-topics" class="md-nav__link">
-    <span class="md-ellipsis">
-      Advanced Topics
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -325,7 +254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="alignment_methods/rlhf/rlhf_pipeline/" class="md-nav__link">
+      <a href="../../rlhf/rlhf_pipeline/" class="md-nav__link">
         
   
   
@@ -386,7 +315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="alignment_methods/rlhf/rl_optimization_methods/ppo/" class="md-nav__link">
+      <a href="../../rlhf/rl_optimization_methods/ppo/" class="md-nav__link">
         
   
   
@@ -409,7 +338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="alignment_methods/rlhf/rl_optimization_methods/dpo/" class="md-nav__link">
+      <a href="../../rlhf/rl_optimization_methods/dpo/" class="md-nav__link">
         
   
   
@@ -432,7 +361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="alignment_methods/rlhf/rl_optimization_methods/grpo/" class="md-nav__link">
+      <a href="../../rlhf/rl_optimization_methods/grpo/" class="md-nav__link">
         
   
   
@@ -463,7 +392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="kl_penalty_reward_hacking.md" class="md-nav__link">
+      <a href="../../../kl_penalty_reward_hacking.md" class="md-nav__link">
         
   
   
@@ -531,7 +460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="methods/ppo/" class="md-nav__link">
+      <a href="../../../methods/ppo/" class="md-nav__link">
         
   
   
@@ -554,7 +483,7 @@
   
   
     <li class="md-nav__item">
-      <a href="methods/dpo/" class="md-nav__link">
+      <a href="../../../methods/dpo/" class="md-nav__link">
         
   
   
@@ -577,7 +506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="methods/drpo/" class="md-nav__link">
+      <a href="../../../methods/drpo/" class="md-nav__link">
         
   
   
@@ -600,7 +529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="methods/grpo/" class="md-nav__link">
+      <a href="../../../methods/grpo/" class="md-nav__link">
         
   
   
@@ -668,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="supporting_topics/kl_penalty/" class="md-nav__link">
+      <a href="../../../supporting_topics/kl_penalty/" class="md-nav__link">
         
   
   
@@ -691,7 +620,7 @@
   
   
     <li class="md-nav__item">
-      <a href="supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
+      <a href="../../../supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
         
   
   
@@ -714,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="supporting_topics/rewards_hacking/" class="md-nav__link">
+      <a href="../../../supporting_topics/rewards_hacking/" class="md-nav__link">
         
   
   
@@ -744,7 +673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="references/" class="md-nav__link">
+      <a href="../../../references/" class="md-nav__link">
         
   
   
@@ -847,12 +776,12 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
 </thead>
 <tbody>
 <tr>
-<td><a href="methods/ppo/">PPO</a></td>
+<td><a href="./methods/ppo.md">PPO</a></td>
 <td>Proximal Policy Optimization</td>
 <td>Balances exploration and stability in policy updates.</td>
 </tr>
 <tr>
-<td><a href="methods/dpo/">DPO</a></td>
+<td><a href="./methods/dpo.md">DPO</a></td>
 <td>Direct Preference Optimization</td>
 <td>Aligns model outputs with human preferences without a full RL loop.</td>
 </tr>
@@ -867,7 +796,7 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
 <td>Incorporates pairwise comparisons or structured guidance during training.</td>
 </tr>
 <tr>
-<td><a href="methods/drpo/">Direct Reward Policy Optimization (DRPO-Offline)</a></td>
+<td><a href="./methods/drpo.md">Direct Reward Policy Optimization (DRPO-Offline)</a></td>
 <td>Offline Reward Optimization</td>
 <td>Uses pre-collected reward data to guide policy updates without live RL interaction.</td>
 </tr>
@@ -885,9 +814,9 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
 <h2 id="advanced-topics">Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permanent link">&para;</a></h2>
 <p>In addition to the main methods, the repository also explores advanced topics related to RL fine-tuning:</p>
 <ul>
-<li><a href="supporting_topics/kl_penalty/">KL Penalty in Policy Optimization</a> – Techniques to stabilize learning by penalizing deviations from reference policies.  </li>
-<li><a href="supporting_topics/rewards_hacking/">Reward Hacking</a> – Understanding how misaligned rewards can lead to unintended behaviors.  </li>
-<li><a href="supporting_topics/deepseek_rl_finetuning/">DeepSeek RL Details</a> – In-depth insights into the DeepSeek approach to LLM alignment.</li>
+<li><a href="supporting_topics/kl_penalty.md">KL Penalty in Policy Optimization</a> – Techniques to stabilize learning by penalizing deviations from reference policies.  </li>
+<li><a href="supporting_topics/rewards_hacking.md">Reward Hacking</a> – Understanding how misaligned rewards can lead to unintended behaviors.  </li>
+<li><a href="supporting_topics/deepseek_rl_finetuning.md">DeepSeek RL Details</a> – In-depth insights into the DeepSeek approach to LLM alignment.</li>
 </ul>
 <hr />
 
@@ -938,10 +867,10 @@ Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>s
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": ["mathjax"], "search": "assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["mathjax"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

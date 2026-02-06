@@ -1,0 +1,1509 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation and notes on RL methods for LLM fine-tuning">
+      
+      
+        <meta name="author" content="Saurabh Goyal">
+      
+      
+      
+        <link rel="prev" href="../../..">
+      
+      
+        <link rel="next" href="../rl_optimization_methods/ppo/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>RLHF Pipeline Reward Modeling & Preference Data Collection - LLM RL Fine-tuning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM RL Fine-tuning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RLHF Pipeline Reward Modeling & Preference Data Collection
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM RL Fine-tuning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RLHF Pipeline Reward Modeling & Preference Data Collection
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF Pipeline Reward Modeling & Preference Data Collection
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-preference-data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Preference Data Collection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Preference Data Collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-data-generation-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Data Generation Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-human-annotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Human Annotation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-data-quality-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Data Quality Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-reward-model-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Reward Model Training
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Reward Model Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-model-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Model Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-training-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Training Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-reward-model-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Reward Model Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-key-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Key Challenges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Key Challenges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-reward-model-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Reward Model Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Scalability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Interview Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Interview Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conceptual-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conceptual Questions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Questions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RL Optimization Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            RL Optimization Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rl_optimization_methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rl_optimization_methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rl_optimization_methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kl_penalty_reward_hacking.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty & Reward Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/drpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Rewards Policy Optimization (DRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supporting Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/kl_penalty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deepseek RL Fine-tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/rewards_hacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rewards Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-preference-data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Preference Data Collection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Preference Data Collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-data-generation-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Data Generation Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-human-annotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Human Annotation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-data-quality-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Data Quality Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-reward-model-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Reward Model Training
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Reward Model Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-model-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Model Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-training-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Training Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-reward-model-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Reward Model Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-key-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Key Challenges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Key Challenges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-reward-model-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Reward Model Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Scalability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Interview Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Interview Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conceptual-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conceptual Questions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Questions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>RLHF Pipeline Reward Modeling & Preference Data Collection</h1>
+
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>RLHF (Reinforcement Learning from Human Feedback) is a three-stage pipeline to align language models with human preferences:</p>
+<ol>
+<li><strong>Supervised Fine-Tuning (SFT)</strong>: Train base model on high-quality demonstrations</li>
+<li><strong>Reward Model Training</strong>: Learn human preferences via a reward function</li>
+<li><strong>RL Optimization</strong>: Fine-tune policy using the reward model (PPO, etc.)</li>
+</ol>
+<p>This document focuses on stages 2 and the data collection needed for it.</p>
+<hr />
+<hr />
+<h2 id="1-preference-data-collection">1. Preference Data Collection<a class="headerlink" href="#1-preference-data-collection" title="Permanent link">&para;</a></h2>
+<h3 id="11-data-generation-process">1.1 Data Generation Process<a class="headerlink" href="#11-data-generation-process" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt Selection:</strong>
+- Curate diverse prompts covering target use cases
+- Include different difficulty levels and domains
+- Sources: user interactions, seed datasets, synthetic generation</p>
+<p><strong>Response Sampling:</strong>
+- Generate 2-4 completions per prompt using:
+  - <strong>Temperature sampling</strong> (T ∈ [0.7, 1.0]) for diversity
+  - <strong>Different models/checkpoints</strong> to ensure variety
+  - <strong>Varied decoding</strong> (top-k, nucleus sampling)
+- Goal: Create meaningfully different responses worth comparing</p>
+<hr />
+<h3 id="12-human-annotation">1.2 Human Annotation<a class="headerlink" href="#12-human-annotation" title="Permanent link">&para;</a></h3>
+<p><strong>Comparison Types:</strong>
+- <strong>Pairwise</strong>: Choose better response (A &gt; B or B &gt; A or Tie)
+- <strong>Ranking</strong>: Order k responses from best to worst
+- <strong>Likert Scale</strong>: Rate each independently (1-5 stars)</p>
+<p><strong>Annotation Criteria:</strong>
+- <strong>Helpfulness</strong>: Does it answer the question well?
+- <strong>Harmlessness</strong>: Is it safe and appropriate?
+- <strong>Honesty</strong>: Is it truthful and admits uncertainty?</p>
+<p><strong>Best Practices:</strong>
+- Clear guidelines with examples
+- Inter-annotator agreement checks (Fleiss' kappa, Krippendorff's alpha)
+- Multiple annotators per comparison (typically 3-5)
+- Quality control: gold standard examples, spot checks</p>
+<hr />
+<h3 id="13-data-quality-considerations">1.3 Data Quality Considerations<a class="headerlink" href="#13-data-quality-considerations" title="Permanent link">&para;</a></h3>
+<p><strong>Common Issues:</strong>
+- <strong>Annotation bias</strong>: Personal preferences vs. general quality
+- <strong>Low agreement</strong>: Ambiguous prompts or subjective criteria
+- <strong>Gaming</strong>: Annotators choosing randomly or following patterns</p>
+<p><strong>Solutions:</strong>
+- Calibration sessions with annotators
+- Disagreement resolution protocols
+- Monitor annotation time and patterns
+- Bonus for high-agreement annotations</p>
+<p><strong>Dataset Size:</strong>
+- Typical: 10K-100K preference pairs
+- Quality &gt; quantity (InstructGPT used ~50K comparisons)
+- More data needed for complex/multi-domain tasks</p>
+<hr />
+<hr />
+<h2 id="2-reward-model-training">2. Reward Model Training<a class="headerlink" href="#2-reward-model-training" title="Permanent link">&para;</a></h2>
+<h3 id="21-model-architecture">2.1 Model Architecture<a class="headerlink" href="#21-model-architecture" title="Permanent link">&para;</a></h3>
+<p><strong>Base Model:</strong>
+- Usually the SFT model with final layer replaced
+- Outputs scalar reward: <code>r(x, y)</code> for prompt x and completion y
+- Shared backbone leverages language understanding</p>
+<p><strong>Training Objective (Bradley-Terry Model):</strong></p>
+<p>For preference pair (y_w, y_l) where y_w ≻ y_l:</p>
+<div class="highlight"><pre><span></span><code>Loss = -log σ(r(x, y_w) - r(x, y_l))
+</code></pre></div>
+<p>Where σ is sigmoid function. This maximizes probability that preferred completion gets higher reward.</p>
+<p><strong>Alternative: Ranking Loss (for k &gt; 2 completions):</strong></p>
+<div class="highlight"><pre><span></span><code>Loss = -∑_{i&lt;j} log σ(r(x, y_i) - r(x, y_j))
+</code></pre></div>
+<p>Where y_i is ranked higher than y_j.</p>
+<hr />
+<h3 id="22-training-process">2.2 Training Process<a class="headerlink" href="#22-training-process" title="Permanent link">&para;</a></h3>
+<p><strong>Data Preparation:</strong>
+- Split: 80% train, 10% validation, 10% test
+- Ensure prompt diversity across splits
+- Balance difficulty levels</p>
+<p><strong>Training Details:</strong>
+- Learning rate: ~1e-5 (lower than SFT)
+- Batch size: 32-64 comparison pairs
+- Epochs: 1-3 (avoid overfitting)
+- Monitor validation accuracy</p>
+<p><strong>Regularization:</strong>
+- Dropout in final layers
+- Early stopping based on validation accuracy
+- Weight decay</p>
+<hr />
+<h3 id="23-reward-model-evaluation">2.3 Reward Model Evaluation<a class="headerlink" href="#23-reward-model-evaluation" title="Permanent link">&para;</a></h3>
+<p><strong>Accuracy Metrics:</strong>
+- <strong>Pairwise accuracy</strong>: % of correct preference predictions
+- <strong>Ranking correlation</strong>: Spearman's ρ with human rankings
+- Typical target: &gt;65-70% accuracy on held-out test set</p>
+<p><strong>Calibration:</strong>
+- Check if reward magnitude correlates with confidence
+- Avoid overconfident predictions</p>
+<p><strong>Out-of-Distribution Detection:</strong>
+- Test on novel prompts/domains
+- Reward model should be robust to distribution shift</p>
+<hr />
+<hr />
+<h2 id="3-key-challenges">3. Key Challenges<a class="headerlink" href="#3-key-challenges" title="Permanent link">&para;</a></h2>
+<h3 id="31-reward-hacking">3.1 Reward Hacking<a class="headerlink" href="#31-reward-hacking" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> Policy exploits reward model weaknesses, generating high-reward but low-quality outputs.</p>
+<p><strong>Mitigation:</strong>
+- KL penalty to stay close to SFT model: <code>r_total = r_RM - β * KL(π || π_SFT)</code>
+- Reward model ensembles
+- Regular reward model updates during RL</p>
+<hr />
+<h3 id="32-reward-model-limitations">3.2 Reward Model Limitations<a class="headerlink" href="#32-reward-model-limitations" title="Permanent link">&para;</a></h3>
+<p><strong>Issues:</strong>
+- Limited to training distribution
+- May not capture all aspects of quality
+- Can be fooled by surface-level patterns</p>
+<p><strong>Solutions:</strong>
+- Diverse training data
+- Constitutional AI for principled constraints
+- Human oversight during RL</p>
+<hr />
+<h3 id="33-scalability">3.3 Scalability<a class="headerlink" href="#33-scalability" title="Permanent link">&para;</a></h3>
+<p><strong>Challenges:</strong>
+- Human annotation is expensive and slow
+- Need continuous data for model updates</p>
+<p><strong>Approaches:</strong>
+- <strong>RLAIF:</strong> Use AI feedback to scale
+- <strong>Active learning:</strong> Select most informative comparisons. Prioritize labeling examples where the reward model is most uncertain or disagrees (e.g., close reward scores), maximizing learning per annotatio
+- <strong>Automated filters before human review:</strong> Use automated checks (toxicity filters, length limits, format validators) to screen out obviously bad responses before sending to human annotators, reducing annotation cost.</p>
+<hr />
+<hr />
+<h2 id="4-interview-questions">4. Interview Questions<a class="headerlink" href="#4-interview-questions" title="Permanent link">&para;</a></h2>
+<h3 id="conceptual-questions">Conceptual Questions<a class="headerlink" href="#conceptual-questions" title="Permanent link">&para;</a></h3>
+<p><strong>Q1: Why do we need a separate reward modeling phase instead of directly using human feedback during RL?</strong></p>
+<details>
+<summary>Answer</summary>
+
+- **Sample efficiency**: RL requires millions of samples; human labeling can't scale to that
+- **Cost**: Human feedback is expensive; reward model provides unlimited free evaluations
+- **Speed**: Reward model inference is fast; enables real-time RL training
+- **Consistency**: Reward model provides consistent scores; humans may have variance
+
+However, reward model introduces approximation error and potential reward hacking.
+</details>
+
+<p><strong>Q2: What's the difference between pairwise comparisons and absolute ratings? Which is better for RLHF?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**Pairwise comparisons:**
+- Pros: Easier for humans (relative judgment), more reliable, handles subjectivity better
+- Cons: Requires more data (combinatorial), doesn't give absolute scale
+
+**Absolute ratings:**
+- Pros: Efficient data collection, provides absolute scale
+- Cons: Harder to calibrate, annotator disagreement higher, scale ambiguity
+
+**Pairwise is generally preferred** for RLHF because:
+- Human preferences are more consistent in relative judgments
+- Bradley-Terry model naturally fits preference data
+- Reduces annotator bias (no need to agree on absolute scale)
+</details>
+
+<p><strong>Q3: How does the Bradley-Terry model work, and what assumptions does it make?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**Model**: Assumes P(y_w ≻ y_l) = σ(r(y_w) - r(y_l))
+
+**Assumptions:**
+1. **Transitivity**: If A > B and B > C, then A > C
+2. **Independence**: Preference between A and B doesn't depend on other options
+3. **Scale invariance**: Only reward differences matter, not absolute values
+
+**Limitations:**
+- Real human preferences may violate transitivity
+- Context matters (preferences may not be independent)
+- Doesn't model uncertainty or indifference well
+
+Despite limitations, works well in practice for RLHF.
+</details>
+
+<p><strong>Q4: What is reward hacking and how do we prevent it in RLHF?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**Reward hacking**: Policy exploits flaws in the reward model to achieve high scores without actually improving quality.
+
+**Examples:**
+- Generating very long responses (reward model correlates length with quality)
+- Using fancy words or formatting without substance
+- Exploiting reward model's lack of factual knowledge
+
+**Prevention strategies:**
+1. **KL penalty**: `r_total = r_RM - β·KL(π || π_SFT)` keeps policy close to SFT baseline
+2. **Reward model ensembles**: Harder to hack multiple models simultaneously
+3. **Iterative reward model updates**: Retrain on RL-generated outputs
+4. **Rule-based constraints**: Hard limits on length, repetition, etc.
+5. **Human-in-the-loop**: Regular human evaluation during RL training
+</details>
+
+<p><strong>Q5: Why do we initialize the RL policy from the SFT model rather than training from scratch?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**Reasons:**
+1. **Better starting point**: SFT model already generates reasonable outputs
+2. **Faster convergence**: Less exploration needed
+3. **Prevents catastrophic forgetting**: Maintains language modeling capabilities
+4. **KL penalty works better**: Meaningful to constrain distance from SFT model
+5. **Reduces reward hacking**: Harder to drift into degenerate solutions
+
+Without SFT initialization:
+- RL might converge to nonsensical but high-reward outputs
+- Exploration in text space is extremely difficult
+- Training is much slower and less stable
+</details>
+
+<h3 id="technical-questions">Technical Questions<a class="headerlink" href="#technical-questions" title="Permanent link">&para;</a></h3>
+<p><strong>Q6: How would you handle disagreement between human annotators?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**Measurement:**
+- Calculate inter-annotator agreement (Fleiss' kappa, Krippendorff's alpha)
+- Track per-annotator agreement with majority/expert
+
+**Handling strategies:**
+1. **Majority vote**: Use most common preference
+2. **Weighted voting**: Weight by annotator reliability
+3. **Discard high-disagreement examples**: They're likely ambiguous
+4. **Model uncertainty**: Train ensemble or probabilistic reward model
+5. **Consensus building**: Resolve disagreements through discussion
+6. **Improve guidelines**: Address common disagreement sources
+
+**For training:**
+- Can model soft preferences: P(y_w ≻ y_l) = fraction of annotators who preferred y_w
+- Helps reward model learn uncertainty
+</details>
+
+<p><strong>Q7: How do you ensure your reward model generalizes to out-of-distribution prompts?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**During data collection:**
+1. **Diverse prompt set**: Cover many domains, styles, difficulties
+2. **Include edge cases**: Adversarial, ambiguous, multi-step prompts
+3. **Regular updates**: Continuously add new prompt types
+
+**During training:**
+1. **Regularization**: Dropout, weight decay to prevent overfitting
+2. **Data augmentation**: Paraphrase prompts, vary response styles
+3. **Domain-specific splits**: Ensure validation set covers all domains
+
+**Evaluation:**
+1. **Hold-out test sets**: Different domains than training
+2. **Monitor RL outputs**: Check for reward hacking patterns
+3. **Human evaluation**: Regular checks on RL-generated samples
+4. **Red-teaming**: Actively try to find failure modes
+
+**Continuous improvement:**
+- Retrain reward model on RL-generated distribution
+- Active learning to find informative new comparisons
+</details>
+
+<p><strong>Q8: What's the trade-off in choosing the β parameter for the KL penalty?</strong></p>
+<details>
+<summary>Answer</summary>
+
+The total reward is: `r_total = r_RM(x,y) - β·KL(π(y|x) || π_SFT(y|x))`
+
+**High β (strong penalty):**
+- Pros: Policy stays very close to SFT, prevents reward hacking, stable training
+- Cons: Limited improvement, may not fully leverage reward signal
+
+**Low β (weak penalty):**
+- Pros: More optimization freedom, potentially better performance
+- Cons: Higher reward hacking risk, may drift into nonsensical outputs
+
+**Typical values**: β ∈ [0.01, 0.1]
+
+**Adaptive strategies:**
+- Start with high β, gradually decrease
+- Use different β for different layers
+- Monitor KL divergence and adjust dynamically
+- Per-example β based on reward model confidence
+
+**In practice**: Tune β on validation set balancing reward model score and human evaluation.
+</details>
+
+<p><strong>Q9: Compare RLHF with Direct Preference Optimization (DPO). What are the trade-offs?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**RLHF (PPO-based):**
+- Pros: Explicit reward model (interpretable), flexible (can update RM), handles complex rewards
+- Cons: Complex pipeline (3 stages), RL instability, reward hacking risks, computationally expensive
+
+**DPO:**
+- Pros: Simpler (single-stage), more stable, no reward model to hack, lower compute
+- Cons: Less flexible (bakes in Bradley-Terry assumption), harder to update preferences, no explicit reward signal
+
+**Key difference**: DPO reparameterizes the RL objective to directly optimize policy from preferences, eliminating reward model.
+
+**When to use:**
+- **RLHF**: Need interpretable rewards, complex multi-objective optimization, iterative updates
+- **DPO**: Simpler use cases, want stability, limited compute
+
+**Trend**: DPO gaining popularity due to simplicity, but RLHF still useful for complex alignment tasks.
+</details>
+
+<p><strong>Q10: How would you design an active learning strategy for preference data collection?</strong></p>
+<details>
+<summary>Answer</summary>
+
+**Goal**: Select most informative comparisons to minimize annotation cost while maximizing reward model quality.
+
+**Uncertainty-based sampling:**
+1. **Model disagreement**: Query pairs where ensemble models disagree most
+2. **Entropy**: Select comparisons with highest prediction entropy
+3. **Margin**: Choose pairs with smallest reward difference (close calls)
+
+**Diversity-based sampling:**
+1. **Prompt coverage**: Ensure diverse prompt types are covered
+2. **Response diversity**: Sample varied response styles
+3. **Cluster-based**: Select representatives from different clusters
+
+**Performance-based sampling:**
+1. **Error analysis**: Focus on domains where RM performs poorly
+2. **Gradient-based**: Select examples with high expected gradient norm
+3. **Policy-aware**: Sample from current RL policy distribution
+
+**Practical approach:**
+- Combine strategies: 50% uncertainty + 30% diversity + 20% error-focused
+- Regular cold-start: Include random samples to prevent bias
+- Batch selection: Consider redundancy within each batch
+- Monitor distribution shift: Ensure coverage of evolving policy
+
+**Metrics**: Track validation accuracy vs. number of labels to measure efficiency.
+</details>
+
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["mathjax"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

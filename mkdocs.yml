@@ -21,6 +21,13 @@ extra_javascript:
 
 nav:
   - Home: index.md
+  - RLHF
+    - RLHF Pipeline - Reward Modeling & Preference Data Collection: rlhf_pipeline.md
+    - RL Optimization Methods:
+        - Proximal Policy Optimization (PPO): ./alignment_methods/rlhf/rl_otimization_methods/ppo.md
+        - Direct Policy Optimization (DPO): ./alignment_methods/rlhf/rl_otimization_methods/dpo.md
+        - Group Relative Policy Optimization (GRPO): ./alignment_methods/rlhf/rl_otimization_methods/grpo.md
+    - KL Penalty & Reward Hacking: kl_penalty_reward_hacking.md
   - Methods:
       - Proximal Policy Optimization (PPO): methods/ppo.md
       - Direct Policy Optimization (DPO): methods/dpo.md

@@ -21,13 +21,31 @@ extra_javascript:
 
 nav:
   - Home: index.md
-  - RLHF
-    - RLHF Pipeline - Reward Modeling & Preference Data Collection: rlhf_pipeline.md
-    - RL Optimization Methods:
-        - Proximal Policy Optimization (PPO): ./alignment_methods/rlhf/rl_otimization_methods/ppo.md
-        - Direct Policy Optimization (DPO): ./alignment_methods/rlhf/rl_otimization_methods/dpo.md
-        - Group Relative Policy Optimization (GRPO): ./alignment_methods/rlhf/rl_otimization_methods/grpo.md
-    - KL Penalty & Reward Hacking: kl_penalty_reward_hacking.md
+  - Alignment Methods:
+      - RLHF:
+        - RLHF Pipeline Reward Modeling & Preference Data Collection: ./alignment_methods/rlhf/rlhf_pipeline.md
+        - RL Optimization Methods:
+          - Proximal Policy Optimization (PPO): ./alignment_methods/rlhf/rl_optimization_methods/ppo.md
+          - Direct Policy Optimization (DPO): ./alignment_methods/rlhf/rl_optimization_methods/dpo.md
+          - Group Relative Policy Optimization (GRPO): ./alignment_methods/rlhf/rl_optimization_methods/grpo.md
+        - KL Penalty & Reward Hacking: ./alignment_methods/rlhf/kl_penalty_reward_hacking.md
+      - Alternative Alignment Approaches:
+        - RLAIF: ./alignment_methods/alternate_approaches/rlaif.md
+        - Constitutional AI: ./alignment_methods/alternate_approaches/constitutional_ai.md
+        - Context Distillation: ./alignment_methods/alternate_approaches/context_distillation.md
+      - Safety And Evaluation:
+          - Red Teaming: ./alignment_methods/safety_and_evaluation/red_teaming.md
+  - Reasoning Techniques:
+      - Prompting Based Techniques:
+          - Chain of Thoughts (COT): ./reasoning_techniques/prompting_based_techniques/cot.md
+          - Tree of Thoughts (ToT): ./reasoning_techniques/prompting_based_techniques/tree_of_thoughts.md
+          - Self-Consistency: ./reasoning_techniques/prompting_based_techniques/self_consistency.md
+          - ReACT: ./reasoning_techniques/prompting_based_techniques/react.md
+      - Test-Time Compute Scaling:
+
+      - Iterative Refinement:
+
+      - Advanced Reasoning Models:
   - Methods:
       - Proximal Policy Optimization (PPO): methods/ppo.md
       - Direct Policy Optimization (DPO): methods/dpo.md

@@ -42,10 +42,11 @@ nav:
           - Self-Consistency: ./reasoning_techniques/prompting_based_techniques/self_consistency.md
           - ReACT: ./reasoning_techniques/prompting_based_techniques/react.md
       - Test-Time Compute Scaling:
-
+          - Best-of-N Sampling: ./reasoning_techniques/test_time_compute_scaling/best_of_n_sampling.md
       - Iterative Refinement:
-
+          - Self Critic Methods: ./reasoning_techniques/iterative_refinement/self_critic_methods.md
       - Advanced Reasoning Models:
+          - STaR (Self-Taught Reasoner): ./reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner.md
   - Methods:
       - Proximal Policy Optimization (PPO): methods/ppo.md
       - Direct Policy Optimization (DPO): methods/dpo.md

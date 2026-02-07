@@ -1,0 +1,2614 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation and notes on RL methods for LLM fine-tuning">
+      
+      
+        <meta name="author" content="Saurabh Goyal">
+      
+      
+      
+        <link rel="prev" href="../../test_time_compute_scaling/best_of_n_sampling/">
+      
+      
+        <link rel="next" href="../../advanced_reasoning_models/STAR_self_taught_reasoner/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Self Critic Methods - LLM RL Fine-tuning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM RL Fine-tuning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Self Critic Methods
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM RL Fine-tuning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Alignment Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Alignment Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/rlhf/rlhf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF Pipeline Reward Modeling & Preference Data Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RL Optimization Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            RL Optimization Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/rlhf/kl_penalty_reward_hacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty & Reward Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Alternative Alignment Approaches
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Alternative Alignment Approaches
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/alternate_approaches/rlaif/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLAIF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/alternate_approaches/constitutional_ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Constitutional AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/alternate_approaches/context_distillation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Distillation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Safety And Evaluation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Safety And Evaluation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../alignment_methods/safety_and_evaluation/red_teaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Red Teaming
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reasoning Techniques
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Reasoning Techniques
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Prompting Based Techniques
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Prompting Based Techniques
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompting_based_techniques/cot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chain of Thoughts (COT)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompting_based_techniques/tree_of_thoughts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tree of Thoughts (ToT)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompting_based_techniques/self_consistency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Self-Consistency
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompting_based_techniques/react/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ReACT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Test-Time Compute Scaling
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Test-Time Compute Scaling
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Best-of-N Sampling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Iterative Refinement
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Iterative Refinement
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Self Critic Methods
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Self Critic Methods
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Core Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-refinement-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Refinement Loop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-technical-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Technical Approaches
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Technical Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-self-consistency-with-self-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Self-Consistency with Self-Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pseudo-code-pattern-responses-modelgenerateprompt-for-_-in-rangen-verified-modelverifyr-criteria-for-r-in-responses-best-select_highest_confidenceresponses-verified" class="md-nav__link">
+    <span class="md-ellipsis">
+      # Pseudo-code pattern responses = [model.generate(prompt) for _ in range(n)] verified = [model.verify(r, criteria) for r in responses] best = select_highest_confidence(responses, verified)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="# Pseudo-code pattern responses = [model.generate(prompt) for _ in range(n)] verified = [model.verify(r, criteria) for r in responses] best = select_highest_confidence(responses, verified)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2-constitutional-ai-cai" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Constitutional AI (CAI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-reflexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Reflexion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-self-refine" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Self-Refine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-recent-innovations-2023-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Recent Innovations (2023-2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Recent Innovations (2023-2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-debate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Agent Debate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-of-thoughts-tot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree of Thoughts (ToT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critic-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      CRITIC (2023)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v-star-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      V-STaR (2024)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-taught-reasoner-star" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Taught Reasoner (STaR)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-implementation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Implementation Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Implementation Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-basic-self-critique-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Basic Self-Critique Template
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-rubric-based-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Rubric-Based Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Advantages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Metrics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Interview Questions &amp; Answers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Interview Questions &amp; Answers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-explain-the-difference-between-self-critique-and-rlhf-reinforcement-learning-from-human-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: Explain the difference between self-critique and RLHF (Reinforcement Learning from Human Feedback).
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-are-the-main-failure-modes-of-self-critique-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: What are the main failure modes of self-critique methods?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-how-would-you-implement-self-critique-for-a-code-generation-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: How would you implement self-critique for a code generation task?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-compare-tree-of-thoughts-tot-with-standard-chain-of-thought-cot-when-would-you-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: Compare Tree of Thoughts (ToT) with standard Chain-of-Thought (CoT). When would you use each?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-do-you-prevent-a-model-from-getting-stuck-in-a-self-critique-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: How do you prevent a model from getting stuck in a self-critique loop?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-is-constitutional-ai-and-how-does-it-use-self-critique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: What is Constitutional AI and how does it use self-critique?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-how-would-you-evaluate-the-quality-of-a-self-critique-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: How would you evaluate the quality of a self-critique system?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-explain-the-reflexion-framework-and-its-key-innovation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: Explain the Reflexion framework and its key innovation.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-are-the-tradeoffs-between-inference-time-compute-self-critique-vs-training-time-compute-larger-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What are the tradeoffs between inference-time compute (self-critique) vs. training-time compute (larger models)?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-how-would-you-combine-self-critique-with-external-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: How would you combine self-critique with external tool use?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced Reasoning Models
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Reasoning Models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced_reasoning_models/STAR_self_taught_reasoner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    STaR (Self-Taught Reasoner)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/ppo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proximal Policy Optimization (PPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/dpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Policy Optimization (DPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/drpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Direct Rewards Policy Optimization (DRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methods/grpo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Group Relative Policy Optimization (GRPO)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supporting Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/kl_penalty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deepseek RL Fine-tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../supporting_topics/rewards_hacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rewards Hacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Core Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-refinement-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Refinement Loop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-technical-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Technical Approaches
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Technical Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-self-consistency-with-self-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Self-Consistency with Self-Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pseudo-code-pattern-responses-modelgenerateprompt-for-_-in-rangen-verified-modelverifyr-criteria-for-r-in-responses-best-select_highest_confidenceresponses-verified" class="md-nav__link">
+    <span class="md-ellipsis">
+      # Pseudo-code pattern responses = [model.generate(prompt) for _ in range(n)] verified = [model.verify(r, criteria) for r in responses] best = select_highest_confidence(responses, verified)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="# Pseudo-code pattern responses = [model.generate(prompt) for _ in range(n)] verified = [model.verify(r, criteria) for r in responses] best = select_highest_confidence(responses, verified)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2-constitutional-ai-cai" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Constitutional AI (CAI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-reflexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Reflexion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-self-refine" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Self-Refine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-recent-innovations-2023-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Recent Innovations (2023-2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Recent Innovations (2023-2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-debate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Agent Debate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-of-thoughts-tot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree of Thoughts (ToT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critic-2023" class="md-nav__link">
+    <span class="md-ellipsis">
+      CRITIC (2023)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v-star-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      V-STaR (2024)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-taught-reasoner-star" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Taught Reasoner (STaR)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-implementation-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Implementation Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Implementation Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-basic-self-critique-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Basic Self-Critique Template
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-rubric-based-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Rubric-Based Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Advantages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Metrics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Interview Questions &amp; Answers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Interview Questions &amp; Answers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-explain-the-difference-between-self-critique-and-rlhf-reinforcement-learning-from-human-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: Explain the difference between self-critique and RLHF (Reinforcement Learning from Human Feedback).
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-are-the-main-failure-modes-of-self-critique-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: What are the main failure modes of self-critique methods?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-how-would-you-implement-self-critique-for-a-code-generation-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: How would you implement self-critique for a code generation task?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-compare-tree-of-thoughts-tot-with-standard-chain-of-thought-cot-when-would-you-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: Compare Tree of Thoughts (ToT) with standard Chain-of-Thought (CoT). When would you use each?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-do-you-prevent-a-model-from-getting-stuck-in-a-self-critique-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: How do you prevent a model from getting stuck in a self-critique loop?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-is-constitutional-ai-and-how-does-it-use-self-critique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: What is Constitutional AI and how does it use self-critique?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-how-would-you-evaluate-the-quality-of-a-self-critique-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: How would you evaluate the quality of a self-critique system?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-explain-the-reflexion-framework-and-its-key-innovation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: Explain the Reflexion framework and its key innovation.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-are-the-tradeoffs-between-inference-time-compute-self-critique-vs-training-time-compute-larger-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What are the tradeoffs between inference-time compute (self-critique) vs. training-time compute (larger models)?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-how-would-you-combine-self-critique-with-external-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: How would you combine self-critique with external tool use?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Self Critic Methods</h1>
+
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<p>Self-critique methods enable LLMs to iteratively improve their outputs by evaluating and refining their own responses. This paradigm shifts from single-shot generation to multi-step refinement processes, improving accuracy and quality.</p>
+<hr />
+<hr />
+<h2 id="2-core-concepts">2. Core Concepts<a class="headerlink" href="#2-core-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="self-refinement-loop">Self-Refinement Loop<a class="headerlink" href="#self-refinement-loop" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Generate</strong> initial response</li>
+<li><strong>Critique</strong> the output (identify errors, weaknesses)</li>
+<li><strong>Refine</strong> based on critique</li>
+<li><strong>Repeat</strong> until satisfactory or max iterations</li>
+</ol>
+<h3 id="key-components">Key Components<a class="headerlink" href="#key-components" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Critic Model</strong>: Evaluates outputs against criteria (accuracy, completeness, consistency)</p>
+</li>
+<li>
+<p><strong>Refinement Strategy</strong>: How to incorporate feedback (rewrite, patch, restructure)</p>
+</li>
+<li>
+<p><strong>Stopping Criteria</strong>: When to halt iteration (quality threshold, iteration limit, convergence)</p>
+</li>
+</ol>
+<hr />
+<hr />
+<h2 id="3-technical-approaches">3. Technical Approaches<a class="headerlink" href="#3-technical-approaches" title="Permanent link">&para;</a></h2>
+<h3 id="1-self-consistency-with-self-verification">1. Self-Consistency with Self-Verification<a class="headerlink" href="#1-self-consistency-with-self-verification" title="Permanent link">&para;</a></h3>
+<h2 id="pseudo-code-pattern-responses-modelgenerateprompt-for-_-in-rangen-verified-modelverifyr-criteria-for-r-in-responses-best-select_highest_confidenceresponses-verified"><div class="highlight"><pre><span></span><code><span class="c1"># Pseudo-code pattern</span>
+<span class="n">responses</span> <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="n">verified</span> <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">criteria</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
+<span class="n">best</span> <span class="o">=</span> <span class="n">select_highest_confidence</span><span class="p">(</span><span class="n">responses</span><span class="p">,</span> <span class="n">verified</span><span class="p">)</span>
+</code></pre></div><a class="headerlink" href="#pseudo-code-pattern-responses-modelgenerateprompt-for-_-in-rangen-verified-modelverifyr-criteria-for-r-in-responses-best-select_highest_confidenceresponses-verified" title="Permanent link">&para;</a></h2>
+<h3 id="2-constitutional-ai-cai">2. Constitutional AI (CAI)<a class="headerlink" href="#2-constitutional-ai-cai" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Model critiques own outputs against principles</li>
+<li>Revises responses to align with constitutional rules</li>
+<li>Reduces harmfulness without human feedback per iteration</li>
+</ul>
+<hr />
+<h3 id="3-reflexion">3. Reflexion<a class="headerlink" href="#3-reflexion" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Agent architecture with episodic memory</li>
+<li>Stores (trajectory, reflection, outcome) tuples</li>
+<li>Uses past reflections to improve future attempts</li>
+<li>Effective for multi-step reasoning tasks</li>
+</ul>
+<hr />
+<h3 id="4-self-refine">4. Self-Refine<a class="headerlink" href="#4-self-refine" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Loop:
+  output = generate(input)
+  feedback = critique(output, input)
+  if feedback.is_satisfied(): break
+  input = input + output + feedback
+</code></pre></div>
+<hr />
+<hr />
+<h2 id="4-recent-innovations-2023-2025">4. Recent Innovations (2023-2025)<a class="headerlink" href="#4-recent-innovations-2023-2025" title="Permanent link">&para;</a></h2>
+<h3 id="multi-agent-debate">Multi-Agent Debate<a class="headerlink" href="#multi-agent-debate" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Multiple model instances debate answers</li>
+<li>Consensus or judge model selects final output</li>
+<li>Improves factuality and reasoning</li>
+</ul>
+<h3 id="tree-of-thoughts-tot">Tree of Thoughts (ToT)<a class="headerlink" href="#tree-of-thoughts-tot" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Explores multiple reasoning paths simultaneously</li>
+<li>Self-evaluates intermediate steps</li>
+<li>Backtracks and explores alternatives</li>
+<li>Better for complex problems than chain-of-thought</li>
+</ul>
+<h3 id="critic-2023">CRITIC (2023)<a class="headerlink" href="#critic-2023" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Uses external tools for validation</li>
+<li>Searches web, executes code to verify claims</li>
+<li>Grounds critique in external evidence</li>
+</ul>
+<h3 id="v-star-2024">V-STaR (2024)<a class="headerlink" href="#v-star-2024" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Verifier-guided self-training</li>
+<li>Trains verification model on correct/incorrect samples</li>
+<li>Uses verifier to filter training data for refinement</li>
+</ul>
+<h3 id="self-taught-reasoner-star">Self-Taught Reasoner (STaR)<a class="headerlink" href="#self-taught-reasoner-star" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Generates reasoning chains</li>
+<li>Filters by correctness</li>
+<li>Retrains on successful chains</li>
+<li>Bootstraps reasoning ability</li>
+</ul>
+<hr />
+<hr />
+<h2 id="5-implementation-patterns">5. Implementation Patterns<a class="headerlink" href="#5-implementation-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="51-basic-self-critique-template">5.1 Basic Self-Critique Template<a class="headerlink" href="#51-basic-self-critique-template" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">self_refine</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
+        <span class="n">critique</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Critique this response:</span><span class="se">\n</span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Identify errors and improvements.&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;no issues&quot;</span> <span class="ow">in</span> <span class="n">critique</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">break</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Original: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Previous: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Critique: </span><span class="si">{</span><span class="n">critique</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Provide improved response.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+</code></pre></div>
+<hr />
+<h3 id="52-rubric-based-evaluation">5.2 Rubric-Based Evaluation<a class="headerlink" href="#52-rubric-based-evaluation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">rubric</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="s2">&quot;Are facts correct?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;completeness&quot;</span><span class="p">:</span> <span class="s2">&quot;Are all aspects addressed?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;clarity&quot;</span><span class="p">:</span> <span class="s2">&quot;Is it easy to understand?&quot;</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">rubric</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">question</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+        <span class="n">feedback</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">critique</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">criterion</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">feedback</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<hr />
+<h2 id="6-advantages">6. Advantages<a class="headerlink" href="#6-advantages" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Improved Quality</strong>: Catches errors and inconsistencies</li>
+<li><strong>Self-Correction</strong>: Reduces hallucinations</li>
+<li><strong>Adaptability</strong>: Works across tasks without task-specific training</li>
+<li><strong>Transparency</strong>: Critique provides interpretability</li>
+</ul>
+<hr />
+<hr />
+<h2 id="challenges">Challenges<a class="headerlink" href="#challenges" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Computational Cost</strong>: Multiple LLM calls per query</li>
+<li><strong>Diminishing Returns</strong>: May plateau after few iterations</li>
+<li><strong>Echo Chambers</strong>: Model may reinforce own biases</li>
+<li><strong>Calibration</strong>: Models may be overconfident in incorrect outputs</li>
+</ul>
+<hr />
+<hr />
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Specify Clear Criteria</strong>: Provide explicit evaluation dimensions</li>
+<li><strong>Use External Verification</strong>: Ground critique in facts when possible</li>
+<li><strong>Limit Iterations</strong>: 2-3 iterations often optimal</li>
+<li><strong>Temperature Tuning</strong>: Lower for critique, higher for generation</li>
+<li><strong>Prompt Engineering</strong>: Frame critique as helpful, not adversarial</li>
+</ol>
+<hr />
+<hr />
+<h2 id="evaluation-metrics">Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Convergence Rate</strong>: Iterations until stable output</li>
+<li><strong>Quality Improvement</strong>: Δ score from initial to final</li>
+<li><strong>Critique Accuracy</strong>: Does identified issue exist?</li>
+<li><strong>Cost Efficiency</strong>: Quality gain vs. computational cost</li>
+</ul>
+<hr />
+<hr />
+<h2 id="applications">Applications<a class="headerlink" href="#applications" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Code Generation</strong>: Debug and optimize generated code</li>
+<li><strong>Math Problem Solving</strong>: Verify steps and check answers</li>
+<li><strong>Creative Writing</strong>: Improve style, coherence, grammar</li>
+<li><strong>Factual QA</strong>: Verify claims against knowledge</li>
+<li><strong>Task Planning</strong>: Validate and refine action sequences</li>
+</ul>
+<hr />
+<hr />
+<h2 id="common-interview-questions-answers">Common Interview Questions &amp; Answers<a class="headerlink" href="#common-interview-questions-answers" title="Permanent link">&para;</a></h2>
+<h3 id="q1-explain-the-difference-between-self-critique-and-rlhf-reinforcement-learning-from-human-feedback">Q1: Explain the difference between self-critique and RLHF (Reinforcement Learning from Human Feedback).<a class="headerlink" href="#q1-explain-the-difference-between-self-critique-and-rlhf-reinforcement-learning-from-human-feedback" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>: 
+- <strong>Timing</strong>: Self-critique happens at inference time; RLHF occurs during training
+- <strong>Feedback Source</strong>: Self-critique uses the model's own evaluation; RLHF uses human preferences
+- <strong>Flexibility</strong>: Self-critique can adapt to new tasks without retraining; RLHF requires retraining for new objectives
+- <strong>Cost</strong>: Self-critique has per-query computational cost; RLHF has upfront training cost
+- <strong>Use Case</strong>: Self-critique for dynamic improvement; RLHF for aligning model behavior with human values</p>
+<h3 id="q2-what-are-the-main-failure-modes-of-self-critique-methods">Q2: What are the main failure modes of self-critique methods?<a class="headerlink" href="#q2-what-are-the-main-failure-modes-of-self-critique-methods" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+1. <strong>Blind Spots</strong>: Model can't identify errors it doesn't understand
+2. <strong>Overconfidence</strong>: May approve incorrect outputs it believes are correct
+3. <strong>Hallucination Reinforcement</strong>: Critique may introduce new errors while fixing others
+4. <strong>Lack of Ground Truth</strong>: Without external verification, stays within model's knowledge limitations
+5. <strong>Iteration Loops</strong>: May oscillate between different wrong answers
+6. <strong>Computational Cost</strong>: Multiple LLM calls can be expensive and slow</p>
+<h3 id="q3-how-would-you-implement-self-critique-for-a-code-generation-task">Q3: How would you implement self-critique for a code generation task?<a class="headerlink" href="#q3-how-would-you-implement-self-critique-for-a-code-generation-task" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">self_critique_code</span><span class="p">(</span><span class="n">problem_description</span><span class="p">):</span>
+    <span class="c1"># Step 1: Generate initial code</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Write code for: </span><span class="si">{</span><span class="n">problem_description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Step 2: Critique with specific checks</span>
+    <span class="n">critique_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Review this code for:</span>
+<span class="s2">    1. Correctness (logic errors)</span>
+<span class="s2">    2. Edge cases (empty inputs, null values)</span>
+<span class="s2">    3. Efficiency (time/space complexity)</span>
+<span class="s2">    4. Best practices (naming, structure)</span>
+
+<span class="s2">    Code: </span><span class="si">{</span><span class="n">code</span><span class="si">}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">critique</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">critique_prompt</span><span class="p">)</span>
+
+    <span class="c1"># Step 3: Execute tests if possible</span>
+    <span class="n">test_results</span> <span class="o">=</span> <span class="n">run_unit_tests</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="c1"># Step 4: Refine based on critique + test results</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">test_results</span><span class="o">.</span><span class="n">all_passed</span> <span class="ow">or</span> <span class="s2">&quot;issue&quot;</span> <span class="ow">in</span> <span class="n">critique</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">refined_code</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Original problem: </span><span class="si">{</span><span class="n">problem_description</span><span class="si">}</span>
+<span class="s2">        Previous code: </span><span class="si">{</span><span class="n">code</span><span class="si">}</span>
+<span class="s2">        Issues found: </span><span class="si">{</span><span class="n">critique</span><span class="si">}</span>
+<span class="s2">        Test failures: </span><span class="si">{</span><span class="n">test_results</span><span class="o">.</span><span class="n">failures</span><span class="si">}</span>
+
+<span class="s2">        Provide corrected code.</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">refined_code</span>
+
+    <span class="k">return</span> <span class="n">code</span>
+</code></pre></div></p>
+<p><strong>Key points to mention</strong>:
+- Use external verification (test execution) when possible
+- Specific evaluation criteria improve critique quality
+- Limit iterations to avoid excessive cost</p>
+<h3 id="q4-compare-tree-of-thoughts-tot-with-standard-chain-of-thought-cot-when-would-you-use-each">Q4: Compare Tree of Thoughts (ToT) with standard Chain-of-Thought (CoT). When would you use each?<a class="headerlink" href="#q4-compare-tree-of-thoughts-tot-with-standard-chain-of-thought-cot-when-would-you-use-each" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Chain-of-Thought</th>
+<th>Tree of Thoughts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Structure</strong></td>
+<td>Linear reasoning path</td>
+<td>Branching exploration</td>
+</tr>
+<tr>
+<td><strong>Evaluation</strong></td>
+<td>No intermediate evaluation</td>
+<td>Self-evaluates each step</td>
+</tr>
+<tr>
+<td><strong>Backtracking</strong></td>
+<td>No backtracking</td>
+<td>Can abandon poor paths</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Single path, cheaper</td>
+<td>Multiple paths, expensive</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Straightforward problems</td>
+<td>Complex multi-step reasoning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use CoT when</strong>: Problem has clear sequential steps, computational budget is limited
+<strong>Use ToT when</strong>: Multiple approaches possible, need to explore alternatives, problem requires strategic planning (e.g., Game of 24, creative writing)</p>
+<h3 id="q5-how-do-you-prevent-a-model-from-getting-stuck-in-a-self-critique-loop">Q5: How do you prevent a model from getting stuck in a self-critique loop?<a class="headerlink" href="#q5-how-do-you-prevent-a-model-from-getting-stuck-in-a-self-critique-loop" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+1. <strong>Max Iterations</strong>: Hard limit (typically 2-3)
+2. <strong>Convergence Detection</strong>: Stop when output changes minimally between iterations
+3. <strong>Confidence Threshold</strong>: Stop when critique indicates sufficient quality
+4. <strong>Diversity Penalty</strong>: Penalize repetitive critiques
+5. <strong>External Validation</strong>: Use external tools/models as circuit breakers</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">refined_generation</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">similarity_threshold</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+    <span class="n">responses</span> <span class="o">=</span> <span class="p">[</span><span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">critique</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">critique</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">critique</span><span class="o">.</span><span class="n">quality_score</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>  <span class="c1"># Good enough</span>
+            <span class="k">break</span>
+
+        <span class="n">new_response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">critique</span><span class="p">)</span>
+
+        <span class="c1"># Check convergence</span>
+        <span class="k">if</span> <span class="n">similarity</span><span class="p">(</span><span class="n">new_response</span><span class="p">,</span> <span class="n">responses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">similarity_threshold</span><span class="p">:</span>
+            <span class="k">break</span>  <span class="c1"># Not changing meaningfully</span>
+
+        <span class="n">responses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_response</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">responses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="q6-what-is-constitutional-ai-and-how-does-it-use-self-critique">Q6: What is Constitutional AI and how does it use self-critique?<a class="headerlink" href="#q6-what-is-constitutional-ai-and-how-does-it-use-self-critique" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+Constitutional AI uses self-critique to align model behavior without human feedback per iteration.</p>
+<p><strong>Process</strong>:
+1. <strong>Principles</strong>: Define "constitution" (rules/principles)
+2. <strong>Self-Critique</strong>: Model evaluates own output against principles
+3. <strong>Self-Revision</strong>: Model rewrites response to better align
+4. <strong>Training</strong>: Fine-tune on revised outputs (RLAIF - RL from AI Feedback)</p>
+<p><strong>Example</strong>:
+<div class="highlight"><pre><span></span><code>Principle: &quot;Responses should be helpful, harmless, and honest&quot;
+
+Initial: [potentially problematic response]
+Critique: &quot;This could be harmful because...&quot;
+Revision: [improved response aligned with principles]
+</code></pre></div></p>
+<p><strong>Advantages</strong>: Scales better than human feedback, more consistent, can encode complex values</p>
+<h3 id="q7-how-would-you-evaluate-the-quality-of-a-self-critique-system">Q7: How would you evaluate the quality of a self-critique system?<a class="headerlink" href="#q7-how-would-you-evaluate-the-quality-of-a-self-critique-system" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:</p>
+<p><strong>Metrics</strong>:
+1. <strong>Accuracy Improvement</strong>: Compare initial vs. final output quality
+2. <strong>Critique Precision</strong>: Do identified issues actually exist?
+3. <strong>Critique Recall</strong>: Are all issues identified?
+4. <strong>Refinement Effectiveness</strong>: Do revisions fix identified issues?
+5. <strong>Convergence Efficiency</strong>: Iterations needed to reach quality threshold
+6. <strong>Cost-Benefit Ratio</strong>: Quality gain per additional LLM call</p>
+<p><strong>Evaluation Framework</strong>:
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_self_critique</span><span class="p">(</span><span class="n">test_cases</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;initial_quality&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;final_quality&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;iterations&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;critique_accuracy&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
+        <span class="n">final</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">self_refine_with_history</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
+
+        <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;initial_quality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">case</span><span class="o">.</span><span class="n">gold</span><span class="p">))</span>
+        <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;final_quality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">(</span><span class="n">final</span><span class="p">,</span> <span class="n">case</span><span class="o">.</span><span class="n">gold</span><span class="p">))</span>
+        <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">))</span>
+
+        <span class="c1"># Check if critique identified real issues</span>
+        <span class="n">real_issues</span> <span class="o">=</span> <span class="n">find_issues</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">case</span><span class="o">.</span><span class="n">gold</span><span class="p">)</span>
+        <span class="n">identified</span> <span class="o">=</span> <span class="n">parse_critique</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">critique</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;critique_accuracy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">precision_recall</span><span class="p">(</span><span class="n">identified</span><span class="p">,</span> <span class="n">real_issues</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">aggregate</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="q8-explain-the-reflexion-framework-and-its-key-innovation">Q8: Explain the Reflexion framework and its key innovation.<a class="headerlink" href="#q8-explain-the-reflexion-framework-and-its-key-innovation" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+Reflexion is an agent architecture that learns from failures through verbal self-reflection.</p>
+<p><strong>Key Components</strong>:
+1. <strong>Actor</strong>: Takes actions in environment
+2. <strong>Evaluator</strong>: Scores trajectory success
+3. <strong>Self-Reflection</strong>: Generates verbal reflection on failures
+4. <strong>Memory</strong>: Stores (trajectory, reflection, reward) tuples</p>
+<p><strong>Innovation</strong>: Uses <strong>episodic memory</strong> of past failures + reflections to improve future attempts without parameter updates.</p>
+<p><strong>Process</strong>:
+<div class="highlight"><pre><span></span><code>Trial 1: Attempt task → Fail → Reflect on why
+Trial 2: Retrieve relevant past reflections → Attempt with insights → Succeed
+</code></pre></div></p>
+<p><strong>Example (Code Debugging)</strong>:
+- Attempt 1: Code fails tests
+- Reflection: "I didn't handle empty list case"
+- Attempt 2: Uses reflection to add edge case handling
+- Success!</p>
+<p><strong>Advantage</strong>: Works in long-horizon tasks where intermediate feedback is sparse</p>
+<h3 id="q9-what-are-the-tradeoffs-between-inference-time-compute-self-critique-vs-training-time-compute-larger-models">Q9: What are the tradeoffs between inference-time compute (self-critique) vs. training-time compute (larger models)?<a class="headerlink" href="#q9-what-are-the-tradeoffs-between-inference-time-compute-self-critique-vs-training-time-compute-larger-models" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Inference-Time (Self-Critique)</th>
+<th>Training-Time (Bigger Model)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cost Model</strong></td>
+<td>Per-query cost</td>
+<td>One-time training cost</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>Higher (multiple calls)</td>
+<td>Lower (single call)</td>
+</tr>
+<tr>
+<td><strong>Adaptability</strong></td>
+<td>Task-agnostic</td>
+<td>Task-specific knowledge</td>
+</tr>
+<tr>
+<td><strong>Transparency</strong></td>
+<td>Interpretable reasoning</td>
+<td>Black-box improvement</td>
+</tr>
+<tr>
+<td><strong>Quality Ceiling</strong></td>
+<td>Limited by base model</td>
+<td>Higher raw capability</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Use Self-Critique</strong>:
+- Need interpretability
+- Budget constraints on training
+- Task-specific optimization
+- Can tolerate latency</p>
+<p><strong>When to Use Larger Model</strong>:
+- Latency-critical applications
+- High query volume
+- Need consistent quality without variability</p>
+<h3 id="q10-how-would-you-combine-self-critique-with-external-tool-use">Q10: How would you combine self-critique with external tool use?<a class="headerlink" href="#q10-how-would-you-combine-self-critique-with-external-tool-use" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>: This is the <strong>CRITIC approach</strong> - using external tools to ground critique in facts.</p>
+<p><strong>Implementation</strong>:
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">critic_method</span><span class="p">(</span><span class="n">question</span><span class="p">):</span>
+    <span class="c1"># Generate initial answer</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+
+    <span class="c1"># Extract verifiable claims</span>
+    <span class="n">claims</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">extract_claims</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+    <span class="c1"># Verify each claim with tools</span>
+    <span class="k">for</span> <span class="n">claim</span> <span class="ow">in</span> <span class="n">claims</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_factual</span><span class="p">(</span><span class="n">claim</span><span class="p">):</span>
+            <span class="c1"># Search web for verification</span>
+            <span class="n">evidence</span> <span class="o">=</span> <span class="n">web_search</span><span class="p">(</span><span class="n">claim</span><span class="p">)</span>
+            <span class="n">verification</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">claim</span><span class="p">,</span> <span class="n">evidence</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">verification</span><span class="o">.</span><span class="n">is_correct</span><span class="p">:</span>
+                <span class="c1"># Refine answer based on evidence</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span>
+                    <span class="n">answer</span><span class="p">,</span> 
+                    <span class="sa">f</span><span class="s2">&quot;Claim &#39;</span><span class="si">{</span><span class="n">claim</span><span class="si">}</span><span class="s2">&#39; is incorrect. Evidence: </span><span class="si">{</span><span class="n">evidence</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+    <span class="c1"># Check code/math with execution</span>
+    <span class="k">if</span> <span class="n">has_code</span><span class="p">(</span><span class="n">answer</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">execute_code</span><span class="p">(</span><span class="n">extract_code</span><span class="p">(</span><span class="n">answer</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">has_error</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">answer</span>
+</code></pre></div></p>
+<p><strong>Tools Used</strong>:
+- Web search: Verify facts
+- Code execution: Test correctness
+- Calculators: Check math
+- Databases: Lookup data</p>
+<p><strong>Advantage</strong>: Breaks out of model's knowledge limitations and hallucination tendencies</p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["mathjax"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

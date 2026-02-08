@@ -43,17 +43,16 @@ nav:
           - ReACT: ./reasoning_techniques/prompting_based_techniques/react.md
       - Test-Time Compute Scaling:
           - Best-of-N Sampling: ./reasoning_techniques/test_time_compute_scaling/best_of_n_sampling.md
+          - Compute Optimal Inference: ./reasoning_techniques/test_time_compute_scaling/compute_optimal_inference.md
+          - ORM & PRM: ./reasoning_techniques/test_time_compute_scaling/orm_prm.md
       - Iterative Refinement:
           - Self Critic Methods: ./reasoning_techniques/iterative_refinement/self_critic_methods.md
+          - Debate & Multi-Agent: ./reasoning_techniques/iterative_refinement/debate_and_multi_agent.md
       - Advanced Reasoning Models:
           - STaR (Self-Taught Reasoner): ./reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner.md
-  - Methods:
-      - Proximal Policy Optimization (PPO): methods/ppo.md
-      - Direct Policy Optimization (DPO): methods/dpo.md
-      - Direct Rewards Policy Optimization (DRPO): methods/drpo.md
-      - Group Relative Policy Optimization (GRPO): methods/grpo.md
-  - Supporting Topics:
-      - KL Penalty: supporting_topics/kl_penalty.md
-      - Deepseek RL Fine-tuning: supporting_topics/deepseek_rl_finetuning.md
-      - Rewards Hacking: supporting_topics/rewards_hacking.md
+          - System 2 Attention: ./reasoning_techniques/advanced_reasoning_models/system2_attention.md
+  - Case Study:
+      - DeepSeek RL Finetuning: ./case_studies/deepseek_rl_finetuning.md
+  - Evaluation & Metrics:
+      - Reasoning Evaluation Benchmarks: index.md
   - References: references.md

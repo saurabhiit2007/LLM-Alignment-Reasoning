@@ -34,6 +34,6 @@ In addition to the main methods, the repository also explores advanced topics re
 
 - [KL Penalty in Policy Optimization](supporting_topics/kl_penalty.md) – Techniques to stabilize learning by penalizing deviations from reference policies.  
 - [Reward Hacking](supporting_topics/rewards_hacking.md) – Understanding how misaligned rewards can lead to unintended behaviors.  
-- [DeepSeek RL Details](supporting_topics/deepseek_rl_finetuning.md) – In-depth insights into the DeepSeek approach to LLM alignment.
+- [DeepSeek RL Details](case_studies/deepseek_rl_finetuning.md) – In-depth insights into the DeepSeek approach to LLM alignment.
 
 ---

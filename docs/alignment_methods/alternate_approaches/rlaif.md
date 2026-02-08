@@ -11,6 +11,8 @@
 
 ---
 
+---
+
 ## 2. RLAIF vs RLHF
 
 ### Advantages
@@ -26,6 +28,8 @@
 
 ---
 
+---
+
 ## 3. RLAIF-Specific Technical Details
 
 ### AI Judge Selection & Setup
@@ -35,6 +39,7 @@
 - **Judge prompting**: Critical design choice - constitution/principles vs. open-ended comparison
 - **Temperature settings**: Lower temperature (0.3-0.7) for judge to get consistent preferences
 
+---
 ### AI Judge Prompting Strategy
 
 ```
@@ -44,6 +49,8 @@ Common template:
 - Request structured output: preference + confidence + explanation
 - Include evaluation criteria (helpfulness, accuracy, safety)
 ```
+
+---
 
 ### Preference Quality Control
 
@@ -61,12 +68,16 @@ Common template:
 - Measure human-AI judge agreement on 5-10% of data
 - If agreement <70-80%, reconsider judge prompting or model choice
 
+---
+
 ### Response Generation for Comparison
 
 - **Sampling diversity**: Use different decoding strategies (temperature, top-p) to create varied outputs
 - **Model snapshots**: Sample from different checkpoints to increase diversity
 - **Typical setup**: Generate 4-16 responses per prompt, create preference pairs
 - **Pairing strategy**: Best-vs-worst, adjacent ranking, or random pairs
+
+---
 
 ### Judge Explanation Utilization
 
@@ -79,11 +90,14 @@ Common template:
 - Use judge's critiques to iteratively improve responses
 - Constitutional AI approach: generate response → critique → revise → repeat
 
+---
 ### Scaling Laws for RLAIF
 
 - **Judge capability threshold**: Need sufficiently strong judge (generally >70B params or frontier models)
 - **Diminishing returns**: Quality plateaus when judge is much stronger than student
 - **Data efficiency**: RLAIF typically needs 2-3x more preference pairs than RLHF to achieve similar performance (due to label noise)
+
+---
 
 ---
 
@@ -105,6 +119,8 @@ Common template:
 
 ---
 
+---
+
 ## 5. RLAIF Variants
 
 ### RLAIF-V (with verifiable tasks)
@@ -121,6 +137,8 @@ Common template:
 
 ---
 
+---
+
 ## 7. Recent Progress (2024-2025)
 
 - **Constitutional AI integration**: Combining RLAIF with principle-based oversight
@@ -131,12 +149,16 @@ Common template:
 
 ---
 
+---
+
 ## 8. Evaluation Metrics
 
 - **Win rate**: A/B testing against baseline
 - **Reward model accuracy**: How well RM predicts held-out preferences
 - **KL divergence**: Track drift from base model
 - **Human agreement**: Validate AI preferences on sample
+
+---
 
 ---
 
@@ -199,17 +221,5 @@ Common template:
 ### Q10: Why does RLAIF typically need 2-3x more preference pairs than RLHF?
 
 **A:** RLAIF preferences contain more label noise compared to human preferences because: (1) AI judges can be inconsistent on ambiguous cases, (2) they may have systematic blind spots or biases, (3) they lack true understanding of nuanced human preferences. This noise means the reward model needs more data to learn robust preference patterns. Quality control mechanisms (agreement filtering, confidence thresholding) help but don't fully eliminate this gap.
-
----
-
-## 10. Key Takeaways for Interviews
-
-1. **RLAIF is about scalability**: Trading human annotation for compute
-2. **Judge quality is critical**: Weak judges produce poor preferences
-3. **Validation is essential**: Always check AI preferences against human samples
-4. **It's not a silver bullet**: Works best for objective criteria, struggles with subjective preferences
-5. **Hybrid approaches are emerging**: Combining strengths of both RLAIF and RLHF
-6. **Constitutional AI makes it interpretable**: Explicit principles improve transparency
-7. **DPO is gaining traction**: Simpler, more stable than PPO for preference learning
 
 ---

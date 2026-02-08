@@ -214,6 +214,8 @@ for criterion, question in rubric.items():
 - **Cost**: Self-critique has per-query computational cost; RLHF has upfront training cost
 - **Use Case**: Self-critique for dynamic improvement; RLHF for aligning model behavior with human values
 
+---
+
 ### Q2: What are the main failure modes of self-critique methods?
 
 **Answer**:
@@ -224,6 +226,7 @@ for criterion, question in rubric.items():
 5. **Iteration Loops**: May oscillate between different wrong answers
 6. **Computational Cost**: Multiple LLM calls can be expensive and slow
 
+---
 ### Q3: How would you implement self-critique for a code generation task?
 
 **Answer**:
@@ -267,6 +270,8 @@ def self_critique_code(problem_description):
 - Specific evaluation criteria improve critique quality
 - Limit iterations to avoid excessive cost
 
+---
+
 ### Q4: Compare Tree of Thoughts (ToT) with standard Chain-of-Thought (CoT). When would you use each?
 
 **Answer**:
@@ -281,6 +286,8 @@ def self_critique_code(problem_description):
 
 **Use CoT when**: Problem has clear sequential steps, computational budget is limited
 **Use ToT when**: Multiple approaches possible, need to explore alternatives, problem requires strategic planning (e.g., Game of 24, creative writing)
+
+===
 
 ### Q5: How do you prevent a model from getting stuck in a self-critique loop?
 
@@ -311,6 +318,8 @@ def refined_generation(prompt, max_iter=3, similarity_threshold=0.95):
     return responses[-1]
 ```
 
+---
+
 ### Q6: What is Constitutional AI and how does it use self-critique?
 
 **Answer**:
@@ -332,6 +341,8 @@ Revision: [improved response aligned with principles]
 ```
 
 **Advantages**: Scales better than human feedback, more consistent, can encode complex values
+
+---
 
 ### Q7: How would you evaluate the quality of a self-critique system?
 
@@ -373,6 +384,8 @@ def evaluate_self_critique(test_cases):
     return aggregate(metrics)
 ```
 
+---
+
 ### Q8: Explain the Reflexion framework and its key innovation.
 
 **Answer**:
@@ -400,6 +413,8 @@ Trial 2: Retrieve relevant past reflections → Attempt with insights → Succee
 
 **Advantage**: Works in long-horizon tasks where intermediate feedback is sparse
 
+---
+
 ### Q9: What are the tradeoffs between inference-time compute (self-critique) vs. training-time compute (larger models)?
 
 **Answer**:
@@ -422,6 +437,8 @@ Trial 2: Retrieve relevant past reflections → Attempt with insights → Succee
 - Latency-critical applications
 - High query volume
 - Need consistent quality without variability
+
+---
 
 ### Q10: How would you combine self-critique with external tool use?
 

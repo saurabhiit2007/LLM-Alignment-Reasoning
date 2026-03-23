@@ -13,10 +13,6 @@
       
       
       
-        <link rel="prev" href="../constitutional_ai/">
-      
-      
-        <link rel="next" href="../../safety_and_evaluation/red_teaming/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -24,7 +20,7 @@
     
     
       
-        <title>Context Distillation - LLM RL Fine-tuning</title>
+        <title>Context distillation - LLM Alignment & Reasoning</title>
       
     
     
@@ -65,6 +61,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#1-overview" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -77,7 +78,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="LLM RL Fine-tuning" class="md-header__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+    <a href="../../.." title="LLM Alignment &amp; Reasoning" class="md-header__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -91,13 +92,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            LLM RL Fine-tuning
+            LLM Alignment & Reasoning
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Context Distillation
+              Context distillation
             
           </span>
         </div>
@@ -175,13 +176,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="LLM RL Fine-tuning" class="md-nav__button md-logo" aria-label="LLM RL Fine-tuning" data-md-component="logo">
+    <a href="../../.." title="LLM Alignment &amp; Reasoning" class="md-nav__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    LLM RL Fine-tuning
+    LLM Alignment & Reasoning
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -204,1095 +205,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Alignment Methods
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            Alignment Methods
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    RLHF
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_1">
-            <span class="md-nav__icon md-icon"></span>
-            RLHF
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../rlhf/rlhf_pipeline/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    RLHF Pipeline Reward Modeling & Preference Data Collection
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    RL Optimization Methods
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_1_2">
-            <span class="md-nav__icon md-icon"></span>
-            RL Optimization Methods
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../rlhf/rl_optimization_methods/ppo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Proximal Policy Optimization (PPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../rlhf/rl_optimization_methods/dpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Direct Policy Optimization (DPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../rlhf/rl_optimization_methods/grpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Group Relative Policy Optimization (GRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../rlhf/kl_penalty_reward_hacking/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    KL Penalty & Reward Hacking
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Alternative Alignment Approaches
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2_2">
-            <span class="md-nav__icon md-icon"></span>
-            Alternative Alignment Approaches
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../rlaif/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    RLAIF
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../constitutional_ai/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Constitutional AI
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    Context Distillation
-    
-  </span>
-  
-
-      </a>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Safety And Evaluation
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_3">
-            <span class="md-nav__icon md-icon"></span>
-            Safety And Evaluation
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../safety_and_evaluation/red_teaming/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Red Teaming
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Reasoning Techniques
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Reasoning Techniques
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Prompting Based Techniques
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1">
-            <span class="md-nav__icon md-icon"></span>
-            Prompting Based Techniques
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/prompting_based_techniques/cot/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Chain of Thoughts (COT)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/prompting_based_techniques/tree_of_thoughts/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Tree of Thoughts (ToT)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/prompting_based_techniques/self_consistency/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Self-Consistency
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/prompting_based_techniques/react/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ReACT
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Compute Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Compute Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-N Sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Iterative Refinement
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_3">
-            <span class="md-nav__icon md-icon"></span>
-            Iterative Refinement
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/iterative_refinement/self_critic_methods/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Self Critic Methods
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Advanced Reasoning Models
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Advanced Reasoning Models
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    STaR (Self-Taught Reasoner)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Methods
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Methods
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../methods/ppo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Proximal Policy Optimization (PPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../methods/dpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Direct Policy Optimization (DPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../methods/drpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Direct Rewards Policy Optimization (DRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../methods/grpo/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Group Relative Policy Optimization (GRPO)
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Supporting Topics
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            Supporting Topics
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../supporting_topics/kl_penalty/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    KL Penalty
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../supporting_topics/deepseek_rl_finetuning/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Deepseek RL Fine-tuning
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../supporting_topics/rewards_hacking/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Rewards Hacking
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1337,6 +249,236 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-core-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Core Concept
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-technical-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Technical Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Technical Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-recent-developments-2024-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Recent Developments (2024-2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Recent Developments (2024-2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-multi-task-context-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Multi-Task Context Distillation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-constitutional-ai-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Constitutional AI Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-iterative-refinement" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Iterative Refinement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-context-distillation-for-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Context Distillation for RLHF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-prompt-specific-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Prompt-Specific Distillation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-implementation-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Implementation Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Implementation Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-common-interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Common Interview Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Common Interview Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-how-does-context-distillation-differ-from-standard-knowledge-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: How does context distillation differ from standard knowledge distillation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-are-the-main-limitations-of-context-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: What are the main limitations of context distillation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-how-would-you-evaluate-whether-context-distillation-was-successful" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: How would you evaluate whether context distillation was successful?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-can-context-distillation-be-combined-with-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: Can context distillation be combined with RLHF?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-do-you-prevent-the-student-from-learning-undesired-biases-during-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: How do you prevent the student from learning undesired biases during distillation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-role-does-context-distillation-play-in-modern-llm-alignment-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: What role does context distillation play in modern LLM alignment pipelines?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1351,9 +493,141 @@
 
 
 
-  <h1>Context Distillation</h1>
+  <h1>Context distillation</h1>
 
-
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<p>Context distillation is an alignment technique that transfers desired behaviors from a larger model (teacher) or prompt-based system into a smaller, more efficient model (student) without requiring the explicit prompts at inference time. The goal is to internalize behavioral constraints and preferences directly into model weights.</p>
+<hr />
+<hr />
+<h2 id="2-core-concept">2. Core Concept<a class="headerlink" href="#2-core-concept" title="Permanent link">&para;</a></h2>
+<p>Instead of relying on lengthy system prompts or few-shot examples at inference, context distillation "bakes in" the desired behavior by:</p>
+<ol>
+<li><strong>Generating synthetic data</strong> using the teacher model with alignment prompts</li>
+<li><strong>Training the student model</strong> on input-output pairs where outputs reflect aligned behavior</li>
+<li><strong>Removing the need</strong> for explicit prompts during deployment</li>
+</ol>
+<hr />
+<hr />
+<h2 id="3-technical-details">3. Technical Details<a class="headerlink" href="#3-technical-details" title="Permanent link">&para;</a></h2>
+<h3 id="basic-pipeline">Basic Pipeline<a class="headerlink" href="#basic-pipeline" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Teacher Model + Alignment Prompt → Generate Responses → Train Student Model
+</code></pre></div>
+<hr />
+<h3 id="key-components">Key Components<a class="headerlink" href="#key-components" title="Permanent link">&para;</a></h3>
+<p><strong>1. Data Generation</strong>
+- Use teacher model with system prompts defining desired behavior (safety, helpfulness, honesty)
+- Generate responses to diverse queries
+- Create dataset: <code>{(query, aligned_response)}</code></p>
+<p><strong>2. Training Objective</strong>
+- Standard supervised fine-tuning (SFT) on generated data
+- Student learns: <code>P(response | query)</code> instead of <code>P(response | query, prompt)</code>
+- Loss function: Cross-entropy on token predictions</p>
+<p><strong>3. Advantages</strong>
+- <strong>Efficiency</strong>: No prompt overhead at inference
+- <strong>Consistency</strong>: Behavior encoded in weights
+- <strong>Scalability</strong>: Deploy smaller, faster models
+- <strong>Security</strong>: Reduces prompt injection vulnerabilities</p>
+<hr />
+<h3 id="mathematical-formulation">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permanent link">&para;</a></h3>
+<p>Traditional prompting: <span class="arithmatex">\(p(y|x, c)\)</span> where c = context/prompt</p>
+<p>Context distillation: Train student to approximate <span class="arithmatex">\(p(y|x)\)</span> by distilling <span class="arithmatex">\(p(y|x,c)\)</span></p>
+<p>Objective: Minimize <code>KL[p_teacher(y|x,c) || p_student(y|x)]</code></p>
+<hr />
+<hr />
+<h2 id="4-recent-developments-2024-2025">4. Recent Developments (2024-2025)<a class="headerlink" href="#4-recent-developments-2024-2025" title="Permanent link">&para;</a></h2>
+<h3 id="1-multi-task-context-distillation">1. <strong>Multi-Task Context Distillation</strong><a class="headerlink" href="#1-multi-task-context-distillation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Distilling multiple alignment objectives simultaneously (safety + helpfulness + factuality)</li>
+<li>Better generalization across diverse behavioral requirements</li>
+</ul>
+<h3 id="2-constitutional-ai-integration">2. <strong>Constitutional AI Integration</strong><a class="headerlink" href="#2-constitutional-ai-integration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Combining context distillation with constitutional methods</li>
+<li>Self-critique and revision steps before distillation</li>
+<li>Improved robustness to adversarial queries</li>
+</ul>
+<h3 id="3-iterative-refinement">3. <strong>Iterative Refinement</strong><a class="headerlink" href="#3-iterative-refinement" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Multi-stage distillation where student becomes teacher</li>
+<li>Progressive capability and alignment improvement</li>
+<li>Used in models like Claude and GPT-4</li>
+</ul>
+<h3 id="4-context-distillation-for-rlhf">4. <strong>Context Distillation for RLHF</strong><a class="headerlink" href="#4-context-distillation-for-rlhf" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Distilling reward model preferences into policy</li>
+<li>Hybrid approaches combining distillation with PPO</li>
+<li>Reduced computational cost of RLHF deployment</li>
+</ul>
+<h3 id="5-prompt-specific-distillation">5. <strong>Prompt-Specific Distillation</strong><a class="headerlink" href="#5-prompt-specific-distillation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Domain-specific alignment (medical, legal, coding)</li>
+<li>Specialized models without runtime prompt engineering</li>
+<li>Transfer learning from general to specialized alignment</li>
+</ul>
+<hr />
+<hr />
+<h2 id="5-implementation-considerations">5. Implementation Considerations<a class="headerlink" href="#5-implementation-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="challenges">Challenges<a class="headerlink" href="#challenges" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Distribution shift</strong>: Student may not generalize beyond teacher's training distribution</li>
+<li><strong>Capability degradation</strong>: Risk of losing capabilities during distillation</li>
+<li><strong>Quality-diversity tradeoff</strong>: Generating diverse, high-quality training data</li>
+<li><strong>Evaluation</strong>: Measuring alignment retention vs. capability</li>
+</ul>
+<hr />
+<h3 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Diverse prompt set</strong>: Use varied alignment prompts during generation</li>
+<li><strong>Quality filtering</strong>: Remove low-quality or misaligned generations</li>
+<li><strong>Balanced datasets</strong>: Ensure coverage of edge cases and challenging queries</li>
+<li><strong>Iterative evaluation</strong>: Test student behavior on held-out adversarial examples</li>
+<li><strong>Capability preservation</strong>: Include capability-focused examples alongside alignment data</li>
+</ol>
+<hr />
+<hr />
+<h2 id="6-common-interview-questions">6. Common Interview Questions<a class="headerlink" href="#6-common-interview-questions" title="Permanent link">&para;</a></h2>
+<h3 id="q1-how-does-context-distillation-differ-from-standard-knowledge-distillation">Q1: How does context distillation differ from standard knowledge distillation?<a class="headerlink" href="#q1-how-does-context-distillation-differ-from-standard-knowledge-distillation" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>: Standard knowledge distillation transfers task performance from teacher to student. Context distillation specifically transfers <em>behavioral constraints</em> and <em>alignment properties</em> that were originally specified through prompts. The student learns to behave as if the alignment prompt is always present, without needing it explicitly.</p>
+<hr />
+<h3 id="q2-what-are-the-main-limitations-of-context-distillation">Q2: What are the main limitations of context distillation?<a class="headerlink" href="#q2-what-are-the-main-limitations-of-context-distillation" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>: 
+- <strong>Generalization</strong>: Student may fail on out-of-distribution inputs not covered during distillation
+- <strong>Prompt dependency</strong>: If teacher's behavior heavily depends on nuanced prompting, distillation may not fully capture it
+- <strong>Capability loss</strong>: Aggressive distillation can reduce model capabilities
+- <strong>Static alignment</strong>: Unlike runtime prompting, distilled behavior is harder to update</p>
+<hr />
+<h3 id="q3-how-would-you-evaluate-whether-context-distillation-was-successful">Q3: How would you evaluate whether context distillation was successful?<a class="headerlink" href="#q3-how-would-you-evaluate-whether-context-distillation-was-successful" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+- <strong>Alignment metrics</strong>: Test on safety benchmarks (TruthfulQA, toxicity detection)
+- <strong>Behavioral consistency</strong>: Compare student vs. teacher+prompt responses
+- <strong>Capability retention</strong>: Ensure performance on downstream tasks isn't degraded
+- <strong>Adversarial robustness</strong>: Test on jailbreaks and edge cases
+- <strong>Efficiency gains</strong>: Measure latency and throughput improvements</p>
+<hr />
+<h3 id="q4-can-context-distillation-be-combined-with-rlhf">Q4: Can context distillation be combined with RLHF?<a class="headerlink" href="#q4-can-context-distillation-be-combined-with-rlhf" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>: Yes, in several ways:
+- Distill RLHF-trained teacher into smaller student
+- Use distillation to pre-align before RLHF (warm start)
+- Distill reward model preferences directly into policy
+- Hybrid approach: RLHF for high-stakes alignment, distillation for deployment efficiency</p>
+<hr />
+<h3 id="q5-how-do-you-prevent-the-student-from-learning-undesired-biases-during-distillation">Q5: How do you prevent the student from learning undesired biases during distillation?<a class="headerlink" href="#q5-how-do-you-prevent-the-student-from-learning-undesired-biases-during-distillation" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>:
+- <strong>Careful data curation</strong>: Filter teacher outputs for quality and alignment
+- <strong>Diverse prompt strategies</strong>: Use multiple perspectives in alignment prompts
+- <strong>Red-teaming</strong>: Generate adversarial examples and test student responses
+- <strong>Held-out validation</strong>: Evaluate on separate test set of challenging queries
+- <strong>Iterative refinement</strong>: Multiple rounds with feedback incorporation</p>
+<hr />
+<h3 id="q6-what-role-does-context-distillation-play-in-modern-llm-alignment-pipelines">Q6: What role does context distillation play in modern LLM alignment pipelines?<a class="headerlink" href="#q6-what-role-does-context-distillation-play-in-modern-llm-alignment-pipelines" title="Permanent link">&para;</a></h3>
+<p><strong>Answer</strong>: Context distillation is typically used mid-to-late pipeline:
+1. Pre-training on large corpus
+2. Instruction fine-tuning
+3. RLHF or Constitutional AI
+4. <strong>Context distillation</strong> (to create deployable versions)
+5. Optional: Further specialization or safety filtering</p>
+<p>It bridges research prototypes (with complex prompting) and production systems (efficient, standalone).</p>
+<hr />
 
 
 

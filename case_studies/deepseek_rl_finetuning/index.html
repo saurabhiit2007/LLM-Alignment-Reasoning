@@ -1,0 +1,793 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical documentation and notes on RL methods for LLM fine-tuning">
+      
+      
+        <meta name="author" content="Saurabh Goyal">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Deepseek rl finetuning - LLM Alignment & Reasoning</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLM Alignment &amp; Reasoning" class="md-header__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLM Alignment & Reasoning
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deepseek rl finetuning
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLM Alignment &amp; Reasoning" class="md-nav__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLM Alignment & Reasoning
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-key-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Key Variants
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-grpo-algorithm-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The GRPO Algorithm: Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The GRPO Algorithm: Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Intuition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Key Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-reward-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Reward Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Reward Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-reasoning-oriented-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Reasoning-Oriented Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-general-instruction-following-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 General Instruction-Following Tasks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-multi-stage-training-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Multi-Stage Training Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Multi-Stage Training Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-pipeline-highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Pipeline Highlights
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-distinctive-features-compared-to-traditional-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Distinctive Features Compared to Traditional Methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-technical-training-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Technical &amp; Training Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Technical &amp; Training Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-model-sizes-and-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Model Sizes and Releases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-reward-function-sampling-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Reward Function &amp; Sampling Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-training-and-distillation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Training and Distillation Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-observed-strengths-weaknesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Observed Strengths &amp; Weaknesses
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Summary Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-advantages-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Advantages &amp; Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Advantages &amp; Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Deepseek rl finetuning</h1>
+
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<p>This document provides a comprehensive overview of the DeepSeek-R1 strategy for fine-tuning and preference-tuning large language models (LLMs). It covers the RL methods, distinctions from traditional approaches, the GRPO optimization algorithm, multi-stage training pipeline, reward design, model distillation, and additional technical details.</p>
+<p>DeepSeek-R1 introduces a novel approach to improving reasoning capabilities and general instruction-following in large language models using reinforcement learning (RL). Rather than relying solely on large human-annotated supervised fine-tuning datasets and learned reward models, DeepSeek emphasizes verifiable tasks (particularly reasoning, mathematics, and code), multi-stage pipelines, and knowledge distillation to smaller models.</p>
+<h3 id="11-key-variants">1.1 Key Variants<a class="headerlink" href="#11-key-variants" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>DeepSeek-R1-Zero</strong>: RL-only variant without initial supervised fine-tuning (SFT). Uses verifiable reasoning tasks (e.g., math, code, logic) with automatically computable reward signals.</li>
+<li><strong>DeepSeek-R1</strong>: Multi-stage pipeline starting with a "cold-start" SFT, followed by reasoning-oriented RL, generation of an SFT dataset from high-quality RL outputs, further SFT fine-tuning, and then a second RL stage for broader instruction-following.</li>
+</ul>
+<hr />
+<hr />
+<h2 id="2-the-grpo-algorithm-overview">2. The GRPO Algorithm: Overview<a class="headerlink" href="#2-the-grpo-algorithm-overview" title="Permanent link">&para;</a></h2>
+<p>This section provides a summary of the core optimization algorithm used in DeepSeek-R1: Group Relative Policy Optimization (GRPO).</p>
+<p><strong>For full mathematical details and derivation, see the dedicated <a href="../methods/grpo.md">GRPO Algorithm</a> document.</strong></p>
+<h3 id="21-intuition">2.1 Intuition<a class="headerlink" href="#21-intuition" title="Permanent link">&para;</a></h3>
+<p>Instead of using a value network (critic) as in PPO, GRPO operates by sampling multiple candidate outputs for each prompt and comparing their performance <strong>within the group</strong> through ranking. This approach encourages responses that outperform peers in the same group, emphasizing <strong>relative</strong> improvement rather than absolute reward magnitudes. GRPO offers more stable training for LLMs at scale by avoiding the complexity and instability of critic/value training.</p>
+<hr />
+<h3 id="22-key-features">2.2 Key Features<a class="headerlink" href="#22-key-features" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Group-based candidate sampling</strong>: Group size <span class="arithmatex">\(G\)</span> typically ranges from 8–16</li>
+<li><strong>Advantage computation</strong>:
+  <span class="arithmatex">\(<span class="arithmatex">\(A_i = \frac{r_i - \mathrm{mean}(r_{1..G})}{\mathrm{std}(r_{1..G})}\)</span>\)</span>
+  where <span class="arithmatex">\(r_i\)</span> is the reward of candidate <span class="arithmatex">\(o_i\)</span></li>
+<li><strong>PPO-style clipped ratio</strong>: Applied to new policy versus old policy for each candidate</li>
+<li><strong>KL regularization</strong>: Prevents drift from a reference policy</li>
+<li><strong>No explicit value function</strong>: Critical for large-scale LLM fine-tuning efficiency</li>
+</ul>
+<hr />
+<hr />
+<h2 id="3-reward-design">3. Reward Design<a class="headerlink" href="#3-reward-design" title="Permanent link">&para;</a></h2>
+<p>DeepSeek divides reward design into two main domains: reasoning-oriented tasks and general instruction-following tasks.</p>
+<h3 id="31-reasoning-oriented-tasks">3.1 Reasoning-Oriented Tasks<a class="headerlink" href="#31-reasoning-oriented-tasks" title="Permanent link">&para;</a></h3>
+<p>The reward function for reasoning tasks includes:</p>
+<ul>
+<li><strong>Correctness</strong>: Automatically verified through solvers for math answers or compilers/tests for code solutions</li>
+<li><strong>Chain-of-Thought (CoT) / Format Enforcement</strong>: Encourages structured reasoning via tags or designated reasoning segments</li>
+<li><strong>Language Consistency / Style</strong>: Penalizes language mixing (e.g., mixing English and Mandarin) or incoherent formatting</li>
+<li><strong>Weighted Sum</strong>: The overall reward combines correctness with readability and style metrics</li>
+</ul>
+<hr />
+<h3 id="32-general-instruction-following-tasks">3.2 General Instruction-Following Tasks<a class="headerlink" href="#32-general-instruction-following-tasks" title="Permanent link">&para;</a></h3>
+<p>For broader tasks, DeepSeek employs:</p>
+<ul>
+<li>Preference models or mixtures of rule-based checks for helpfulness, harmlessness, and style</li>
+<li>Learned reward models for tasks beyond verifiable reasoning domains</li>
+<li>Integration after the reasoning-oriented RL stage to develop comprehensive instruction-following capabilities</li>
+</ul>
+<hr />
+<hr />
+<h2 id="4-multi-stage-training-pipeline">4. Multi-Stage Training Pipeline<a class="headerlink" href="#4-multi-stage-training-pipeline" title="Permanent link">&para;</a></h2>
+<p>The DeepSeek-R1 training strategy follows a systematic multi-stage approach:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stage 1: Cold-Start SFT</strong></td>
+<td>A small curated dataset of chain-of-thought reasoning examples bootstraps the model, stabilizing the initial policy before intensive RL.</td>
+</tr>
+<tr>
+<td><strong>Stage 2: Reasoning-Oriented RL</strong></td>
+<td>GRPO applied to verifiable reasoning tasks (math, code, logic) drives emergent reasoning capability—either via RL only (DeepSeek-R1-Zero) or RL after SFT (DeepSeek-R1).</td>
+</tr>
+<tr>
+<td><strong>Stage 3: Rejection Sampling → SFT Dataset</strong></td>
+<td>RL-generated outputs are filtered by quality and readability to create a high-quality SFT dataset, addressing issues like language mixing or readability observed in R1-Zero.</td>
+</tr>
+<tr>
+<td><strong>Stage 4: Second RL Stage (General Instruction-Following)</strong></td>
+<td>Expands prompt coverage to include broad instructions and incorporates general reward signals (helpfulness, style, harmlessness) to generalize beyond reasoning tasks.</td>
+</tr>
+<tr>
+<td><strong>Stage 5: Distillation to Smaller Models</strong></td>
+<td>Uses the high-capability RL-trained model as a teacher to generate reasoning-rich data, then fine-tunes smaller student models via SFT on that data (rather than performing full RL on smaller models).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="41-pipeline-highlights">4.1 Pipeline Highlights<a class="headerlink" href="#41-pipeline-highlights" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The reasoning-only RL variant (R1-Zero) demonstrates that emergent reasoning can arise via RL alone (without SFT) but suffers from readability and language consistency issues</li>
+<li>For R1 proper, the cold-start SFT "kick-starts" the policy, improving readability and general language handling before RL</li>
+<li>Distilled models are available in multiple sizes: 1.5B, 7B, 8B, 14B, 32B, and 70B parameters, based on Qwen2.5 and Llama3 series</li>
+<li>According to public sources, R1 achieved reasoning performance comparable to OpenAI's o1-1217 model on reasoning and multitask benchmarks</li>
+</ul>
+<hr />
+<hr />
+<h2 id="5-distinctive-features-compared-to-traditional-methods">5. Distinctive Features Compared to Traditional Methods<a class="headerlink" href="#5-distinctive-features-compared-to-traditional-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Conventional RLHF / SFT + RL</th>
+<th>DeepSeek-R1 Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Initial SFT</strong></td>
+<td>Often uses large human-annotated datasets</td>
+<td>R1-Zero: none; R1: small cold-start SFT</td>
+</tr>
+<tr>
+<td><strong>Reward Source</strong></td>
+<td>Learned reward model (often from human preferences)</td>
+<td>Reasoning tasks: rule-based correctness + ranking; General tasks: mixture</td>
+</tr>
+<tr>
+<td><strong>Policy Optimization</strong></td>
+<td>PPO (with value network/critic, learned rewards)</td>
+<td>GRPO (group ranking + clipped ratio + KL penalty)</td>
+</tr>
+<tr>
+<td><strong>Domain Focus</strong></td>
+<td>Broad instruction-following from the start</td>
+<td>Emphasis on reasoning first → then general instructions</td>
+</tr>
+<tr>
+<td><strong>Post-RL Dataset Generation</strong></td>
+<td>Sometimes limited</td>
+<td>RL outputs → filtered → SFT dataset → distillation</td>
+</tr>
+<tr>
+<td><strong>Distillation to Smaller Models</strong></td>
+<td>Optional / less emphasized</td>
+<td>Explicit large → dataset → smaller models path</td>
+</tr>
+<tr>
+<td><strong>Emergence of Reasoning</strong></td>
+<td>Often via SFT + RL; may require large annotated data</td>
+<td>Demonstrated via RL alone (R1-Zero), then refined by SFT + RL</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr />
+<h2 id="6-technical-training-details">6. Technical &amp; Training Details<a class="headerlink" href="#6-technical-training-details" title="Permanent link">&para;</a></h2>
+<h3 id="61-model-sizes-and-releases">6.1 Model Sizes and Releases<a class="headerlink" href="#61-model-sizes-and-releases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Base models</strong>: R1-Zero and R1 are built on a 37B-activated parameter MoE architecture with a total of 671B parameters</li>
+<li><strong>Distilled variants</strong>: Available in 1.5B, 7B, 8B, 14B, 32B, and 70B parameter configurations based on Qwen2.5 and Llama3 series</li>
+</ul>
+<hr />
+<h3 id="62-reward-function-sampling-details">6.2 Reward Function &amp; Sampling Details<a class="headerlink" href="#62-reward-function-sampling-details" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Reasoning tasks</strong>: The reward function is largely rule-based, checking final answers for correctness, format tags for reasoning sections, and penalizing language mixing</li>
+<li><strong>Process vs. outcome rewards</strong>: Outcome rewards (correct answer) proved more effective than weaker signals like process rewards (number of reasoning steps)</li>
+<li><strong>Distillation sampling</strong>: For R1-Distill models, generation settings included temperature 0.6, top-p 0.95, with 64 responses per query used for pass@1 estimation</li>
+</ul>
+<hr />
+<h3 id="63-training-and-distillation-strategy">6.3 Training and Distillation Strategy<a class="headerlink" href="#63-training-and-distillation-strategy" title="Permanent link">&para;</a></h3>
+<p>The distillation process leverages the high-capability teacher model to generate large "reasoning-rich" datasets. Student models are then fine-tuned via SFT (not full RL) to inherit reasoning patterns. While smaller models may underperform the teacher, they offer substantial cost and efficiency improvements.</p>
+<hr />
+<h3 id="64-observed-strengths-weaknesses">6.4 Observed Strengths &amp; Weaknesses<a class="headerlink" href="#64-observed-strengths-weaknesses" title="Permanent link">&para;</a></h3>
+<p><strong>Strengths:</strong>
+- Emergent reasoning capability via RL
+- High performance on reasoning benchmarks
+- Efficient multi-stage training approach</p>
+<p><strong>Weaknesses:</strong>
+- R1-Zero exhibits readability and language mixing issues due to skipping SFT
+- Distilled models experience some performance degradation compared to the full model
+- General instruction-following may lag in smaller or early-stage variants</p>
+<hr />
+<hr />
+<h2 id="7-summary-table">7. Summary Table<a class="headerlink" href="#7-summary-table" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+<th>Example / Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Policy Model (LLM)</strong></td>
+<td>Learns improved policy via RL</td>
+<td>DeepSeek-R1, DeepSeek-R1-Zero</td>
+</tr>
+<tr>
+<td><strong>Reference Model</strong></td>
+<td>Provides KL regularization baseline</td>
+<td>Frozen SFT model (in GRPO)</td>
+</tr>
+<tr>
+<td><strong>Reward Function</strong></td>
+<td>Scores responses</td>
+<td>Correctness, readability, chain-of-thought format</td>
+</tr>
+<tr>
+<td><strong>Group Size (G)</strong></td>
+<td>Sampling granularity for GRPO</td>
+<td>8–16 outputs per prompt (typical)</td>
+</tr>
+<tr>
+<td><strong>Advantage (<span class="arithmatex">\(A_i\)</span>)</strong></td>
+<td>Relative performance metric within group</td>
+<td>Normalization: <span class="arithmatex">\((r_i - \text{mean}) / \text{std}\)</span></td>
+</tr>
+<tr>
+<td><strong>Objective (GRPO)</strong></td>
+<td>PPO-style surrogate + KL penalty</td>
+<td>See GRPO doc for full derivation</td>
+</tr>
+<tr>
+<td><strong>Training Pipeline</strong></td>
+<td>Multi-stage (Cold-SFT → RL → SFT → RL → Distill)</td>
+<td>Reasoning first, then broad instruction</td>
+</tr>
+<tr>
+<td><strong>Distillation</strong></td>
+<td>Transfer reasoning to smaller models</td>
+<td>Student models 1.5B–70B params</td>
+</tr>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Efficient reasoning/instruction fine-tuning</td>
+<td>Stable RL fine-tuning for large LLMs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr />
+<h2 id="8-advantages-limitations">8. Advantages &amp; Limitations<a class="headerlink" href="#8-advantages-limitations" title="Permanent link">&para;</a></h2>
+<h3 id="advantages">Advantages<a class="headerlink" href="#advantages" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Emergent reasoning</strong>: R1-Zero demonstrates reasoning capability via RL without relying solely on large human-annotated SFT datasets</li>
+<li><strong>Efficient training</strong>: Multi-stage strategy combining SFT, RL, filtering, and distillation</li>
+<li><strong>Verifiable rewards</strong>: Correctness and format-based signals reduce noise and training instability</li>
+<li><strong>Scalable deployment</strong>: Distillation enables smaller, deployable models with reasoning capability for cost-effective production use</li>
+</ul>
+<hr />
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Limited transparency</strong>: Full details on datasets, hyperparameters, and training costs are not publicly available</li>
+<li><strong>Instruction-following gaps</strong>: General instruction-following beyond reasoning may lag, especially in R1-Zero and smaller distilled variants</li>
+<li><strong>Distillation trade-offs</strong>: SFT-only post-distillation may not fully retain RL-derived benefits in smaller models</li>
+<li><strong>Filtering dependency</strong>: Effective reward design and RL output filtering remain critical; low-quality RL outputs create bottlenecks</li>
+</ul>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["mathjax"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

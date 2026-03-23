@@ -23,40 +23,40 @@ nav:
   - Home: index.md
   - Alignment Methods:
       - RLHF:
-          - RLHF Pipeline: ./docs/alignment_methods/rlhf/rlhf_pipeline.md
+          - RLHF Pipeline: ./alignment_methods/rlhf/rlhf_pipeline.md
           - RL Optimization Methods:
-              - PPO: ./docs/alignment_methods/rlhf/rl_optimization_methods/ppo.md
-              - DPO: ./docs/alignment_methods/rlhf/rl_optimization_methods/dpo.md
-              - GRPO: ./docs/alignment_methods/rlhf/rl_optimization_methods/grpo.md
-          - KL Penalty & Reward Hacking: ./docs/alignment_methods/rlhf/kl_penalty_reward_hacking.md
+              - PPO: ./alignment_methods/rlhf/rl_optimization_methods/ppo.md
+              - DPO: ./alignment_methods/rlhf/rl_optimization_methods/dpo.md
+              - GRPO: ./alignment_methods/rlhf/rl_optimization_methods/grpo.md
+          - KL Penalty & Reward Hacking: ./alignment_methods/rlhf/kl_penalty_reward_hacking.md
       - Alternate Approaches:
-          - RLAIF: ./docs/alignment_methods/alternate_approaches/rlaif.md
-          - Context Distillation: ./docs/alignment_methods/alternate_approaches/context_distillation.md
-          - Constitutional AI: ./docs/alignment_methods/alternate_approaches/constitutional_ai.md
+          - RLAIF: ./alignment_methods/alternate_approaches/rlaif.md
+          - Context Distillation: ./alignment_methods/alternate_approaches/context_distillation.md
+          - Constitutional AI: ./alignment_methods/alternate_approaches/constitutional_ai.md
       - Safety & Evaluation:
-          - Safety & Evaluation Frameworks: docs/alignment_methods/safety_and_evaluation/safety_evaluation_frameworks.md
-          - Adversarial Testing: docs/alignment_methods/safety_and_evaluation/adversarial_testing.md
-          - Red Teaming: docs/alignment_methods/safety_and_evaluation/red_teaming.md
+          - Safety & Evaluation Frameworks: ./alignment_methods/safety_and_evaluation/safety_evaluation_frameworks.md
+          - Adversarial Testing: ./alignment_methods/safety_and_evaluation/adversarial_testing.md
+          - Red Teaming: ./alignment_methods/safety_and_evaluation/red_teaming.md
   - Reasoning Techniques:
       - Prompting Based Techniques:
-          - Chain-of-thoughts: docs/reasoning_techniques/prompting_based_techniques/cot.md
-          - Tree-of-thoughts: docs/reasoning_techniques/prompting_based_techniques/tree_of_thoughts.md
-          - Self-Consistency: docs/reasoning_techniques/prompting_based_techniques/self_consistency.md
-          - ReAcT: docs/reasoning_techniques/prompting_based_techniques/react.md
+          - Chain-of-thoughts: ./reasoning_techniques/prompting_based_techniques/cot.md
+          - Tree-of-thoughts: ./reasoning_techniques/prompting_based_techniques/tree_of_thoughts.md
+          - Self-Consistency: ./reasoning_techniques/prompting_based_techniques/self_consistency.md
+          - ReAcT: ./reasoning_techniques/prompting_based_techniques/react.md
       - Iterative Refinement:
-          - Self-Critic Methods: docs/reasoning_techniques/iterative_refinement/self_critic_methods.md
-          - Debate & Multi-Agent: docs/reasoning_techniques/iterative_refinement/debate_and_multi_agent.md
+          - Self-Critic Methods: ./reasoning_techniques/iterative_refinement/self_critic_methods.md
+          - Debate & Multi-Agent: ./reasoning_techniques/iterative_refinement/debate_and_multi_agent.md
       - Advanced Reasoning Methods:
-          - STAR-Self Taught Reasoner: docs/reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner.md
-          - System2 Attention: docs/reasoning_techniques/advanced_reasoning_models/system2_attention.md
+          - STAR-Self Taught Reasoner: ./reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner.md
+          - System2 Attention: ./reasoning_techniques/advanced_reasoning_models/system2_attention.md
       - Test-Time Scaling:
-          - Best-of-n-sampling: docs/reasoning_techniques/test_time_compute_scaling/best_of_n_sampling.md
-          - Compute Optimal Inference: docs/reasoning_techniques/test_time_compute_scaling/compute_optimal_inference.md
-          - ORMs & PRMs: docs/reasoning_techniques/test_time_compute_scaling/orm_prm.md
+          - Best-of-n-sampling: ./reasoning_techniques/test_time_compute_scaling/best_of_n_sampling.md
+          - Compute Optimal Inference: ./reasoning_techniques/test_time_compute_scaling/compute_optimal_inference.md
+          - ORMs & PRMs: ./reasoning_techniques/test_time_compute_scaling/orm_prm.md
   - Evaluation & Metrics:
       - Reasoning & Evaluation Benchmarks: references.md
-      - Alignment Evaluation: docs/evaluation_and_metrics/alignment_evaluation.md
-      - Verification Metrics: docs/evaluation_and_metrics/verification_metrics.md
+      - Alignment Evaluation: ./evaluation_and_metrics/alignment_evaluation.md
+      - Verification Metrics: ./evaluation_and_metrics/verification_metrics.md
   - Case Studies:
-      - Deepseek RL Finetuning: docs/case_studies/deepseek_rl_finetuning.md
+      - Deepseek RL Finetuning: ./case_studies/deepseek_rl_finetuning.md
   - References: references.md

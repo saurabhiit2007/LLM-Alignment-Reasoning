@@ -17,7 +17,7 @@ DeepSeek-R1 introduces a novel approach to improving reasoning capabilities and 
 
 This section provides a summary of the core optimization algorithm used in DeepSeek-R1: Group Relative Policy Optimization (GRPO).
 
-**For full mathematical details and derivation, see the dedicated [GRPO Algorithm](../methods/grpo.md) document.**
+**For full mathematical details and derivation, see the dedicated [GRPO Algorithm](../alignment_methods/rlhf/rl_optimization_methods/grpo.md) document.**
 
 ### 2.1 Intuition
 

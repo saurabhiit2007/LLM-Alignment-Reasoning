@@ -4,16 +4,24 @@ site_author: Saurabh Goyal
 theme:
   name: material
   features:
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
     - mathjax
-
-markdown_extensions:
-  - admonition
-  - toc:
-      permalink: true
-  - pymdownx.arithmatex:
-      generic: true
-  - pymdownx.superfences
-  - pymdownx.details
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: deep purple
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: lime
+  font:
+    text: Inter
+    code: JetBrains Mono
 
 extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
@@ -60,3 +68,21 @@ nav:
   - Case Studies:
       - Deepseek RL Finetuning: ./case_studies/deepseek_rl_finetuning.md
   - References: references.md
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+  - footnotes
+  - tables
+  - pymdownx.arithmatex
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tasklist
+  - pymdownx.snippets
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink

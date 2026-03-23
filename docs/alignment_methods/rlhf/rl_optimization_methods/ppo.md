@@ -80,6 +80,7 @@ $$
 The ratio measures how much the new policy's likelihood of an action changes compared to the reference policy.
 
 **Interpretation:**
+
 - $r_t > 1$: New policy assigns higher probability to this action
 - $r_t < 1$: New policy assigns lower probability to this action
 - $r_t ≈ 1$: Policies are similar for this action
@@ -103,9 +104,24 @@ Where:
 - The `min` operation limits large, destabilizing updates
 
 **Why Clipping Works:**
+
 - If `A_t > 0` (good action): encourages increase in probability, but clips at `(1+ε)`
 - If `A_t < 0` (bad action): encourages decrease in probability, but clips at `(1-ε)`
 - Prevents the policy from changing too dramatically in a single update
+
+**Why do you need Clipping and KL-divergence**
+
+In the original PPO paper by Schulman et al. (2017), two variants were proposed as alternatives to each other, not as mechanisms meant to be used together:
+
+- Variant 1: PPO-Clip: Uses the clipped surrogate objective. The probability ratio r(θ) = π_θ / π_old is clipped to [1−ε, 1+ε], which prevents the optimization step from making too large a policy update. This is the version most people think of as "PPO."
+- Variant 2: PPO-Penalty: Instead of clipping, it adds a KL divergence penalty term directly to the objective, with an adaptive coefficient that increases if KL gets too large and decreases if it's too small. This acts as a soft constraint on how far the new policy can drift.
+
+In the RLHF/LLM fine-tuning context (like InstructGPT / ChatGPT training), practitioners often use PPO-Clip plus an additional KL penalty against a frozen reference model. This is because they're solving a somewhat different problem than standard RL:
+
+- Clipping prevents the policy from changing too much within a single update step relative to the previous iteration (π_old). It's a local, per-step safeguard.
+- KL penalty against the reference prevents the policy from drifting too far cumulatively over the entire training run from the original pretrained model. It's a global safeguard.
+
+Clipping alone doesn't prevent the model from slowly drifting very far from the original pretrained model over many small, clipped steps — each step is small, but they compound. The KL term against the frozen reference catches this cumulative drift, which matters because you want the model to retain its general language capabilities, not collapse into some degenerate policy that only maximizes the reward model.
 
 ---
 
@@ -129,6 +145,7 @@ $$
 **Reward Simplification in RLHF:**
 
 In language model fine-tuning, the setup is simplified:
+
 - A **prompt** acts as the state s
 - The **model's response** (a sequence of tokens) is treated as the action a
 - A **reward model (RM)** assigns **a single scalar reward** $r(s, a)$ for the entire sequence
@@ -158,11 +175,13 @@ $$
 In practice, the **value function** is implemented as a **learned neural network head** attached to the policy model.
 
 During training:
+
 1. The reward model provides rewards $r_t$ for each sequence
 2. The **cumulative discounted reward** $R_t$ is computed
 3. The value head learns to predict $V_θ(s_t)$ to match the observed return $R_t$
 
 There are two common approaches:
+
 - **Monte Carlo estimate:** directly use full episode returns $R_t$ (common in RLHF)
 - **Bootstrapped estimate:** use $r_t + γ V_θ(s_{t+1})$ to reduce variance
 
@@ -185,6 +204,7 @@ A_t = \sum_{l=0}^{\infty} (\gamma \lambda)^l \delta_{t+l}
 $$
 
 where:
+
 - $δ_t = r_t + γ V_θ(s_{t+1}) - V_θ(s_t)$
 - $λ$ is the *GAE smoothing factor* (typically 0.9–0.97)
 
@@ -200,11 +220,13 @@ In **LLM fine-tuning with PPO**, the advantage is typically computed at the **se
 **When Token-Level Advantages Are Used:**
 
 Some implementations compute **token-level advantages** to better attribute credit:
+
 - Assign the same scalar reward to all tokens in a sequence
 - Use GAE to smooth the signal: $A_t = GAE(r_t, V_θ(s_t))$
 - Provides more stable gradients and finer control during backpropagation
 
 **Summary:**
+
 - **Sequence-level PPO:** $A = r(s, a) - V_θ(s)$ → simpler, effective for sparse rewards
 - **Token-level PPO:** Uses GAE for propagating reward information across tokens
 
@@ -221,6 +243,7 @@ $$
 Higher entropy = more exploration and diversity in generated responses.
 
 **Why Entropy Matters:**
+
 - Prevents the model from becoming too deterministic
 - Maintains diversity in outputs
 - Helps avoid mode collapse where the model only generates a few "safe" responses
@@ -236,6 +259,7 @@ L_{total}(\theta) = -L^{PPO}(\theta) + c_1 \cdot L^{value}(\theta) - c_2 \cdot H
 $$
 
 Where:
+
 - **$H[π_θ]$**: entropy term promoting exploration
 - **$c_1$**: value loss coefficient (typically 0.5–1.0)
 - **$c_2$**: entropy coefficient (typically 0.01–0.1)
@@ -249,6 +273,7 @@ L_{total}(\theta) = -L^{PPO}(\theta) + c_1 \cdot L^{value}(\theta) - c_2 \cdot H
 $$
 
 Where:
+
 - **$c_3$**: KL penalty coefficient (adaptive or fixed, typically 0.01–0.1)
 - **$D_{KL}$**: KL divergence between current and reference policy
 
@@ -360,6 +385,7 @@ L = L^{PPO} - \beta D_{KL}(\pi_{\theta} || \pi_{ref})
 $$
 
 **Challenges:**
+
 - **Too small $β$:** model diverges, may collapse to degenerate solutions
 - **Too large $β$:** very slow learning, model stays too close to initialization
 - **Solution:** Adaptive KL control adjusts $β$ based on observed KL divergence
@@ -369,12 +395,14 @@ $$
 ### ⏳ 2. High Training Cost
 
 **Computational Requirements:**
+
 - Multiple models in memory: policy, reference, reward model, value head
 - Fine-tuning large LLMs can require **thousands of GPU-hours**
 - Need to generate samples, compute rewards, and train simultaneously
 - Typically requires distributed training across many GPUs
 
 **Memory Challenges:**
+
 - Reference model is often a frozen copy of the policy
 - Reward model may be as large as the policy model
 - Requires efficient batching and gradient accumulation
@@ -384,17 +412,20 @@ $$
 ### ⚠️ 3. Reward Hacking
 
 **The Problem:**
+
 - LLM may over-optimize for the reward model instead of true human preferences
 - Exploits weaknesses or biases in the reward model
 - Can result in responses that "game" the reward model
 
 **Common Examples:**
+
 - Overly verbose or repetitive responses (if length correlates with reward)
 - Excessive politeness or flattery
 - Technically correct but misleading or unhelpful responses
 - Responses that avoid controversial topics even when appropriate
 
 **Mitigations:**
+
 - Regularization through KL penalty
 - Diverse and robust reward model training
 - Iterative improvement of reward models
@@ -405,16 +436,19 @@ $$
 ### 🧮 4. Sparse or Noisy Rewards
 
 **Sparse Rewards:**
+
 - One reward per sequence makes credit assignment harder
 - Difficult to determine which tokens contributed to high/low reward
 - Increases variance in gradient estimates
 
 **Noisy Rewards:**
+
 - Subjective or inconsistent human preferences
 - Reward model uncertainty
 - Can lead to unstable updates and poor convergence
 
 **Solutions:**
+
 - Token-level advantage estimation (GAE)
 - Larger batch sizes to reduce variance
 - Reward model ensembles
@@ -425,11 +459,13 @@ $$
 ### 🔁 5. Credit Assignment Problem
 
 **Challenge:**
+
 - Per-token updates but per-sequence rewards create ambiguity
 - Which specific tokens led to high/low rewards?
 - Early tokens affect later generation but get same reward signal
 
 **Approaches:**
+
 - GAE for token-level credit assignment
 - Shaped rewards (e.g., intermediate rewards for partial sequences)
 - Curriculum learning (start with simpler tasks)
@@ -439,11 +475,13 @@ $$
 ### ⚖️ 6. Exploration vs Alignment Trade-off
 
 **The Dilemma:**
+
 - Encouraging exploration may generate unsafe or off-policy outputs
 - Too little exploration leads to mode collapse
 - Need to balance diversity with safety and alignment
 
 **Mitigations:**
+
 - Carefully tuned entropy coefficient
 - Safety constraints in reward model
 - Filtered sampling (reject unsafe outputs before training)
@@ -453,12 +491,14 @@ $$
 ### 🔍 7. Implementation Complexity
 
 **Technical Challenges:**
+
 - Multiple models with different update schedules
 - Careful hyperparameter tuning (ε, c_1, c_2, c_3, learning rate)
 - Numerical stability (log probabilities, ratio clipping)
 - Can be unstable if any component is suboptimal
 
 **Engineering Challenges:**
+
 - Distributed training coordination
 - Efficient sampling and reward computation
 - Memory management for large models
@@ -469,11 +509,13 @@ $$
 ### 🎯 8. Reward Model Quality Bottleneck
 
 **Issue:**
+
 - PPO is only as good as the reward model
 - Garbage in, garbage out: poor reward model → poor aligned model
 - Reward model may not capture all aspects of human preference
 
 **Implications:**
+
 - Need high-quality preference data for reward model training
 - Reward model must generalize beyond its training distribution
 - Continuous iteration on reward model alongside policy training
@@ -483,11 +525,13 @@ $$
 ### 📊 9. Distribution Shift
 
 **Problem:**
+
 - As the policy improves, it generates outputs different from the initial SFT model
 - Reward model may not generalize to these new outputs (out-of-distribution)
 - Can lead to reward model exploits or failures
 
 **Solutions:**
+
 - Online reward model updates with new samples
 - Conservative updates (small ε, high KL penalty)
 - Iterative data collection and reward model retraining

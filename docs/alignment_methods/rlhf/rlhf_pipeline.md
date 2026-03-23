@@ -17,12 +17,15 @@ This document focuses on stages 2 and the data collection needed for it.
 ### 1.1 Data Generation Process
 
 **Prompt Selection:**
+
 - Curate diverse prompts covering target use cases
 - Include different difficulty levels and domains
 - Sources: user interactions, seed datasets, synthetic generation
 
 **Response Sampling:**
+
 - Generate 2-4 completions per prompt using:
+
   - **Temperature sampling** (T ∈ [0.7, 1.0]) for diversity
   - **Different models/checkpoints** to ensure variety
   - **Varied decoding** (top-k, nucleus sampling)
@@ -33,16 +36,19 @@ This document focuses on stages 2 and the data collection needed for it.
 ### 1.2 Human Annotation
 
 **Comparison Types:**
+
 - **Pairwise**: Choose better response (A > B or B > A or Tie)
 - **Ranking**: Order k responses from best to worst
 - **Likert Scale**: Rate each independently (1-5 stars)
 
 **Annotation Criteria:**
+
 - **Helpfulness**: Does it answer the question well?
 - **Harmlessness**: Is it safe and appropriate?
 - **Honesty**: Is it truthful and admits uncertainty?
 
 **Best Practices:**
+
 - Clear guidelines with examples
 - Inter-annotator agreement checks (Fleiss' kappa, Krippendorff's alpha)
 - Multiple annotators per comparison (typically 3-5)
@@ -53,17 +59,20 @@ This document focuses on stages 2 and the data collection needed for it.
 ### 1.3 Data Quality Considerations
 
 **Common Issues:**
+
 - **Annotation bias**: Personal preferences vs. general quality
 - **Low agreement**: Ambiguous prompts or subjective criteria
 - **Gaming**: Annotators choosing randomly or following patterns
 
 **Solutions:**
+
 - Calibration sessions with annotators
 - Disagreement resolution protocols
 - Monitor annotation time and patterns
 - Bonus for high-agreement annotations
 
 **Dataset Size:**
+
 - Typical: 10K-100K preference pairs
 - Quality > quantity (InstructGPT used ~50K comparisons)
 - More data needed for complex/multi-domain tasks
@@ -77,13 +86,14 @@ This document focuses on stages 2 and the data collection needed for it.
 ### 2.1 Model Architecture
 
 **Base Model:**
+
 - Usually the SFT model with final layer replaced
 - Outputs scalar reward: `r(x, y)` for prompt x and completion y
 - Shared backbone leverages language understanding
 
 **Training Objective (Bradley-Terry Model):**
 
-For preference pair (y_w, y_l) where y_w ≻ y_l:
+For preference pair ($y_w$, $y_l$) where $y_w ≻ y_l$:
 
 ```
 Loss = -log σ(r(x, y_w) - r(x, y_l))
@@ -97,24 +107,27 @@ Where σ is sigmoid function. This maximizes probability that preferred completi
 Loss = -∑_{i<j} log σ(r(x, y_i) - r(x, y_j))
 ```
 
-Where y_i is ranked higher than y_j.
+Where $y_i$ is ranked higher than $y_j$.
 
 ---
 
 ### 2.2 Training Process
 
 **Data Preparation:**
+
 - Split: 80% train, 10% validation, 10% test
 - Ensure prompt diversity across splits
 - Balance difficulty levels
 
 **Training Details:**
+
 - Learning rate: ~1e-5 (lower than SFT)
 - Batch size: 32-64 comparison pairs
 - Epochs: 1-3 (avoid overfitting)
 - Monitor validation accuracy
 
 **Regularization:**
+
 - Dropout in final layers
 - Early stopping based on validation accuracy
 - Weight decay
@@ -124,15 +137,18 @@ Where y_i is ranked higher than y_j.
 ### 2.3 Reward Model Evaluation
 
 **Accuracy Metrics:**
+
 - **Pairwise accuracy**: % of correct preference predictions
 - **Ranking correlation**: Spearman's ρ with human rankings
 - Typical target: >65-70% accuracy on held-out test set
 
 **Calibration:**
+
 - Check if reward magnitude correlates with confidence
 - Avoid overconfident predictions
 
 **Out-of-Distribution Detection:**
+
 - Test on novel prompts/domains
 - Reward model should be robust to distribution shift
 
@@ -147,6 +163,7 @@ Where y_i is ranked higher than y_j.
 **Problem:** Policy exploits reward model weaknesses, generating high-reward but low-quality outputs.
 
 **Mitigation:**
+
 - KL penalty to stay close to SFT model: `r_total = r_RM - β * KL(π || π_SFT)`
 - Reward model ensembles
 - Regular reward model updates during RL
@@ -334,16 +351,19 @@ Without SFT initialization:
 The total reward is: `r_total = r_RM(x,y) - β·KL(π(y|x) || π_SFT(y|x))`
 
 **High β (strong penalty):**
+
 - Pros: Policy stays very close to SFT, prevents reward hacking, stable training
 - Cons: Limited improvement, may not fully leverage reward signal
 
 **Low β (weak penalty):**
+
 - Pros: More optimization freedom, potentially better performance
 - Cons: Higher reward hacking risk, may drift into nonsensical outputs
 
 **Typical values**: β ∈ [0.01, 0.1]
 
 **Adaptive strategies:**
+
 - Start with high β, gradually decrease
 - Use different β for different layers
 - Monitor KL divergence and adjust dynamically
@@ -358,16 +378,19 @@ The total reward is: `r_total = r_RM(x,y) - β·KL(π(y|x) || π_SFT(y|x))`
 <summary>Answer</summary>
 
 **RLHF (PPO-based):**
+
 - Pros: Explicit reward model (interpretable), flexible (can update RM), handles complex rewards
 - Cons: Complex pipeline (3 stages), RL instability, reward hacking risks, computationally expensive
 
 **DPO:**
+
 - Pros: Simpler (single-stage), more stable, no reward model to hack, lower compute
 - Cons: Less flexible (bakes in Bradley-Terry assumption), harder to update preferences, no explicit reward signal
 
 **Key difference**: DPO reparameterizes the RL objective to directly optimize policy from preferences, eliminating reward model.
 
 **When to use:**
+
 - **RLHF**: Need interpretable rewards, complex multi-objective optimization, iterative updates
 - **DPO**: Simpler use cases, want stability, limited compute
 
@@ -382,21 +405,25 @@ The total reward is: `r_total = r_RM(x,y) - β·KL(π(y|x) || π_SFT(y|x))`
 **Goal**: Select most informative comparisons to minimize annotation cost while maximizing reward model quality.
 
 **Uncertainty-based sampling:**
+
 1. **Model disagreement**: Query pairs where ensemble models disagree most
 2. **Entropy**: Select comparisons with highest prediction entropy
 3. **Margin**: Choose pairs with smallest reward difference (close calls)
 
 **Diversity-based sampling:**
+
 1. **Prompt coverage**: Ensure diverse prompt types are covered
 2. **Response diversity**: Sample varied response styles
 3. **Cluster-based**: Select representatives from different clusters
 
 **Performance-based sampling:**
+
 1. **Error analysis**: Focus on domains where RM performs poorly
 2. **Gradient-based**: Select examples with high expected gradient norm
 3. **Policy-aware**: Sample from current RL policy distribution
 
 **Practical approach:**
+
 - Combine strategies: 50% uncertainty + 30% diversity + 20% error-focused
 - Regular cold-start: Include random samples to prevent bias
 - Batch selection: Consider redundancy within each batch

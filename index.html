@@ -63,11 +63,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#reinforcement-learning-for-fine-tuning-large-language-models" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -202,21 +197,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
         
@@ -229,52 +209,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-rl-based-fine-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why RL-Based Fine-Tuning?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Methods Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#advanced-topics" class="md-nav__link">
-    <span class="md-ellipsis">
-      Advanced Topics
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1465,43 +1399,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-rl-based-fine-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why RL-Based Fine-Tuning?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#methods-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Methods Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#advanced-topics" class="md-nav__link">
-    <span class="md-ellipsis">
-      Advanced Topics
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1517,68 +1414,9 @@
 
 
 
-<h1 id="reinforcement-learning-for-fine-tuning-large-language-models">Reinforcement Learning for Fine-Tuning Large Language Models<a class="headerlink" href="#reinforcement-learning-for-fine-tuning-large-language-models" title="Permanent link">&para;</a></h1>
-<p>Welcome to the repository on <strong>RL-based fine-tuning of LLMs</strong>. This project explores methods for aligning large language models with human preferences, improving instruction following, and optimizing task-specific performance.</p>
-<hr />
-<h2 id="why-rl-based-fine-tuning">Why RL-Based Fine-Tuning?<a class="headerlink" href="#why-rl-based-fine-tuning" title="Permanent link">&para;</a></h2>
-<p>Large Language Models (LLMs) trained on massive text corpora often produce outputs that are plausible but not always aligned with user intent or desired behavior.<br />
-Reinforcement Learning (RL) enables fine-tuning LLMs by optimizing for <strong>specific objectives</strong>, <strong>human feedback</strong>, or <strong>pairwise preferences</strong>, allowing models to generate more reliable and controllable responses.</p>
-<hr />
-<h2 id="methods-overview">Methods Overview<a class="headerlink" href="#methods-overview" title="Permanent link">&para;</a></h2>
-<p>This repository covers the following key RL-based fine-tuning methods:</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Focus</th>
-<th>Highlights</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="./methods/ppo.md">PPO</a></td>
-<td>Proximal Policy Optimization</td>
-<td>Balances exploration and stability in policy updates.</td>
-</tr>
-<tr>
-<td><a href="./methods/dpo.md">DPO</a></td>
-<td>Direct Preference Optimization</td>
-<td>Aligns model outputs with human preferences without a full RL loop.</td>
-</tr>
-<tr>
-<td><a href="./methods/decoupled_rpo.md">DRPO</a></td>
-<td>Decoupled Reward Policy Optimization</td>
-<td>Separates reward modeling from policy updates for improved stability.</td>
-</tr>
-<tr>
-<td><a href="./methods/guided_rpo.md">GRPO</a></td>
-<td>Guided Relative Policy Optimization</td>
-<td>Incorporates pairwise comparisons or structured guidance during training.</td>
-</tr>
-<tr>
-<td><a href="./methods/drpo.md">Direct Reward Policy Optimization (DRPO-Offline)</a></td>
-<td>Offline Reward Optimization</td>
-<td>Uses pre-collected reward data to guide policy updates without live RL interaction.</td>
-</tr>
-<tr>
-<td><a href="./methods/guided_rpo.md">Guided RPO</a></td>
-<td>Guided Reward Policy Optimization</td>
-<td>Combines structured guidance with pairwise preference learning for improved alignment.</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>Each method page contains detailed explanations, mathematical formulations, and references for further reading.</p>
-</blockquote>
-<hr />
-<h2 id="advanced-topics">Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permanent link">&para;</a></h2>
-<p>In addition to the main methods, the repository also explores advanced topics related to RL fine-tuning:</p>
-<ul>
-<li><a href="supporting_topics/kl_penalty.md">KL Penalty in Policy Optimization</a> – Techniques to stabilize learning by penalizing deviations from reference policies.  </li>
-<li><a href="supporting_topics/rewards_hacking.md">Reward Hacking</a> – Understanding how misaligned rewards can lead to unintended behaviors.  </li>
-<li><a href="case_studies/deepseek_rl_finetuning/">DeepSeek RL Details</a> – In-depth insights into the DeepSeek approach to LLM alignment.</li>
-</ul>
-<hr />
+  <h1>Home</h1>
+
+
 
 
 

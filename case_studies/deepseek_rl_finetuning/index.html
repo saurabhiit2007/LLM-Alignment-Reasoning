@@ -1907,7 +1907,7 @@
 <hr />
 <h2 id="2-the-grpo-algorithm-overview">2. The GRPO Algorithm: Overview<a class="headerlink" href="#2-the-grpo-algorithm-overview" title="Permanent link">&para;</a></h2>
 <p>This section provides a summary of the core optimization algorithm used in DeepSeek-R1: Group Relative Policy Optimization (GRPO).</p>
-<p><strong>For full mathematical details and derivation, see the dedicated <a href="../methods/grpo.md">GRPO Algorithm</a> document.</strong></p>
+<p><strong>For full mathematical details and derivation, see the dedicated <a href="../../alignment_methods/rlhf/rl_optimization_methods/grpo/">GRPO Algorithm</a> document.</strong></p>
 <h3 id="21-intuition">2.1 Intuition<a class="headerlink" href="#21-intuition" title="Permanent link">&para;</a></h3>
 <p>Instead of using a value network (critic) as in PPO, GRPO operates by sampling multiple candidate outputs for each prompt and comparing their performance <strong>within the group</strong> through ranking. This approach encourages responses that outperform peers in the same group, emphasizing <strong>relative</strong> improvement rather than absolute reward magnitudes. GRPO offers more stable training for LLMs at scale by avoiding the complexity and instability of critic/value training.</p>
 <hr />

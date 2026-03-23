@@ -13,6 +13,10 @@
       
       
       
+        <link rel="prev" href="../rl_optimization_methods/grpo/">
+      
+      
+        <link rel="next" href="../../alternate_approaches/rlaif/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -20,7 +24,7 @@
     
     
       
-        <title>Kl penalty reward hacking - LLM Alignment & Reasoning</title>
+        <title>KL Penalty & Reward Hacking - LLM Alignment & Reasoning</title>
       
     
     
@@ -98,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kl penalty reward hacking
+              KL Penalty & Reward Hacking
             
           </span>
         </div>
@@ -213,18 +217,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -240,7 +246,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Alignment Methods
@@ -251,18 +257,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
         
           
           <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
@@ -278,7 +286,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_1">
             <span class="md-nav__icon md-icon"></span>
             RLHF
@@ -292,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/rlhf/rlhf_pipeline.md" class="md-nav__link">
+      <a href="../rlhf_pipeline/" class="md-nav__link">
         
   
   
@@ -353,7 +361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/rlhf/rl_optimization_methods/ppo.md" class="md-nav__link">
+      <a href="../rl_optimization_methods/ppo/" class="md-nav__link">
         
   
   
@@ -376,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/rlhf/rl_optimization_methods/dpo.md" class="md-nav__link">
+      <a href="../rl_optimization_methods/dpo/" class="md-nav__link">
         
   
   
@@ -399,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/rlhf/rl_optimization_methods/grpo.md" class="md-nav__link">
+      <a href="../rl_optimization_methods/grpo/" class="md-nav__link">
         
   
   
@@ -427,10 +435,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/rlhf/kl_penalty_reward_hacking.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    KL Penalty & Reward Hacking
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -441,6 +469,369 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-kl-penalty-in-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 1: KL Penalty in Policy Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1: KL Penalty in Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kl-divergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is KL Divergence?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-do-we-need-kl-penalty" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do We Need KL Penalty?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-penalty-in-the-optimization-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      KL Penalty in the Optimization Objective
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computing-kl-penalty-token-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing KL Penalty (Token-Level)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adaptive-kl-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adaptive KL Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kl-penalty-in-different-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      KL Penalty in Different Algorithms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-kl-coefficient" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuning β (KL Coefficient)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-reward-hacking-in-policy-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 2: Reward Hacking in Policy Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2: Reward Hacking in Policy Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Reward Hacking?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-does-reward-hacking-happen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Does Reward Hacking Happen?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-examples-of-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Examples of Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences-of-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences of Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detection Strategies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mitigation Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mitigation Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-reward-model-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Reward Model Improvements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-policy-regularization" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Policy Regularization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-training-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Training Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-between-kl-penalty-and-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship Between KL Penalty and Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interview Questions &amp; Answers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Questions &amp; Answers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-the-purpose-of-kl-penalty-in-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: What is the purpose of KL penalty in RLHF?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-how-would-you-detect-reward-hacking-in-your-trained-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: How would you detect reward hacking in your trained model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-happens-if-kl-coefficient-is-too-large-or-too-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: What happens if β (KL coefficient) is too large or too small?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-explain-the-difference-between-kl-penalty-in-ppo-vs-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: Explain the difference between KL penalty in PPO vs DPO.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-how-do-you-mitigate-reward-hacking-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: How do you mitigate reward hacking in practice?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-what-is-adaptive-kl-control-and-when-would-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: What is adaptive KL control and when would you use it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-can-kl-penalty-alone-prevent-all-reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: Can KL penalty alone prevent all reward hacking?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-how-do-you-compute-kl-divergence-in-practice-for-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: How do you compute KL divergence in practice for language models?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-metrics-would-you-monitor-during-rlhf-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What metrics would you monitor during RLHF training?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-describe-a-real-world-example-of-reward-hacking-you-might-encounter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: Describe a real-world example of reward hacking you might encounter.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-takeaways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Takeaways
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Takeaways">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kl-penalty" class="md-nav__link">
+    <span class="md-ellipsis">
+      KL Penalty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Hacking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -499,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/alternate_approaches/rlaif.md" class="md-nav__link">
+      <a href="../../alternate_approaches/rlaif/" class="md-nav__link">
         
   
   
@@ -522,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/alternate_approaches/context_distillation.md" class="md-nav__link">
+      <a href="../../alternate_approaches/context_distillation/" class="md-nav__link">
         
   
   
@@ -545,7 +936,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/alternate_approaches/constitutional_ai.md" class="md-nav__link">
+      <a href="../../alternate_approaches/constitutional_ai/" class="md-nav__link">
         
   
   
@@ -614,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/safety_and_evaluation/safety_evaluation_frameworks.md" class="md-nav__link">
+      <a href="../../safety_and_evaluation/safety_evaluation_frameworks/" class="md-nav__link">
         
   
   
@@ -637,7 +1028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/safety_and_evaluation/adversarial_testing.md" class="md-nav__link">
+      <a href="../../safety_and_evaluation/adversarial_testing/" class="md-nav__link">
         
   
   
@@ -660,7 +1051,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/alignment_methods/safety_and_evaluation/red_teaming.md" class="md-nav__link">
+      <a href="../../safety_and_evaluation/red_teaming/" class="md-nav__link">
         
   
   
@@ -774,7 +1165,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/prompting_based_techniques/cot.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/prompting_based_techniques/cot/" class="md-nav__link">
         
   
   
@@ -797,7 +1188,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/prompting_based_techniques/tree_of_thoughts.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/prompting_based_techniques/tree_of_thoughts/" class="md-nav__link">
         
   
   
@@ -820,7 +1211,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/prompting_based_techniques/self_consistency.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/prompting_based_techniques/self_consistency/" class="md-nav__link">
         
   
   
@@ -843,7 +1234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/prompting_based_techniques/react.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/prompting_based_techniques/react/" class="md-nav__link">
         
   
   
@@ -912,7 +1303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/iterative_refinement/self_critic_methods.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/iterative_refinement/self_critic_methods/" class="md-nav__link">
         
   
   
@@ -935,7 +1326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/iterative_refinement/debate_and_multi_agent.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/iterative_refinement/debate_and_multi_agent/" class="md-nav__link">
         
   
   
@@ -1004,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner/" class="md-nav__link">
         
   
   
@@ -1027,7 +1418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/advanced_reasoning_models/system2_attention.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/advanced_reasoning_models/system2_attention/" class="md-nav__link">
         
   
   
@@ -1096,7 +1487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/test_time_compute_scaling/best_of_n_sampling.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
         
   
   
@@ -1119,7 +1510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/test_time_compute_scaling/compute_optimal_inference.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
         
   
   
@@ -1142,7 +1533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/reasoning_techniques/test_time_compute_scaling/orm_prm.md" class="md-nav__link">
+      <a href="../../../reasoning_techniques/test_time_compute_scaling/orm_prm/" class="md-nav__link">
         
   
   
@@ -1241,7 +1632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/evaluation_and_metrics/alignment_evaluation.md" class="md-nav__link">
+      <a href="../../../evaluation_and_metrics/alignment_evaluation/" class="md-nav__link">
         
   
   
@@ -1264,7 +1655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/evaluation_and_metrics/verification_metrics.md" class="md-nav__link">
+      <a href="../../../evaluation_and_metrics/verification_metrics/" class="md-nav__link">
         
   
   
@@ -1332,7 +1723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs/case_studies/deepseek_rl_finetuning.md" class="md-nav__link">
+      <a href="../../../case_studies/deepseek_rl_finetuning/" class="md-nav__link">
         
   
   
@@ -1762,7 +2153,7 @@
 
 
 
-  <h1>Kl penalty reward hacking</h1>
+  <h1>KL Penalty & Reward Hacking</h1>
 
 <h2 id="part-1-kl-penalty-in-policy-optimization">Part 1: KL Penalty in Policy Optimization<a class="headerlink" href="#part-1-kl-penalty-in-policy-optimization" title="Permanent link">&para;</a></h2>
 <h3 id="what-is-kl-divergence">What is KL Divergence?<a class="headerlink" href="#what-is-kl-divergence" title="Permanent link">&para;</a></h3>

@@ -483,37 +483,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-intuitive-understanding" class="md-nav__link">
+  <a href="#3-training-data-and-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Intuitive Understanding
+      3. Training Data and Setup
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Intuitive Understanding">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#4-training-data-and-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Training Data and Setup
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-dpo-formulation" class="md-nav__link">
+  <a href="#4-dpo-formulation" class="md-nav__link">
     <span class="md-ellipsis">
-      5. DPO Formulation
+      4. DPO Formulation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. DPO Formulation">
+    <nav class="md-nav" aria-label="4. DPO Formulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2107,37 +2092,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-intuitive-understanding" class="md-nav__link">
+  <a href="#3-training-data-and-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Intuitive Understanding
+      3. Training Data and Setup
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Intuitive Understanding">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#4-training-data-and-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Training Data and Setup
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-dpo-formulation" class="md-nav__link">
+  <a href="#4-dpo-formulation" class="md-nav__link">
     <span class="md-ellipsis">
-      5. DPO Formulation
+      4. DPO Formulation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. DPO Formulation">
+    <nav class="md-nav" aria-label="4. DPO Formulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2696,7 +2666,7 @@
 
 <h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
 <p><strong>Direct Preference Optimization (DPO)</strong> is an algorithm designed to fine-tune <strong>Large Language Models (LLMs)</strong> using human preference data — <em>without requiring a separate reward model or reinforcement learning (RL) loop</em>.</p>
-<p>It directly learns from pairs of preferred and rejected responses, offering a simpler and more stable alternative to <strong>Proximal Policy Optimization (PPO)</strong> in the <strong>Reinforcement Learning from Human Feedback (RLHF)</strong> pipeline.</p>
+<p>It directly learns from pairs of preferred and rejected responses, offering a simpler and more stable alternative to <strong>PPO</strong> in the <strong>RLHF</strong> pipeline.</p>
 <p><strong>Key Innovation</strong>: DPO reparameterizes the reward model implicitly within the policy, allowing direct optimization of preferences without the complexity of traditional RLHF.</p>
 <hr />
 <hr />
@@ -2731,17 +2701,7 @@
 <p>This makes DPO <strong>computationally lighter</strong>, <strong>easier to implement</strong>, and <strong>more stable</strong>.</p>
 <hr />
 <hr />
-<h2 id="3-intuitive-understanding">3. Intuitive Understanding<a class="headerlink" href="#3-intuitive-understanding" title="Permanent link">&para;</a></h2>
-<p>Imagine training an assistant:</p>
-<ul>
-<li><strong>PPO:</strong> The assistant writes an answer → a teacher scores it numerically (via a reward model) → updates happen using RL.</li>
-<li><strong>DPO:</strong> The assistant sees two answers for the same question — one good, one bad — and learns which is better <strong>directly</strong>.</li>
-</ul>
-<p>Thus, DPO <strong>bypasses numeric rewards</strong> and learns preferences directly from comparative judgments.</p>
-<p><strong>Analogy</strong>: Instead of grading papers with numbers (60% vs 85%), DPO is like telling the model "this answer is better than that one" — simpler and more aligned with how humans naturally provide feedback.</p>
-<hr />
-<hr />
-<h3 id="4-training-data-and-setup">4. Training Data and Setup<a class="headerlink" href="#4-training-data-and-setup" title="Permanent link">&para;</a></h3>
+<h2 id="3-training-data-and-setup">3. Training Data and Setup<a class="headerlink" href="#3-training-data-and-setup" title="Permanent link">&para;</a></h2>
 <p>Each DPO training example consists of a triplet: <span class="arithmatex">\((x, y_w, y_l)\)</span></p>
 <p>where:</p>
 <ul>
@@ -2750,14 +2710,16 @@
 <li><span class="arithmatex">\(y_l\)</span>: Less preferred (rejected/loser) response</li>
 </ul>
 <p>The model learns to assign <strong>higher probability</strong> to <span class="arithmatex">\(y_w\)</span> than <span class="arithmatex">\(y_l\)</span>, while staying close to a <strong>reference model</strong> <span class="arithmatex">\(\pi_{\text{ref}}\)</span> (usually the SFT model) to prevent overfitting and maintain general capabilities.</p>
-<p><strong>Data Collection Methods:</strong>
-- Human annotators compare two responses and select the better one
-- AI feedback (e.g., constitutional AI)
-- Synthetic preference pairs from stronger models
-- Majority voting among multiple annotators</p>
+<p><strong>Data Collection Methods:</strong></p>
+<ul>
+<li>Human annotators compare two responses and select the better one</li>
+<li>AI feedback (e.g., constitutional AI)</li>
+<li>Synthetic preference pairs from stronger models</li>
+<li>Majority voting among multiple annotators</li>
+</ul>
 <hr />
 <hr />
-<h2 id="5-dpo-formulation">5. DPO Formulation<a class="headerlink" href="#5-dpo-formulation" title="Permanent link">&para;</a></h2>
+<h2 id="4-dpo-formulation">4. DPO Formulation<a class="headerlink" href="#4-dpo-formulation" title="Permanent link">&para;</a></h2>
 <h3 id="51-the-core-objective-function">5.1. The Core Objective Function<a class="headerlink" href="#51-the-core-objective-function" title="Permanent link">&para;</a></h3>
 <p>DPO reframes preference optimization as a <strong>direct likelihood-ratio objective</strong>, eliminating the need for an explicit reward model or reinforcement learning loop. The resulting <strong>closed-form objective</strong> is:</p>
 <div class="arithmatex">\[

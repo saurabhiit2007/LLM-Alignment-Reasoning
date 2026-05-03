@@ -71,6 +71,7 @@ J_{\mathrm{GRPO}}(\theta)
   \frac{\pi_\theta(o_i|q)}{\pi_{\text{old}}(o_i|q)} A_i,\,
   \text{clip}\!\left(\frac{\pi_\theta(o_i|q)}{\pi_{\text{old}}(o_i|q)}, 1-\epsilon, 1+\epsilon \right) A_i
 \Big)
+
 - \beta\, D_{\mathrm{KL}}\!\big(\pi_\theta \| \pi_{\text{ref}}\big)
 \right]
 $$
@@ -94,6 +95,7 @@ A_i = \frac{r_i - \mathrm{mean}(r_{1..G})}{\mathrm{std}(r_{1..G}) + \epsilon_{\t
 $$
 
 where:
+
 * $r_i$ is the reward for output $o_i$
 * $\epsilon_{\text{small}}$ is a small constant (e.g., 1e-8) to prevent division by zero
 
@@ -316,12 +318,14 @@ Without a value baseline, GRPO can have higher gradient variance, potentially re
 | **RLHF (PPO)** | Yes | Moderate | High | Conversational AI, general alignment |
 
 **When to use GRPO:**
+
 - You have a reliable reward function (not just preferences)
 - You need memory efficiency (no critic)
 - You're working on reasoning or math tasks
 - You can sample multiple outputs per prompt efficiently
 
 **When to use alternatives:**
+
 - **DPO:** You only have preference data, no absolute rewards
 - **PPO:** You need lower variance or are in non-LLM RL domains
 - **RRHF:** You want even simpler ranking without clipping
@@ -340,6 +344,7 @@ Without a value baseline, GRPO can have higher gradient variance, potentially re
 GRPO (Grouped Relative Policy Optimization) is an RL algorithm for LLM alignment that eliminates the need for a critic/value network by using group-wise relative advantages.
 
 **Key differences:**
+
 - **PPO** uses a critic to estimate value baselines → GRPO uses group normalization
 - **PPO** computes absolute advantages → GRPO computes relative advantages within groups
 - **PPO** requires 2x memory (policy + critic) → GRPO requires 1x memory (policy only)
@@ -369,6 +374,7 @@ If all rewards are identical, the standard deviation becomes zero (or very small
 - **This is intentional** — if all outputs are equally good/bad, there's nothing to learn
 
 **Solutions:**
+
 - Increase group size G to get more diversity
 - Use temperature sampling instead of greedy decoding
 - Check if the reward function is too coarse-grained
@@ -408,6 +414,7 @@ The clipping prevents large updates, and KL regularization keeps the policy clos
 | ❌ Less reliable ranking | ✅ More reliable ranking |
 
 **Practical guidance:**
+
 - Start with G=8 as a reasonable default
 - Increase G if training is unstable or high variance
 - Decrease G if compute-constrained
@@ -439,11 +446,13 @@ GRPO's exploration comes from:
 3. **KL regularization:** Prevents premature convergence by maintaining entropy
 
 **However:** GRPO has limited exploration compared to traditional RL because:
+
 - It's on-policy (uses current policy samples)
 - No explicit exploration bonus
 - Relies on sampling temperature for diversity
 
 **Solutions for better exploration:**
+
 - Add entropy bonus to objective
 - Use diverse prompts in training data
 - Sample with higher temperature early in training
@@ -486,23 +495,27 @@ Systematic debugging checklist:
 **Answer:**
 
 **During training, you need:**
+
 1. **Policy model** (trainable parameters)
 2. **Reference model** (frozen, can share most weights)
 3. **Old policy logits** (for ratio computation)
 4. **Activations** (for backward pass)
 
 **Memory breakdown:**
+
 - Policy parameters: ~P (model size)
 - Reference parameters: ~P (but can be offloaded or shared)
 - Activations: ~B × L × H (batch size × sequence length × hidden size)
 - Gradient memory: ~P
 
 **Compared to PPO:**
+
 - PPO needs policy + critic ≈ 2P parameters
 - GRPO needs policy + reference ≈ 2P parameters (but reference is frozen)
 - **Net savings:** ~50% trainable parameters, easier to scale
 
 **Optimization tricks:**
+
 - Share embeddings between policy and reference
 - Offload reference to CPU
 - Use gradient checkpointing
@@ -557,6 +570,7 @@ class GRPOTrainer:
 ```
 
 **Critical implementation details:**
+
 1. Keep reference policy frozen throughout training
 2. Update policy_old periodically (every K steps)
 3. Use numerical stability (eps=1e-8 in std computation)
@@ -573,16 +587,19 @@ class GRPOTrainer:
 **Theoretically:** Yes, you could convert preferences to pseudo-rewards, but this is not ideal.
 
 **Why GRPO isn't designed for preferences:**
+
 - Preferences give you "A > B" comparisons, not absolute scores
 - Group normalization requires absolute reward values
 - You'd need to assign arbitrary reward scales
 
 **Better alternatives for preference data:**
+
 - **DPO (Direct Preference Optimization):** Directly optimizes from preferences without rewards
 - **RRHF:** Uses ranking loss on preferences
 - **Preference-based reward modeling:** Train a reward model first, then use GRPO
 
 **If you must use preferences with GRPO:**
+
 1. Convert preferences to Bradley-Terry rewards
 2. Use reward modeling to get absolute scores
 3. Apply standard GRPO with these scores
@@ -604,6 +621,7 @@ class GRPOTrainer:
 | **When to use** | Verifiable rewards (math, code) | Human preferences |
 
 **Key insight:** 
+
 - **DPO** is simpler and more data-efficient when you have preferences
 - **GRPO** is better when you have a reliable reward function and can afford sampling
 
@@ -614,6 +632,7 @@ class GRPOTrainer:
 **Answer:**
 
 **Challenges for multi-turn:**
+
 1. Credit assignment across turns
 2. Longer sequences (memory constraints)
 3. Context dependency
@@ -655,6 +674,7 @@ rewards = [dialogue_reward(traj) for traj in trajectories]
 **Answer:**
 
 **Key challenges:**
+
 1. **Catastrophic forgetting:** Policy might forget earlier tasks
 2. **Distribution shift:** New tasks may have different reward distributions
 3. **Reference drift:** Reference policy becomes outdated
@@ -718,6 +738,7 @@ rewards = [dialogue_reward(traj) for traj in trajectories]
    - **Fix:** Check reward function, increase group size, check sampling diversity
 
 **Monitoring dashboard should include:**
+
 - Reward distribution (mean, std, min, max)
 - KL divergence with reference
 - Advantage distribution
@@ -757,6 +778,7 @@ rewards = [dialogue_reward(traj) for traj in trajectories]
    - GRPO leverages G samples per prompt
 
 **When to use REINFORCE instead:**
+
 - Extremely simple tasks
 - When you can't afford multiple samples
 - When you have a very good learned baseline already

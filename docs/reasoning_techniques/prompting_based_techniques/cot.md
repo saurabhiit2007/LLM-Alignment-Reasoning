@@ -9,6 +9,7 @@ Chain of Thought is a prompting technique that encourages large language models 
 ## 2. Core Concepts
 
 ### Basic CoT
+
 - **Sequential Reasoning**: Breaking problems into logical steps
 - **Explicit Thinking**: Making intermediate reasoning visible
 - **Improved Accuracy**: Particularly effective for arithmetic, commonsense, and symbolic reasoning tasks
@@ -59,26 +60,31 @@ Q: [New problem]
 ## 4. Recent Developments (2023-2025)
 
 ### 1. **Multimodal CoT**
+
 - Extending CoT to vision-language models
 - Incorporating visual reasoning steps
 - Used in models like GPT-4V, Gemini, Claude 3+
 
 ### 2. **Automatic CoT (Auto-CoT)**
+
 - Automatically generating diverse reasoning demonstrations
 - Reduces manual prompt engineering
 - Clustering questions for better coverage
 
 ### 3. **Program-Aided Language Models (PAL)**
+
 - Combining CoT with code execution
 - LLM generates reasoning + executable code
 - Interpreter runs code for final answer
 
 ### 4. **Least-to-Most Prompting**
+
 - Breaking problems into subproblems
 - Solving simple cases first, building to complex
 - Particularly effective for compositional generalization
 
 ### 5. **ReAct (Reasoning + Acting)**
+
 - Interleaving reasoning traces with actions
 - Used in agentic systems and tool-using LLMs
 - Foundation for many modern AI agents
@@ -106,6 +112,7 @@ Q: [New problem]
 ---
 ### Q2: When should you use Chain of Thought?
 **A**: Use CoT for:
+
 - Multi-step arithmetic and mathematical problems
 - Complex logical reasoning
 - Commonsense reasoning requiring multiple inference steps
@@ -117,6 +124,7 @@ Avoid for simple factual queries where direct answers are more efficient.
 
 ### Q3: Explain Zero-Shot CoT vs Few-Shot CoT
 **A**: 
+
 - **Zero-Shot CoT**: Add phrases like "Let's think step by step" without examples. Simple but effective.
 - **Few-Shot CoT**: Provide example problems with reasoning steps. More accurate but requires careful example selection and uses more tokens.
 
@@ -124,6 +132,7 @@ Avoid for simple factual queries where direct answers are more efficient.
 
 ### Q4: What are the limitations of Chain of Thought?
 **A**:
+
 - Higher computational cost (more tokens)
 - Can generate incorrect reasoning paths
 - Less effective on small models (<10B parameters)
@@ -144,6 +153,7 @@ Avoid for simple factual queries where direct answers are more efficient.
 
 ### Q7: How would you implement CoT in production?
 **A**: Consider:
+
 - **Caching**: Cache reasoning for common queries
 - **Hybrid approach**: Use CoT only for complex queries, direct prompting for simple ones
 - **Monitoring**: Track reasoning quality and failure modes

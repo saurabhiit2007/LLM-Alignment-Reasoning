@@ -15,12 +15,14 @@ A set of principles or rules that define desired AI behavior. Examples include: 
 ### Two-Phase Training
 
 **1. Supervised Learning Phase (SL-CAI):**
+
 - Model generates multiple responses to harmful/problematic prompts
 - Self-critiques responses using constitutional principles
 - Revises responses based on critique
 - Fine-tuned on these revised responses
 
 **2. Reinforcement Learning Phase (RL-CAI):**
+
 - Model generates response pairs
 - AI evaluates which response better follows constitutional principles
 - Creates preference dataset from AI feedback (not human labels)
@@ -77,6 +79,7 @@ Constitutional evaluations often use chain-of-thought reasoning where the model 
 ### Prompt Structure for Self-Critique
 
 Typical format includes:
+
 1. Original harmful/problematic prompt
 2. Model's initial response
 3. Constitutional principle to apply
@@ -98,11 +101,13 @@ Uses PPO (Proximal Policy Optimization) or similar algorithms. The reward signal
 ## 7. CAI vs Traditional RLHF
 
 **RLHF (Reinforcement Learning from Human Feedback):**
+
 - Requires extensive human labeling of preferences
 - Subject to individual annotator biases and inconsistencies
 - Expensive and time-consuming to scale
 
 **Constitutional AI:**
+
 - Uses AI-generated feedback based on explicit principles
 - More scalable and consistent
 - Values are explicit and modifiable through constitution

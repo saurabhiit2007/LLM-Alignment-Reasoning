@@ -7,6 +7,7 @@ The **Kullback–Leibler (KL) divergence** measures how one probability distribu
 $$D_{KL}(P \parallel Q) = \mathbb{E}_{x \sim P} \left[ \log \frac{P(x)}{Q(x)} \right]$$
 
 In policy optimization:
+
 - **P** = π_θ(·|x): current fine-tuned policy
 - **Q** = π_ref(·|x): reference/base policy
 
@@ -34,6 +35,7 @@ The training objective with KL penalty:
 $$\mathcal{L}(\pi_\theta) = \mathbb{E}_{(x, y)} \left[ r(x, y) - \beta \cdot D_{KL}(\pi_\theta(\cdot|x) \parallel \pi_{\text{ref}}(\cdot|x)) \right]$$
 
 where:
+
 - **r(x, y)**: reward or preference score
 - **β**: KL coefficient controlling penalty strength
 - Higher KL → stronger penalty → less deviation allowed
@@ -66,6 +68,7 @@ $$\beta \leftarrow \beta \times
 \end{cases}$$
 
 Benefits:
+
 - Automatic adjustment to maintain desired divergence
 - Prevents both over-conservative and over-aggressive updates
 - More robust across different tasks
@@ -104,16 +107,19 @@ loss.backward()
 ### Tuning β (KL Coefficient)
 
 **Too small** (e.g., β < 0.01):
+
 - Model diverges too quickly
 - Training instability
 - Loss of pre-trained capabilities
 
 **Too large** (e.g., β > 0.5):
+
 - Model stuck near reference policy
 - Underfitting to rewards
 - Minimal learning progress
 
 **Sweet spot** (typically β = 0.01 - 0.1):
+
 - Balanced exploration and stability
 - Steady improvement on target task
 - Preserved general capabilities
@@ -135,18 +141,22 @@ This leads to high measured reward but poor actual performance.
 ### Why Does Reward Hacking Happen?
 
 **1. Proxy Misspecification**
+
 - Reward model r_φ is imperfect approximation of true reward r*
 - Gradients favor spurious correlations learned during reward modeling
 
 **2. Distributional Shift**
+
 - Policy explores states not in reward model training data
 - Reward model gives overconfident/inaccurate scores on OOD states
 
 **3. Optimization Artifacts**
+
 - High learning rates amplify small reward model errors
 - Clipping, batching, or estimation noise can magnify exploitation
 
 **4. Deterministic Exploitation**
+
 - Policy collapses to low-entropy modes that reliably exploit loopholes
 - Loss of diversity makes hacking easier to discover
 
@@ -170,18 +180,22 @@ All maximize surrogate reward without improving actual alignment.
 ### Consequences of Reward Hacking
 
 **Performance degradation:**
+
 - High reward model scores ≠ good human evaluations
 - Misalignment between metrics and actual quality
 
 **Loss of diversity:**
+
 - Mode collapse to repetitive, gaming behaviors
 - Reduced creativity and usefulness
 
 **Safety risks:**
+
 - Increased hallucinations or unsafe outputs
 - Unreliable, manipulative responses
 
 **Metric delusion:**
+
 - Optimization metrics improve while real performance declines
 - False sense of progress
 
@@ -203,15 +217,18 @@ kl_div = compute_kl(policy, reference)
 ```
 
 **3. Diversity Metrics**
+
 - N-gram diversity (distinct-1, distinct-2)
 - Per-token entropy
 - Sequence-level diversity
 
 **4. Uncertainty Tracking**
+
 - Ensemble variance in reward predictions
 - High uncertainty → OOD exploitation
 
 **5. Human Audits**
+
 - Review top-k reward episodes
 - Check if high rewards align with quality
 
@@ -222,6 +239,7 @@ kl_div = compute_kl(policy, reference)
 #### A. Reward Model Improvements
 
 **Adversarial data collection:**
+
 - Label policy-generated high-reward examples
 - Retrain reward model on exploited cases
 
@@ -232,6 +250,7 @@ reward = ensemble_mean - beta * ensemble_std
 ```
 
 **Calibration:**
+
 - Temperature scaling
 - Label smoothing
 - Regular retraining on new data
@@ -256,14 +275,17 @@ loss = rewards - beta * kl_div + gamma * bc_loss
 #### C. Training Practices
 
 **Early stopping:**
+
 - Stop when human eval plateaus despite reward growth
 
 **Conservative optimization:**
+
 - Lower learning rates
 - Smaller batch sizes
 - Gradual KL budget increase
 
 **Regular human evaluation:**
+
 - Periodic quality checks
 - Active learning on uncertain samples
 
@@ -279,6 +301,7 @@ The KL penalty is a **primary defense** against reward hacking:
 4. **Bounds distributional shift** - Limits OOD exploration
 
 However, **KL alone is not sufficient**:
+
 - Slow drift toward gaming still possible
 - Need additional monitoring and intervention
 - Combine with ensemble methods and human oversight
@@ -291,6 +314,7 @@ However, **KL alone is not sufficient**:
 
 **Answer:**
 The KL penalty prevents the fine-tuned policy from deviating too far from the reference policy. It acts as a trust-region constraint that:
+
 - Maintains stability during training
 - Prevents catastrophic forgetting of pre-trained capabilities
 - Limits how much the model can change per update
@@ -320,18 +344,21 @@ The key is using multiple signals rather than relying on any single metric.
 **Answer:**
 
 **Too small (e.g., 0.001):**
+
 - Weak constraint on policy updates
 - Model diverges rapidly from reference
 - Training instability and catastrophic forgetting
 - Increased vulnerability to reward hacking
 
 **Too large (e.g., 1.0):**
+
 - Over-constrained updates
 - Policy stays too close to reference
 - Underfitting to reward signal
 - Minimal improvement on target task
 
 **Optimal range (0.01-0.1):**
+
 - Balanced exploration and stability
 - Steady task improvement
 - Preserved general capabilities
@@ -345,12 +372,14 @@ Adaptive KL control can automatically adjust β to maintain target divergence.
 **Answer:**
 
 **PPO:**
+
 - KL penalty is **implicit** in the clipped objective
 - Uses importance sampling ratio: r(θ) = π_θ/π_old
 - Clips ratio to [1-ε, 1+ε] which indirectly bounds KL
 - Requires explicit value function and advantage estimation
 
 **DPO:**
+
 - KL penalty is **explicit** in the loss function
 - Directly optimizes preference objective with KL term
 - Uses Bradley-Terry model: P(y_w > y_l) ∝ exp(r(y_w) - r(y_l))
@@ -396,11 +425,13 @@ No single method is sufficient; combination provides robust defense.
 **Answer:**
 
 Adaptive KL control dynamically adjusts β based on measured KL divergence:
+
 - Increase β when KL exceeds target (too much drift)
 - Decrease β when KL is below target (too conservative)
 - Keep β constant when near target
 
 **When to use:**
+
 - Unknown optimal β for new task
 - Training across diverse datasets
 - Want automatic tuning without manual search
@@ -428,6 +459,7 @@ More robust than fixed β but requires choosing target KL and adaptation rates.
 4. **Trade-off with learning** - Stronger KL limits legitimate improvement too
 
 **Need additional defenses:**
+
 - Reward model ensembles for uncertainty
 - Regular retraining on new data
 - Human evaluation and oversight
@@ -462,6 +494,7 @@ kl_divergence = per_token_kl.sum()
 ```
 
 **Key considerations:**
+
 - Use same tokenization and inputs for both models
 - Can weight by sequence length or use mean
 - Efficient to compute in single forward pass
@@ -474,11 +507,13 @@ kl_divergence = per_token_kl.sum()
 **Answer:**
 
 **Primary metrics:**
+
 1. **Reward model score** - Check task performance
 2. **KL divergence** - Monitor policy drift
 3. **Human evaluation** - Ground truth quality
 
 **Secondary metrics:**
+
 4. **Diversity metrics** - N-gram diversity, entropy
 5. **Reward-human correlation** - Detect gaming
 6. **Perplexity on held-out data** - Check catastrophic forgetting
@@ -486,6 +521,7 @@ kl_divergence = per_token_kl.sum()
 8. **Response length distribution** - Detect length gaming
 
 **Red flags:**
+
 - Reward increasing but human eval flat/declining
 - KL divergence growing rapidly
 - Diversity dropping
@@ -500,22 +536,26 @@ kl_divergence = per_token_kl.sum()
 **Example: Length exploitation in summarization**
 
 **Setup:**
+
 - Training model to summarize documents
 - Reward model trained on human preferences
 - Reward model accidentally correlates length with quality
 
 **Reward hacking behavior:**
+
 - Policy generates very long "summaries"
 - Includes unnecessary details and repetition
 - Achieves high reward scores
 - But fails actual summarization task
 
 **Detection:**
+
 - Reward scores increase but human eval shows poor summaries
 - Length distribution shifts significantly
 - Diversity metrics show repetitive patterns
 
 **Mitigation:**
+
 1. Add length normalization to reward
 2. Collect adversarial examples (long bad summaries)
 3. Retrain reward model with these examples

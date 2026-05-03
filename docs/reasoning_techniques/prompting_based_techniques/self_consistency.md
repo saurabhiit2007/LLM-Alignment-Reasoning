@@ -48,6 +48,7 @@ argmax Σ p(r, a | x)
 ```
 
 Where:
+
 - `r` = reasoning path
 - `a` = answer
 - `R(a)` = set of reasoning paths leading to answer `a`
@@ -90,21 +91,25 @@ Where:
 ## 6. Recent Developments (2023-2025)
 
 ### Universal Self-Consistency (USC)
+
 - Extends to open-ended generation tasks
 - Uses semantic similarity instead of exact match
 - Clusters similar responses and selects representative answer
 
 ### Self-Consistency with Chain-of-Thought (CoT)
+
 - Combined with CoT prompting for complex reasoning
 - Standard practice in modern LLM applications
 - Implemented in frameworks like LangChain, DSPy
 
 ### Weighted Voting Schemes
+
 - Confidence-weighted voting using log probabilities
 - Quality-based weighting using separate verifier models
 - Adaptive sample sizes based on initial agreement
 
 ### Integration with Tool Use
+
 - Self-consistency over tool-augmented reasoning paths
 - Multiple execution paths with external APIs/calculators
 - Verification through diverse computational approaches
@@ -118,12 +123,14 @@ Where:
 ### Q1: When should you use self-consistency over greedy decoding?
 
 **Answer**: Use self-consistency when:
+
 - Task has verifiable, discrete answers (math, QA, classification)
 - Accuracy is more important than latency
 - You need uncertainty estimates
 - Single reasoning paths are unreliable
 
 Avoid when:
+
 - Open-ended creative generation is needed
 - Real-time response is critical
 - Budget constraints limit API calls
@@ -133,6 +140,7 @@ Avoid when:
 ### Q2: How does self-consistency differ from ensemble methods?
 
 **Answer**: 
+
 - **Self-consistency**: Multiple samples from same model with different reasoning paths
 - **Ensembles**: Multiple different models or model checkpoints
 
@@ -143,6 +151,7 @@ Self-consistency is cheaper (one model) but less diverse than true ensembles.
 ### Q3: What's the optimal number of samples?
 
 **Answer**: Depends on task complexity and budget:
+
 - **5-10 samples**: Simple tasks, diminishing returns after
 - **10-20 samples**: Sweet spot for most applications
 - **20-40 samples**: Complex reasoning, when accuracy is critical
@@ -154,6 +163,7 @@ Monitor accuracy vs. sample size curve to find the knee point.
 ### Q4: How do you handle cases where there's no clear majority?
 
 **Answer**: Strategies include:
+
 - **Threshold-based**: Require minimum vote percentage (e.g., 40%)
 - **Tie-breaking**: Use confidence scores or select random winner
 - **Abstention**: Return "uncertain" if no clear winner
@@ -164,6 +174,7 @@ Monitor accuracy vs. sample size curve to find the knee point.
 ### Q5: Can self-consistency be combined with other techniques?
 
 **Answer**: Yes, commonly combined with:
+
 - **Chain-of-Thought (CoT)**: Generate diverse reasoning chains
 - **Few-shot prompting**: Provide examples in prompt
 - **Prompt ensembling**: Different prompt formulations
@@ -174,6 +185,7 @@ Monitor accuracy vs. sample size curve to find the knee point.
 ### Q6: How does temperature affect self-consistency performance?
 
 **Answer**: 
+
 - **Too low (< 0.3)**: Paths too similar, no diversity benefit
 - **Optimal (0.5-0.8)**: Good balance of quality and diversity
 - **Too high (> 1.0)**: Noisy outputs, parsing failures
@@ -185,6 +197,7 @@ Empirically, T=0.7 works well for most reasoning tasks.
 ### Q7: What are the failure modes of self-consistency?
 
 **Answer**:
+
 - **Systematic errors**: All paths make same mistake
 - **Answer extraction errors**: Parsing fails on diverse formats
 - **Adversarial inputs**: Designed to produce consistent wrong answers

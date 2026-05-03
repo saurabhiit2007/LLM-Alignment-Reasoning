@@ -12,6 +12,7 @@ Unlike Chain-of-Thought (CoT) which follows a linear reasoning path, ToT enables
 ## 2. Core Fundamentals
 
 ### 2.1 **Basic Structure**
+
 - **Thought Decomposition**: Break problems into intermediate thinking steps
 - **Thought Generation**: Generate multiple candidate thoughts per step
 - **State Evaluation**: Assess progress toward problem solution
@@ -96,26 +97,31 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 ## 4. Recent Developments (2024-2025)
 
 ### 1. **Graph of Thoughts (GoT)**
+
 - Extension allowing arbitrary graph structures
 - Combines thoughts from multiple branches
 - Better for complex, interdependent reasoning
 
 ### 2. **Self-Consistency ToT**
+
 - Multiple ToT runs with majority voting
 - Improved reliability and accuracy
 - Used in production systems
 
 ### 3. **Hybrid Approaches**
+
 - ToT + Retrieval-Augmented Generation (RAG)
 - ToT + Fine-tuning for domain-specific tasks
 - Integration with multi-modal models
 
 ### 4. **Optimization Techniques**
+
 - Pruning strategies to reduce computational cost
 - Parallel thought generation
 - Adaptive depth/breadth selection
 
 ### 5. **Tool-Augmented ToT**
+
 - Integration with external tools (calculators, code interpreters)
 - Enhanced problem-solving for technical tasks
 
@@ -128,10 +134,12 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 ### Conceptual Questions
 
 **Q1: What is Tree of Thoughts and how does it differ from Chain-of-Thought?**
+
 - **Answer**: ToT is a prompting framework that explores multiple reasoning paths simultaneously, allowing backtracking and evaluation of different approaches. Unlike CoT's linear progression, ToT maintains a tree structure of intermediate thoughts, evaluates them, and selects the most promising paths.
 
 ---
 **Q2: When would you use ToT over standard prompting?**
+
 - **Answer**: Use ToT for:
   - Complex planning tasks (e.g., Game of 24, creative writing)
   - Problems requiring exploration of multiple solutions
@@ -140,12 +148,14 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 
 ---
 **Q3: What are the computational trade-offs of ToT?**
+
 - **Answer**: ToT requires multiple LLM calls (generation + evaluation), increasing latency and cost. The trade-off is between solution quality and computational resources. Optimization techniques include pruning, limiting depth/breadth, and caching.
 
 ---
 ### Technical Questions
 
 **Q4: Explain the thought generation process in ToT.**
+
 - **Answer**: Thoughts can be generated through:
   - **Sampling**: Generate diverse candidates using temperature > 0
   - **Proposing**: LLM explicitly proposes next steps
@@ -153,6 +163,7 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 
 ---
 **Q5: How do you evaluate intermediate thoughts?**
+
 - **Answer**: Common methods:
   - Prompt LLM to score thoughts (1-10)
   - Classification (promising/unpromising)
@@ -161,12 +172,14 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 
 ---
 **Q6: Describe how to implement backtracking in ToT.**
+
 - **Answer**: Maintain a state tree with parent pointers. When a path reaches low evaluation or dead-end, backtrack to parent node and explore alternative branches. Use BFS/DFS algorithms to manage traversal.
 
 ---
 ### Practical Questions
 
 **Q7: How would you optimize ToT for production use?**
+
 - **Answer**:
   - Implement aggressive pruning (top-k selection)
   - Cache evaluated thoughts
@@ -176,6 +189,7 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 
 ---
 **Q8: What are real-world applications of ToT?**
+
 - **Answer**:
   - Code generation with multiple solution approaches
   - Strategic game playing
@@ -185,6 +199,7 @@ def tree_of_thoughts(problem, depth=3, breadth=5):
 
 ---
 **Q9: How does ToT handle error correction?**
+
 - **Answer**: Through evaluation and backtracking. If a thought path leads to incorrect or low-quality results, the evaluation mechanism identifies this, and the search algorithm explores alternative branches, effectively self-correcting.
 
 ---

@@ -16,12 +16,14 @@
 ## 2. RLAIF vs RLHF
 
 ### Advantages
+
 - Dramatically lower cost (no human annotators needed)
 - Faster iteration cycles
 - Scalable to large datasets
 - Consistent labeling criteria
 
 ### Challenges
+
 - Potential for inheriting biases from the teacher model
 - May miss nuanced human preferences
 - Requires strong initial AI judge model
@@ -55,16 +57,19 @@ Common template:
 ### Preference Quality Control
 
 **Agreement filtering:**
+
 - Generate multiple judgments per pair (e.g., 3-5 times)
 - Only keep pairs where judge agrees ≥80% of the time
 - Reduces label noise from judge inconsistency
 
 **Confidence thresholding:**
+
 - Extract confidence scores from judge explanations
 - Filter out low-confidence comparisons
 - Prevents training on ambiguous preferences
 
 **Human validation sampling:**
+
 - Measure human-AI judge agreement on 5-10% of data
 - If agreement <70-80%, reconsider judge prompting or model choice
 
@@ -82,11 +87,13 @@ Common template:
 ### Judge Explanation Utilization
 
 **Chain-of-thought judging:**
+
 - Force judge to explain reasoning before giving preference
 - Improves judgment quality and provides interpretability
 - Can be used as auxiliary training signal
 
 **Critique revision:**
+
 - Use judge's critiques to iteratively improve responses
 - Constitutional AI approach: generate response → critique → revise → repeat
 
@@ -124,14 +131,17 @@ Common template:
 ## 5. RLAIF Variants
 
 ### RLAIF-V (with verifiable tasks)
+
 - Judge has access to ground truth for verification
 - Used for code, math where correctness is checkable
 
 ### Constitutional RLAIF
+
 - Judge evaluates based on explicit principles
 - Principle format: "Choose response that is more [helpful/harmless/honest]"
 
 ### Self-rewarding RLAIF
+
 - Model judges its own outputs, iteratively improving
 - Requires careful initialization to avoid degeneration
 

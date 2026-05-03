@@ -31,6 +31,7 @@ Instead of using a value network (critic) as in PPO, GRPO operates by sampling m
 - **Advantage computation**:
   $$A_i = \frac{r_i - \mathrm{mean}(r_{1..G})}{\mathrm{std}(r_{1..G})}$$
   where $r_i$ is the reward of candidate $o_i$
+
 - **PPO-style clipped ratio**: Applied to new policy versus old policy for each candidate
 - **KL regularization**: Prevents drift from a reference policy
 - **No explicit value function**: Critical for large-scale LLM fine-tuning efficiency
@@ -132,11 +133,13 @@ The distillation process leverages the high-capability teacher model to generate
 ### 6.4 Observed Strengths & Weaknesses
 
 **Strengths:**
+
 - Emergent reasoning capability via RL
 - High performance on reasoning benchmarks
 - Efficient multi-stage training approach
 
 **Weaknesses:**
+
 - R1-Zero exhibits readability and language mixing issues due to skipping SFT
 - Distilled models experience some performance degradation compared to the full model
 - General instruction-following may lag in smaller or early-stage variants

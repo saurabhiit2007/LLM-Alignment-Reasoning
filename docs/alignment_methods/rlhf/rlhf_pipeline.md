@@ -173,11 +173,13 @@ Where $y_i$ is ranked higher than $y_j$.
 ### 3.2 Reward Model Limitations
 
 **Issues:**
+
 - Limited to training distribution
 - May not capture all aspects of quality
 - Can be fooled by surface-level patterns
 
 **Solutions:**
+
 - Diverse training data
 - Constitutional AI for principled constraints
 - Human oversight during RL
@@ -187,10 +189,12 @@ Where $y_i$ is ranked higher than $y_j$.
 ### 3.3 Scalability
 
 **Challenges:**
+
 - Human annotation is expensive and slow
 - Need continuous data for model updates
 
 **Approaches:**
+
 - **RLAIF:** Use AI feedback to scale
 - **Active learning:** Select most informative comparisons. Prioritize labeling examples where the reward model is most uncertain or disagrees (e.g., close reward scores), maximizing learning per annotatio
 - **Automated filters before human review:** Use automated checks (toxicity filters, length limits, format validators) to screen out obviously bad responses before sending to human annotators, reducing annotation cost.
@@ -222,14 +226,17 @@ However, reward model introduces approximation error and potential reward hackin
 <summary>Answer</summary>
 
 **Pairwise comparisons:**
+
 - Pros: Easier for humans (relative judgment), more reliable, handles subjectivity better
 - Cons: Requires more data (combinatorial), doesn't give absolute scale
 
 **Absolute ratings:**
+
 - Pros: Efficient data collection, provides absolute scale
 - Cons: Harder to calibrate, annotator disagreement higher, scale ambiguity
 
 **Pairwise is generally preferred** for RLHF because:
+
 - Human preferences are more consistent in relative judgments
 - Bradley-Terry model naturally fits preference data
 - Reduces annotator bias (no need to agree on absolute scale)
@@ -243,11 +250,13 @@ However, reward model introduces approximation error and potential reward hackin
 **Model**: Assumes P(y_w ≻ y_l) = σ(r(y_w) - r(y_l))
 
 **Assumptions:**
+
 1. **Transitivity**: If A > B and B > C, then A > C
 2. **Independence**: Preference between A and B doesn't depend on other options
 3. **Scale invariance**: Only reward differences matter, not absolute values
 
 **Limitations:**
+
 - Real human preferences may violate transitivity
 - Context matters (preferences may not be independent)
 - Doesn't model uncertainty or indifference well
@@ -263,11 +272,13 @@ Despite limitations, works well in practice for RLHF.
 **Reward hacking**: Policy exploits flaws in the reward model to achieve high scores without actually improving quality.
 
 **Examples:**
+
 - Generating very long responses (reward model correlates length with quality)
 - Using fancy words or formatting without substance
 - Exploiting reward model's lack of factual knowledge
 
 **Prevention strategies:**
+
 1. **KL penalty**: `r_total = r_RM - β·KL(π || π_SFT)` keeps policy close to SFT baseline
 2. **Reward model ensembles**: Harder to hack multiple models simultaneously
 3. **Iterative reward model updates**: Retrain on RL-generated outputs
@@ -281,6 +292,7 @@ Despite limitations, works well in practice for RLHF.
 <summary>Answer</summary>
 
 **Reasons:**
+
 1. **Better starting point**: SFT model already generates reasonable outputs
 2. **Faster convergence**: Less exploration needed
 3. **Prevents catastrophic forgetting**: Maintains language modeling capabilities
@@ -288,6 +300,7 @@ Despite limitations, works well in practice for RLHF.
 5. **Reduces reward hacking**: Harder to drift into degenerate solutions
 
 Without SFT initialization:
+
 - RL might converge to nonsensical but high-reward outputs
 - Exploration in text space is extremely difficult
 - Training is much slower and less stable
@@ -301,10 +314,12 @@ Without SFT initialization:
 <summary>Answer</summary>
 
 **Measurement:**
+
 - Calculate inter-annotator agreement (Fleiss' kappa, Krippendorff's alpha)
 - Track per-annotator agreement with majority/expert
 
 **Handling strategies:**
+
 1. **Majority vote**: Use most common preference
 2. **Weighted voting**: Weight by annotator reliability
 3. **Discard high-disagreement examples**: They're likely ambiguous
@@ -313,6 +328,7 @@ Without SFT initialization:
 6. **Improve guidelines**: Address common disagreement sources
 
 **For training:**
+
 - Can model soft preferences: P(y_w ≻ y_l) = fraction of annotators who preferred y_w
 - Helps reward model learn uncertainty
 </details>
@@ -323,22 +339,26 @@ Without SFT initialization:
 <summary>Answer</summary>
 
 **During data collection:**
+
 1. **Diverse prompt set**: Cover many domains, styles, difficulties
 2. **Include edge cases**: Adversarial, ambiguous, multi-step prompts
 3. **Regular updates**: Continuously add new prompt types
 
 **During training:**
+
 1. **Regularization**: Dropout, weight decay to prevent overfitting
 2. **Data augmentation**: Paraphrase prompts, vary response styles
 3. **Domain-specific splits**: Ensure validation set covers all domains
 
 **Evaluation:**
+
 1. **Hold-out test sets**: Different domains than training
 2. **Monitor RL outputs**: Check for reward hacking patterns
 3. **Human evaluation**: Regular checks on RL-generated samples
 4. **Red-teaming**: Actively try to find failure modes
 
 **Continuous improvement:**
+
 - Retrain reward model on RL-generated distribution
 - Active learning to find informative new comparisons
 </details>

@@ -9,6 +9,7 @@ Self-critique methods enable LLMs to iteratively improve their outputs by evalua
 ## 2. Core Concepts
 
 ### Self-Refinement Loop
+
 1. **Generate** initial response
 2. **Critique** the output (identify errors, weaknesses)
 3. **Refine** based on critique
@@ -38,6 +39,7 @@ best = select_highest_confidence(responses, verified)
 ---
 
 ### 2. Constitutional AI (CAI)
+
 - Model critiques own outputs against principles
 - Revises responses to align with constitutional rules
 - Reduces harmfulness without human feedback per iteration
@@ -45,6 +47,7 @@ best = select_highest_confidence(responses, verified)
 ---
 
 ### 3. Reflexion
+
 - Agent architecture with episodic memory
 - Stores (trajectory, reflection, outcome) tuples
 - Uses past reflections to improve future attempts
@@ -68,27 +71,32 @@ Loop:
 ## 4. Recent Innovations (2023-2025)
 
 ### Multi-Agent Debate
+
 - Multiple model instances debate answers
 - Consensus or judge model selects final output
 - Improves factuality and reasoning
 
 ### Tree of Thoughts (ToT)
+
 - Explores multiple reasoning paths simultaneously
 - Self-evaluates intermediate steps
 - Backtracks and explores alternatives
 - Better for complex problems than chain-of-thought
 
 ### CRITIC (2023)
+
 - Uses external tools for validation
 - Searches web, executes code to verify claims
 - Grounds critique in external evidence
 
 ### V-STaR (2024)
+
 - Verifier-guided self-training
 - Trains verification model on correct/incorrect samples
 - Uses verifier to filter training data for refinement
 
 ### Self-Taught Reasoner (STaR)
+
 - Generates reasoning chains
 - Filters by correctness
 - Retrains on successful chains
@@ -208,6 +216,7 @@ for criterion, question in rubric.items():
 ### Q1: Explain the difference between self-critique and RLHF (Reinforcement Learning from Human Feedback).
 
 **Answer**: 
+
 - **Timing**: Self-critique happens at inference time; RLHF occurs during training
 - **Feedback Source**: Self-critique uses the model's own evaluation; RLHF uses human preferences
 - **Flexibility**: Self-critique can adapt to new tasks without retraining; RLHF requires retraining for new objectives
@@ -219,6 +228,7 @@ for criterion, question in rubric.items():
 ### Q2: What are the main failure modes of self-critique methods?
 
 **Answer**:
+
 1. **Blind Spots**: Model can't identify errors it doesn't understand
 2. **Overconfidence**: May approve incorrect outputs it believes are correct
 3. **Hallucination Reinforcement**: Critique may introduce new errors while fixing others
@@ -266,6 +276,7 @@ def self_critique_code(problem_description):
 ```
 
 **Key points to mention**:
+
 - Use external verification (test execution) when possible
 - Specific evaluation criteria improve critique quality
 - Limit iterations to avoid excessive cost
@@ -292,6 +303,7 @@ def self_critique_code(problem_description):
 ### Q5: How do you prevent a model from getting stuck in a self-critique loop?
 
 **Answer**:
+
 1. **Max Iterations**: Hard limit (typically 2-3)
 2. **Convergence Detection**: Stop when output changes minimally between iterations
 3. **Confidence Threshold**: Stop when critique indicates sufficient quality
@@ -326,6 +338,7 @@ def refined_generation(prompt, max_iter=3, similarity_threshold=0.95):
 Constitutional AI uses self-critique to align model behavior without human feedback per iteration.
 
 **Process**:
+
 1. **Principles**: Define "constitution" (rules/principles)
 2. **Self-Critique**: Model evaluates own output against principles
 3. **Self-Revision**: Model rewrites response to better align
@@ -349,6 +362,7 @@ Revision: [improved response aligned with principles]
 **Answer**:
 
 **Metrics**:
+
 1. **Accuracy Improvement**: Compare initial vs. final output quality
 2. **Critique Precision**: Do identified issues actually exist?
 3. **Critique Recall**: Are all issues identified?
@@ -392,6 +406,7 @@ def evaluate_self_critique(test_cases):
 Reflexion is an agent architecture that learns from failures through verbal self-reflection.
 
 **Key Components**:
+
 1. **Actor**: Takes actions in environment
 2. **Evaluator**: Scores trajectory success
 3. **Self-Reflection**: Generates verbal reflection on failures
@@ -406,6 +421,7 @@ Trial 2: Retrieve relevant past reflections → Attempt with insights → Succee
 ```
 
 **Example (Code Debugging)**:
+
 - Attempt 1: Code fails tests
 - Reflection: "I didn't handle empty list case"
 - Attempt 2: Uses reflection to add edge case handling
@@ -428,12 +444,14 @@ Trial 2: Retrieve relevant past reflections → Attempt with insights → Succee
 | **Quality Ceiling** | Limited by base model | Higher raw capability |
 
 **When to Use Self-Critique**:
+
 - Need interpretability
 - Budget constraints on training
 - Task-specific optimization
 - Can tolerate latency
 
 **When to Use Larger Model**:
+
 - Latency-critical applications
 - High query volume
 - Need consistent quality without variability
@@ -477,6 +495,7 @@ def critic_method(question):
 ```
 
 **Tools Used**:
+
 - Web search: Verify facts
 - Code execution: Test correctness
 - Calculators: Check math

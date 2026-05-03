@@ -76,6 +76,7 @@ Remove any irrelevant details, opinions, or distracting information."
 ```
 
 **Model Selection:**
+
 - Regeneration: Can use smaller, faster models (cost-effective)
 - Reasoning: Larger models for complex reasoning tasks
 - Can use same model for both with different prompts
@@ -134,6 +135,7 @@ Remove any irrelevant details, opinions, or distracting information."
 ### Q2: How does S2A differ from standard attention mechanisms?
 
 **Answer:** 
+
 - **Standard Attention:** Single-pass processing where all context tokens compete for attention weights
 - **System 2 Attention:** Two-stage process - first regenerate/filter context, then apply attention and reasoning
 - S2A operates at the context level (filtering entire passages), while standard attention works at the token level
@@ -143,6 +145,7 @@ Remove any irrelevant details, opinions, or distracting information."
 ### Q3: What are the computational trade-offs of using S2A?
 
 **Answer:**
+
 - **Costs:** 2x inference passes (regeneration + reasoning), higher latency, increased compute
 - **Benefits:** Better accuracy, reduced hallucinations, more robust to noise
 - **Optimization:** Use smaller models for regeneration, cache regenerated contexts for similar queries, apply selectively to complex questions only
@@ -175,6 +178,7 @@ Key considerations: prompt design, model selection, caching strategies, quality 
 ### Q5: What are the limitations of S2A?
 
 **Answer:**
+
 1. **Information loss during filtering** - may remove important contextual nuances
 2. **Regeneration errors** - mistakes in Stage 1 propagate to Stage 2
 3. **Latency overhead** - not suitable for real-time applications without optimization
@@ -186,6 +190,7 @@ Key considerations: prompt design, model selection, caching strategies, quality 
 ### Q6: How does S2A handle adversarial or biased context?
 
 **Answer:** S2A is explicitly designed to be robust against adversarial context by:
+
 - Filtering opinion-based content that may bias answers
 - Removing contradictory or misleading information
 - Focusing on factual, question-relevant information
@@ -196,6 +201,7 @@ Key considerations: prompt design, model selection, caching strategies, quality 
 ### Q7: Can S2A be combined with other techniques like Chain-of-Thought?
 
 **Answer:** Yes, and this is increasingly common:
+
 - **S2A + CoT:** Filter context first (S2A), then reason step-by-step (CoT)
 - **S2A + RAG:** Apply S2A to filter retrieved documents
 - **S2A + Few-shot:** Use S2A with few-shot examples for better generalization
@@ -206,6 +212,7 @@ Key considerations: prompt design, model selection, caching strategies, quality 
 ### Q8: What metrics would you use to evaluate S2A effectiveness?
 
 **Answer:**
+
 - **Accuracy:** Task-specific metrics (exact match, F1, etc.)
 - **Robustness:** Performance degradation with adversarial context
 - **Efficiency:** Inference latency, computational cost

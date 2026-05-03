@@ -80,22 +80,26 @@ Probing for discriminatory outputs:
 ## 4. Red Teaming Process
 
 ### 1. Planning
+
 - Define threat models (what harms to test for)
 - Identify risk categories (misinformation, toxicity, privacy, etc.)
 - Set scope and boundaries
 
 ### 2. Execution
+
 - Manual testing by human red teamers
 - Automated adversarial attacks
 - Crowdsourced testing campaigns
 - Continuous monitoring
 
 ### 3. Analysis
+
 - Categorize successful attacks
 - Assess severity and likelihood
 - Identify patterns in failures
 
 ### 4. Mitigation
+
 - Update training data (RLHF - Reinforcement Learning from Human Feedback)
 - Improve content filters
 - Enhance prompt engineering
@@ -136,12 +140,14 @@ Probing for discriminatory outputs:
 ## 7. Tools and Frameworks
 
 ### Research Tools
+
 - **HELM (Holistic Evaluation of Language Models)**: Comprehensive benchmarking
 - **ToxiGen**: Toxicity generation and detection dataset
 - **BOLD**: Bias evaluation in open-ended language generation
 - **PromptBench**: Adversarial prompt evaluation
 
 ### Industry Tools
+
 - **OpenAI Moderation API**: Content filtering
 - **Azure Content Safety**: Microsoft's safety tools
 - **Perspective API**: Toxicity scoring

@@ -16,7 +16,7 @@
         <link rel="prev" href="../STAR_self_taught_reasoner/">
       
       
-        <link rel="next" href="../../test_time_compute_scaling/best_of_n_sampling/">
+        <link rel="next" href="../../../references/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -1375,123 +1375,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2038,10 +1921,12 @@ And the question: {question}
 Extract and rewrite only the relevant information needed to answer the question.
 Remove any irrelevant details, opinions, or distracting information.&quot;
 </code></pre></div></p>
-<p><strong>Model Selection:</strong>
-- Regeneration: Can use smaller, faster models (cost-effective)
-- Reasoning: Larger models for complex reasoning tasks
-- Can use same model for both with different prompts</p>
+<p><strong>Model Selection:</strong></p>
+<ul>
+<li>Regeneration: Can use smaller, faster models (cost-effective)</li>
+<li>Reasoning: Larger models for complex reasoning tasks</li>
+<li>Can use same model for both with different prompts</li>
+</ul>
 <hr />
 <h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
 <ol>
@@ -2085,21 +1970,25 @@ Remove any irrelevant details, opinions, or distracting information.&quot;
 <p><strong>Answer:</strong> System 2 Attention is a technique to improve LLM reasoning by separating context filtering from reasoning. Standard attention treats all input tokens equally, making models vulnerable to irrelevant information and distractors. S2A regenerates the input to extract only relevant facts before reasoning, mimicking deliberate human cognition (System 2 thinking).</p>
 <hr />
 <h3 id="q2-how-does-s2a-differ-from-standard-attention-mechanisms">Q2: How does S2A differ from standard attention mechanisms?<a class="headerlink" href="#q2-how-does-s2a-differ-from-standard-attention-mechanisms" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> 
-- <strong>Standard Attention:</strong> Single-pass processing where all context tokens compete for attention weights
-- <strong>System 2 Attention:</strong> Two-stage process - first regenerate/filter context, then apply attention and reasoning
-- S2A operates at the context level (filtering entire passages), while standard attention works at the token level</p>
+<p><strong>Answer:</strong> </p>
+<ul>
+<li><strong>Standard Attention:</strong> Single-pass processing where all context tokens compete for attention weights</li>
+<li><strong>System 2 Attention:</strong> Two-stage process - first regenerate/filter context, then apply attention and reasoning</li>
+<li>S2A operates at the context level (filtering entire passages), while standard attention works at the token level</li>
+</ul>
 <hr />
 <h3 id="q3-what-are-the-computational-trade-offs-of-using-s2a">Q3: What are the computational trade-offs of using S2A?<a class="headerlink" href="#q3-what-are-the-computational-trade-offs-of-using-s2a" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong>
-- <strong>Costs:</strong> 2x inference passes (regeneration + reasoning), higher latency, increased compute
-- <strong>Benefits:</strong> Better accuracy, reduced hallucinations, more robust to noise
-- <strong>Optimization:</strong> Use smaller models for regeneration, cache regenerated contexts for similar queries, apply selectively to complex questions only</p>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>Costs:</strong> 2x inference passes (regeneration + reasoning), higher latency, increased compute</li>
+<li><strong>Benefits:</strong> Better accuracy, reduced hallucinations, more robust to noise</li>
+<li><strong>Optimization:</strong> Use smaller models for regeneration, cache regenerated contexts for similar queries, apply selectively to complex questions only</li>
+</ul>
 <hr />
 <h3 id="q4-how-would-you-implement-s2a-in-a-production-rag-system">Q4: How would you implement S2A in a production RAG system?<a class="headerlink" href="#q4-how-would-you-implement-s2a-in-a-production-rag-system" title="Permanent link">&para;</a></h3>
 <p><strong>Answer:</strong>
 <div class="highlight"><pre><span></span><code><span class="c1"># Conceptual implementation</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">system2_rag</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">retrieved_docs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">system2_rag</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">retrieved_docs</span><span class="p">):</span>
     <span class="c1"># Stage 1: Regenerate/filter context</span>
     <span class="n">filtered_context</span> <span class="o">=</span> <span class="n">regeneration_llm</span><span class="p">(</span>
         <span class="n">prompt</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Extract relevant info from: </span><span class="si">{</span><span class="n">retrieved_docs</span><span class="si">}</span><span class="s2"> for question: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2115,35 +2004,43 @@ Remove any irrelevant details, opinions, or distracting information.&quot;
 <p>Key considerations: prompt design, model selection, caching strategies, quality metrics.</p>
 <hr />
 <h3 id="q5-what-are-the-limitations-of-s2a">Q5: What are the limitations of S2A?<a class="headerlink" href="#q5-what-are-the-limitations-of-s2a" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong>
-1. <strong>Information loss during filtering</strong> - may remove important contextual nuances
-2. <strong>Regeneration errors</strong> - mistakes in Stage 1 propagate to Stage 2
-3. <strong>Latency overhead</strong> - not suitable for real-time applications without optimization
-4. <strong>Limited benefit for simple tasks</strong> - overhead not justified for straightforward queries
-5. <strong>Prompt sensitivity</strong> - regeneration quality depends heavily on prompt engineering</p>
+<p><strong>Answer:</strong></p>
+<ol>
+<li><strong>Information loss during filtering</strong> - may remove important contextual nuances</li>
+<li><strong>Regeneration errors</strong> - mistakes in Stage 1 propagate to Stage 2</li>
+<li><strong>Latency overhead</strong> - not suitable for real-time applications without optimization</li>
+<li><strong>Limited benefit for simple tasks</strong> - overhead not justified for straightforward queries</li>
+<li><strong>Prompt sensitivity</strong> - regeneration quality depends heavily on prompt engineering</li>
+</ol>
 <hr />
 <h3 id="q6-how-does-s2a-handle-adversarial-or-biased-context">Q6: How does S2A handle adversarial or biased context?<a class="headerlink" href="#q6-how-does-s2a-handle-adversarial-or-biased-context" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> S2A is explicitly designed to be robust against adversarial context by:
-- Filtering opinion-based content that may bias answers
-- Removing contradictory or misleading information
-- Focusing on factual, question-relevant information
-- Studies show S2A models are significantly more resilient to context injection attacks compared to standard attention</p>
+<p><strong>Answer:</strong> S2A is explicitly designed to be robust against adversarial context by:</p>
+<ul>
+<li>Filtering opinion-based content that may bias answers</li>
+<li>Removing contradictory or misleading information</li>
+<li>Focusing on factual, question-relevant information</li>
+<li>Studies show S2A models are significantly more resilient to context injection attacks compared to standard attention</li>
+</ul>
 <hr />
 <h3 id="q7-can-s2a-be-combined-with-other-techniques-like-chain-of-thought">Q7: Can S2A be combined with other techniques like Chain-of-Thought?<a class="headerlink" href="#q7-can-s2a-be-combined-with-other-techniques-like-chain-of-thought" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> Yes, and this is increasingly common:
-- <strong>S2A + CoT:</strong> Filter context first (S2A), then reason step-by-step (CoT)
-- <strong>S2A + RAG:</strong> Apply S2A to filter retrieved documents
-- <strong>S2A + Few-shot:</strong> Use S2A with few-shot examples for better generalization
-- Combinations often outperform individual techniques on complex reasoning benchmarks</p>
+<p><strong>Answer:</strong> Yes, and this is increasingly common:</p>
+<ul>
+<li><strong>S2A + CoT:</strong> Filter context first (S2A), then reason step-by-step (CoT)</li>
+<li><strong>S2A + RAG:</strong> Apply S2A to filter retrieved documents</li>
+<li><strong>S2A + Few-shot:</strong> Use S2A with few-shot examples for better generalization</li>
+<li>Combinations often outperform individual techniques on complex reasoning benchmarks</li>
+</ul>
 <hr />
 <h3 id="q8-what-metrics-would-you-use-to-evaluate-s2a-effectiveness">Q8: What metrics would you use to evaluate S2A effectiveness?<a class="headerlink" href="#q8-what-metrics-would-you-use-to-evaluate-s2a-effectiveness" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong>
-- <strong>Accuracy:</strong> Task-specific metrics (exact match, F1, etc.)
-- <strong>Robustness:</strong> Performance degradation with adversarial context
-- <strong>Efficiency:</strong> Inference latency, computational cost
-- <strong>Context Utilization:</strong> Precision/recall of relevant information extraction
-- <strong>Hallucination Rate:</strong> Factual consistency with source context
-- <strong>Ablation Studies:</strong> Compare against baseline (no S2A) and oracle (perfect filtering)</p>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>Accuracy:</strong> Task-specific metrics (exact match, F1, etc.)</li>
+<li><strong>Robustness:</strong> Performance degradation with adversarial context</li>
+<li><strong>Efficiency:</strong> Inference latency, computational cost</li>
+<li><strong>Context Utilization:</strong> Precision/recall of relevant information extraction</li>
+<li><strong>Hallucination Rate:</strong> Factual consistency with source context</li>
+<li><strong>Ablation Studies:</strong> Compare against baseline (no S2A) and oracle (perfect filtering)</li>
+</ul>
 <hr />
 
 

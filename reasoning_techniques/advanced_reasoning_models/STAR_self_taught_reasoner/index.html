@@ -1456,123 +1456,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2158,10 +2041,12 @@
 <li><strong>Repeat</strong>: Use the improved model for the next iteration</li>
 </ol>
 <h3 id="key-innovation-rationalization">Key Innovation: Rationalization<a class="headerlink" href="#key-innovation-rationalization" title="Permanent link">&para;</a></h3>
-<p>When the model fails to solve a problem:
-- <strong>Traditional approach</strong>: Discard the attempt
-- <strong>STaR approach</strong>: Give the model the correct answer and ask it to work backward to create a valid rationale
-- <strong>Result</strong>: The model learns from its mistakes without requiring human-labeled rationales</p>
+<p>When the model fails to solve a problem:</p>
+<ul>
+<li><strong>Traditional approach</strong>: Discard the attempt</li>
+<li><strong>STaR approach</strong>: Give the model the correct answer and ask it to work backward to create a valid rationale</li>
+<li><strong>Result</strong>: The model learns from its mistakes without requiring human-labeled rationales</li>
+</ul>
 <hr />
 <hr />
 <h2 id="3-technical-details">3. Technical Details<a class="headerlink" href="#3-technical-details" title="Permanent link">&para;</a></h2>
@@ -2293,76 +2178,94 @@ Fine-tuning:
 <p><strong>Answer</strong>: STaR is a self-supervised bootstrapping method where models improve reasoning by learning from their own generated rationales. Unlike supervised fine-tuning that requires extensive human-labeled reasoning chains, STaR needs only ground-truth answers. It uses rationalization to learn from failures by generating rationales backward from correct answers.</p>
 <hr />
 <h3 id="2-explain-the-rationalization-step-in-star-why-is-it-important">2. <strong>Explain the rationalization step in STaR. Why is it important?</strong><a class="headerlink" href="#2-explain-the-rationalization-step-in-star-why-is-it-important" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>: Rationalization addresses problems the model initially fails. Instead of discarding failures, STaR provides the correct answer and asks the model to work backward to generate a supporting rationale. This is crucial because:
-- Expands training data from ~40% initially correct to ~80% coverage
-- Helps model learn from mistakes
-- Creates high-quality reasoning examples without human annotation
-- Enables learning from difficult problems</p>
+<p><strong>Answer</strong>: Rationalization addresses problems the model initially fails. Instead of discarding failures, STaR provides the correct answer and asks the model to work backward to generate a supporting rationale. This is crucial because:</p>
+<ul>
+<li>Expands training data from ~40% initially correct to ~80% coverage</li>
+<li>Helps model learn from mistakes</li>
+<li>Creates high-quality reasoning examples without human annotation</li>
+<li>Enables learning from difficult problems</li>
+</ul>
 <hr />
 <h3 id="3-what-are-the-differences-between-star-quiet-star-and-v-star">3. <strong>What are the differences between STaR, Quiet-STaR, and V-STaR?</strong><a class="headerlink" href="#3-what-are-the-differences-between-star-quiet-star-and-v-star" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>: 
-- <strong>STaR</strong>: Original method for Q&amp;A with explicit reasoning generation
-- <strong>Quiet-STaR</strong>: Generalizes to arbitrary text; generates internal thoughts at every token without explicit output
-- <strong>V-STaR</strong>: Adds verifier component to evaluate reasoning quality; generates multiple paths and selects best; similar to test-time scaling in o1</p>
+<p><strong>Answer</strong>: </p>
+<ul>
+<li><strong>STaR</strong>: Original method for Q&amp;A with explicit reasoning generation</li>
+<li><strong>Quiet-STaR</strong>: Generalizes to arbitrary text; generates internal thoughts at every token without explicit output</li>
+<li><strong>V-STaR</strong>: Adds verifier component to evaluate reasoning quality; generates multiple paths and selects best; similar to test-time scaling in o1</li>
+</ul>
 <hr />
 <h3 id="4-why-does-star-require-models-with-baseline-reasoning-capabilities">4. <strong>Why does STaR require models with baseline reasoning capabilities?</strong><a class="headerlink" href="#4-why-does-star-require-models-with-baseline-reasoning-capabilities" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>: STaR bootstraps from existing capabilities. If the few-shot performance is at chance level (like GPT-2), there's nothing to bootstrap from. The model needs sufficient capacity to:
-- Understand few-shot examples
-- Generate coherent rationales occasionally
-- Benefit from fine-tuning on reasoning chains</p>
+<p><strong>Answer</strong>: STaR bootstraps from existing capabilities. If the few-shot performance is at chance level (like GPT-2), there's nothing to bootstrap from. The model needs sufficient capacity to:</p>
+<ul>
+<li>Understand few-shot examples</li>
+<li>Generate coherent rationales occasionally</li>
+<li>Benefit from fine-tuning on reasoning chains</li>
+</ul>
 <hr />
 <h3 id="5-how-does-star-handle-the-trade-off-between-exploration-and-exploitation">5. <strong>How does STaR handle the trade-off between exploration and exploitation?</strong><a class="headerlink" href="#5-how-does-star-handle-the-trade-off-between-exploration-and-exploitation" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>: Original STaR can stagnate as the model only learns from problems it can already solve. Solutions include:
-- <strong>B-STaR</strong>: Explicitly monitors and balances exploration (diversity) vs exploitation (reward maximization)
-- <strong>Curriculum learning</strong>: Gradually increase problem difficulty
-- <strong>Temperature tuning</strong>: Higher temperature for exploration
-- <strong>Diverse sampling</strong>: Generate multiple rationales per problem</p>
+<p><strong>Answer</strong>: Original STaR can stagnate as the model only learns from problems it can already solve. Solutions include:</p>
+<ul>
+<li><strong>B-STaR</strong>: Explicitly monitors and balances exploration (diversity) vs exploitation (reward maximization)</li>
+<li><strong>Curriculum learning</strong>: Gradually increase problem difficulty</li>
+<li><strong>Temperature tuning</strong>: Higher temperature for exploration</li>
+<li><strong>Diverse sampling</strong>: Generate multiple rationales per problem</li>
+</ul>
 <hr />
 <h3 id="6-what-is-test-time-compute-and-how-does-it-relate-to-star">6. <strong>What is test-time compute and how does it relate to STaR?</strong><a class="headerlink" href="#6-what-is-test-time-compute-and-how-does-it-relate-to-star" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>: Test-time compute refers to additional computation during inference rather than training. Related to STaR through:
-- <strong>V-STaR</strong>: Generates multiple reasoning paths at inference, uses verifier to select best
-- <strong>Quiet-STaR</strong>: Generates internal thoughts during generation
-- <strong>Trade-off</strong>: Slower inference but better quality
-- Used in models like o1 for complex reasoning tasks</p>
+<p><strong>Answer</strong>: Test-time compute refers to additional computation during inference rather than training. Related to STaR through:</p>
+<ul>
+<li><strong>V-STaR</strong>: Generates multiple reasoning paths at inference, uses verifier to select best</li>
+<li><strong>Quiet-STaR</strong>: Generates internal thoughts during generation</li>
+<li><strong>Trade-off</strong>: Slower inference but better quality</li>
+<li>Used in models like o1 for complex reasoning tasks</li>
+</ul>
 <hr />
 <h3 id="7-how-would-you-implement-star-for-a-new-domain">7. <strong>How would you implement STaR for a new domain?</strong><a class="headerlink" href="#7-how-would-you-implement-star-for-a-new-domain" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>: 
-1. <strong>Prerequisites</strong>: Ensure base model shows &gt;chance few-shot performance
-2. <strong>Prepare data</strong>: Ground-truth answers, few-shot examples (4-8)
-3. <strong>Iteration 1</strong>: Generate rationales, filter correct ones
-4. <strong>Rationalization</strong>: For failures, provide answer and generate backward rationale
-5. <strong>Fine-tune</strong>: Train on combined dataset
-6. <strong>Evaluate</strong>: Test on held-out set, check for overfitting
-7. <strong>Iterate</strong>: Repeat 3-6 for 5-10 iterations
-8. <strong>Monitor</strong>: Track diversity, OOD performance, catastrophic forgetting</p>
+<p><strong>Answer</strong>: </p>
+<ol>
+<li><strong>Prerequisites</strong>: Ensure base model shows &gt;chance few-shot performance</li>
+<li><strong>Prepare data</strong>: Ground-truth answers, few-shot examples (4-8)</li>
+<li><strong>Iteration 1</strong>: Generate rationales, filter correct ones</li>
+<li><strong>Rationalization</strong>: For failures, provide answer and generate backward rationale</li>
+<li><strong>Fine-tune</strong>: Train on combined dataset</li>
+<li><strong>Evaluate</strong>: Test on held-out set, check for overfitting</li>
+<li><strong>Iterate</strong>: Repeat 3-6 for 5-10 iterations</li>
+<li><strong>Monitor</strong>: Track diversity, OOD performance, catastrophic forgetting</li>
+</ol>
 <hr />
 <h3 id="8-what-are-potential-pitfalls-when-deploying-star-in-production">8. <strong>What are potential pitfalls when deploying STaR in production?</strong><a class="headerlink" href="#8-what-are-potential-pitfalls-when-deploying-star-in-production" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>:
-- <strong>Hallucination amplification</strong>: Model may generate plausible but incorrect rationales
-- <strong>Computational cost</strong>: Multiple inference passes expensive at scale
-- <strong>Latency</strong>: Test-time reasoning increases response time
-- <strong>Drift</strong>: Model may drift from original capabilities
-- <strong>Faithfulness</strong>: Rationales may not reflect true reasoning
-- <strong>Solutions</strong>: Verifier models, human-in-the-loop validation, monitoring, A/B testing</p>
+<p><strong>Answer</strong>:</p>
+<ul>
+<li><strong>Hallucination amplification</strong>: Model may generate plausible but incorrect rationales</li>
+<li><strong>Computational cost</strong>: Multiple inference passes expensive at scale</li>
+<li><strong>Latency</strong>: Test-time reasoning increases response time</li>
+<li><strong>Drift</strong>: Model may drift from original capabilities</li>
+<li><strong>Faithfulness</strong>: Rationales may not reflect true reasoning</li>
+<li><strong>Solutions</strong>: Verifier models, human-in-the-loop validation, monitoring, A/B testing</li>
+</ul>
 <hr />
 <h3 id="9-how-does-star-compare-to-chain-of-thought-prompting">9. <strong>How does STaR compare to chain-of-thought prompting?</strong><a class="headerlink" href="#9-how-does-star-compare-to-chain-of-thought-prompting" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>:
-- <strong>CoT Prompting</strong>: Zero/few-shot, no training, works immediately
-- <strong>STaR</strong>: Requires training, learns to generate CoT automatically
-- <strong>CoT</strong>: Performance limited by base model + examples
-- <strong>STaR</strong>: Iteratively improves beyond few-shot ceiling
-- <strong>Use case</strong>: CoT for quick deployment, STaR for maximum performance with training budget</p>
+<p><strong>Answer</strong>:</p>
+<ul>
+<li><strong>CoT Prompting</strong>: Zero/few-shot, no training, works immediately</li>
+<li><strong>STaR</strong>: Requires training, learns to generate CoT automatically</li>
+<li><strong>CoT</strong>: Performance limited by base model + examples</li>
+<li><strong>STaR</strong>: Iteratively improves beyond few-shot ceiling</li>
+<li><strong>Use case</strong>: CoT for quick deployment, STaR for maximum performance with training budget</li>
+</ul>
 <hr />
 <h3 id="10-what-metrics-would-you-track-when-evaluating-a-star-implementation">10. <strong>What metrics would you track when evaluating a STaR implementation?</strong><a class="headerlink" href="#10-what-metrics-would-you-track-when-evaluating-a-star-implementation" title="Permanent link">&para;</a></h3>
-<p><strong>Answer</strong>:
-- <strong>Primary</strong>: Task accuracy on test set
-- <strong>Rationale quality</strong>: Human evaluation, faithfulness scores
-- <strong>Coverage</strong>: % of training data with valid rationales
-- <strong>Diversity</strong>: Unique reasoning patterns, n-gram diversity
-- <strong>OOD generalization</strong>: Performance on harder/different problems
-- <strong>Training efficiency</strong>: Convergence rate, data efficiency
-- <strong>Inference cost</strong>: Tokens generated, latency
-- <strong>Stability</strong>: Variance across runs, catastrophic forgetting metrics</p>
+<p><strong>Answer</strong>:</p>
+<ul>
+<li><strong>Primary</strong>: Task accuracy on test set</li>
+<li><strong>Rationale quality</strong>: Human evaluation, faithfulness scores</li>
+<li><strong>Coverage</strong>: % of training data with valid rationales</li>
+<li><strong>Diversity</strong>: Unique reasoning patterns, n-gram diversity</li>
+<li><strong>OOD generalization</strong>: Performance on harder/different problems</li>
+<li><strong>Training efficiency</strong>: Convergence rate, data efficiency</li>
+<li><strong>Inference cost</strong>: Tokens generated, latency</li>
+<li><strong>Stability</strong>: Variance across runs, catastrophic forgetting metrics</li>
+</ul>
 <hr />
 
 

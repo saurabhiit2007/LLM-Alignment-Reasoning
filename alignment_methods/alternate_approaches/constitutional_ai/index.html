@@ -1384,123 +1384,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2006,16 +1889,20 @@
 <h3 id="the-constitution">The Constitution<a class="headerlink" href="#the-constitution" title="Permanent link">&para;</a></h3>
 <p>A set of principles or rules that define desired AI behavior. Examples include: "Choose the response that is most helpful, honest, and harmless" or "Avoid generating toxic content." The constitution serves as the normative framework for model behavior.</p>
 <h3 id="two-phase-training">Two-Phase Training<a class="headerlink" href="#two-phase-training" title="Permanent link">&para;</a></h3>
-<p><strong>1. Supervised Learning Phase (SL-CAI):</strong>
-- Model generates multiple responses to harmful/problematic prompts
-- Self-critiques responses using constitutional principles
-- Revises responses based on critique
-- Fine-tuned on these revised responses</p>
-<p><strong>2. Reinforcement Learning Phase (RL-CAI):</strong>
-- Model generates response pairs
-- AI evaluates which response better follows constitutional principles
-- Creates preference dataset from AI feedback (not human labels)
-- Trains reward model and applies RLHF using AI-generated preferences</p>
+<p><strong>1. Supervised Learning Phase (SL-CAI):</strong></p>
+<ul>
+<li>Model generates multiple responses to harmful/problematic prompts</li>
+<li>Self-critiques responses using constitutional principles</li>
+<li>Revises responses based on critique</li>
+<li>Fine-tuned on these revised responses</li>
+</ul>
+<p><strong>2. Reinforcement Learning Phase (RL-CAI):</strong></p>
+<ul>
+<li>Model generates response pairs</li>
+<li>AI evaluates which response better follows constitutional principles</li>
+<li>Creates preference dataset from AI feedback (not human labels)</li>
+<li>Trains reward model and applies RLHF using AI-generated preferences</li>
+</ul>
 <hr />
 <hr />
 <h2 id="3-technical-architecture">3. Technical Architecture<a class="headerlink" href="#3-technical-architecture" title="Permanent link">&para;</a></h2>
@@ -2049,12 +1936,14 @@
 <hr />
 <h2 id="6-technical-implementation-details">6. Technical Implementation Details<a class="headerlink" href="#6-technical-implementation-details" title="Permanent link">&para;</a></h2>
 <h3 id="prompt-structure-for-self-critique">Prompt Structure for Self-Critique<a class="headerlink" href="#prompt-structure-for-self-critique" title="Permanent link">&para;</a></h3>
-<p>Typical format includes:
-1. Original harmful/problematic prompt
-2. Model's initial response
-3. Constitutional principle to apply
-4. Critique request
-5. Revision request based on critique</p>
+<p>Typical format includes:</p>
+<ol>
+<li>Original harmful/problematic prompt</li>
+<li>Model's initial response</li>
+<li>Constitutional principle to apply</li>
+<li>Critique request</li>
+<li>Revision request based on critique</li>
+</ol>
 <h3 id="preference-model-training">Preference Model Training<a class="headerlink" href="#preference-model-training" title="Permanent link">&para;</a></h3>
 <p>The preference model (PM) is trained on AI-generated comparisons. Given two responses, the model outputs a scalar score. Training uses binary cross-entropy loss on the pairwise preferences generated through constitutional evaluation.</p>
 <h3 id="rl-optimization">RL Optimization<a class="headerlink" href="#rl-optimization" title="Permanent link">&para;</a></h3>
@@ -2062,14 +1951,18 @@
 <hr />
 <hr />
 <h2 id="7-cai-vs-traditional-rlhf">7. CAI vs Traditional RLHF<a class="headerlink" href="#7-cai-vs-traditional-rlhf" title="Permanent link">&para;</a></h2>
-<p><strong>RLHF (Reinforcement Learning from Human Feedback):</strong>
-- Requires extensive human labeling of preferences
-- Subject to individual annotator biases and inconsistencies
-- Expensive and time-consuming to scale</p>
-<p><strong>Constitutional AI:</strong>
-- Uses AI-generated feedback based on explicit principles
-- More scalable and consistent
-- Values are explicit and modifiable through constitution</p>
+<p><strong>RLHF (Reinforcement Learning from Human Feedback):</strong></p>
+<ul>
+<li>Requires extensive human labeling of preferences</li>
+<li>Subject to individual annotator biases and inconsistencies</li>
+<li>Expensive and time-consuming to scale</li>
+</ul>
+<p><strong>Constitutional AI:</strong></p>
+<ul>
+<li>Uses AI-generated feedback based on explicit principles</li>
+<li>More scalable and consistent</li>
+<li>Values are explicit and modifiable through constitution</li>
+</ul>
 <hr />
 <hr />
 <h2 id="common-interview-questions">Common Interview Questions<a class="headerlink" href="#common-interview-questions" title="Permanent link">&para;</a></h2>

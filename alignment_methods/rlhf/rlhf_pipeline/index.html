@@ -1312,123 +1312,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1997,23 +1880,31 @@
 </ul>
 <hr />
 <h3 id="32-reward-model-limitations">3.2 Reward Model Limitations<a class="headerlink" href="#32-reward-model-limitations" title="Permanent link">&para;</a></h3>
-<p><strong>Issues:</strong>
-- Limited to training distribution
-- May not capture all aspects of quality
-- Can be fooled by surface-level patterns</p>
-<p><strong>Solutions:</strong>
-- Diverse training data
-- Constitutional AI for principled constraints
-- Human oversight during RL</p>
+<p><strong>Issues:</strong></p>
+<ul>
+<li>Limited to training distribution</li>
+<li>May not capture all aspects of quality</li>
+<li>Can be fooled by surface-level patterns</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Diverse training data</li>
+<li>Constitutional AI for principled constraints</li>
+<li>Human oversight during RL</li>
+</ul>
 <hr />
 <h3 id="33-scalability">3.3 Scalability<a class="headerlink" href="#33-scalability" title="Permanent link">&para;</a></h3>
-<p><strong>Challenges:</strong>
-- Human annotation is expensive and slow
-- Need continuous data for model updates</p>
-<p><strong>Approaches:</strong>
-- <strong>RLAIF:</strong> Use AI feedback to scale
-- <strong>Active learning:</strong> Select most informative comparisons. Prioritize labeling examples where the reward model is most uncertain or disagrees (e.g., close reward scores), maximizing learning per annotatio
-- <strong>Automated filters before human review:</strong> Use automated checks (toxicity filters, length limits, format validators) to screen out obviously bad responses before sending to human annotators, reducing annotation cost.</p>
+<p><strong>Challenges:</strong></p>
+<ul>
+<li>Human annotation is expensive and slow</li>
+<li>Need continuous data for model updates</li>
+</ul>
+<p><strong>Approaches:</strong></p>
+<ul>
+<li><strong>RLAIF:</strong> Use AI feedback to scale</li>
+<li><strong>Active learning:</strong> Select most informative comparisons. Prioritize labeling examples where the reward model is most uncertain or disagrees (e.g., close reward scores), maximizing learning per annotatio</li>
+<li><strong>Automated filters before human review:</strong> Use automated checks (toxicity filters, length limits, format validators) to screen out obviously bad responses before sending to human annotators, reducing annotation cost.</li>
+</ul>
 <hr />
 <hr />
 <h2 id="4-interview-questions">4. Interview Questions<a class="headerlink" href="#4-interview-questions" title="Permanent link">&para;</a></h2>
@@ -2035,14 +1926,17 @@ However, reward model introduces approximation error and potential reward hackin
 <summary>Answer</summary>
 
 **Pairwise comparisons:**
+
 - Pros: Easier for humans (relative judgment), more reliable, handles subjectivity better
 - Cons: Requires more data (combinatorial), doesn't give absolute scale
 
 **Absolute ratings:**
+
 - Pros: Efficient data collection, provides absolute scale
 - Cons: Harder to calibrate, annotator disagreement higher, scale ambiguity
 
 **Pairwise is generally preferred** for RLHF because:
+
 - Human preferences are more consistent in relative judgments
 - Bradley-Terry model naturally fits preference data
 - Reduces annotator bias (no need to agree on absolute scale)
@@ -2055,11 +1949,13 @@ However, reward model introduces approximation error and potential reward hackin
 **Model**: Assumes P(y_w ≻ y_l) = σ(r(y_w) - r(y_l))
 
 **Assumptions:**
+
 1. **Transitivity**: If A > B and B > C, then A > C
 2. **Independence**: Preference between A and B doesn't depend on other options
 3. **Scale invariance**: Only reward differences matter, not absolute values
 
 **Limitations:**
+
 - Real human preferences may violate transitivity
 - Context matters (preferences may not be independent)
 - Doesn't model uncertainty or indifference well
@@ -2074,11 +1970,13 @@ Despite limitations, works well in practice for RLHF.
 **Reward hacking**: Policy exploits flaws in the reward model to achieve high scores without actually improving quality.
 
 **Examples:**
+
 - Generating very long responses (reward model correlates length with quality)
 - Using fancy words or formatting without substance
 - Exploiting reward model's lack of factual knowledge
 
 **Prevention strategies:**
+
 1. **KL penalty**: `r_total = r_RM - β·KL(π || π_SFT)` keeps policy close to SFT baseline
 2. **Reward model ensembles**: Harder to hack multiple models simultaneously
 3. **Iterative reward model updates**: Retrain on RL-generated outputs
@@ -2091,6 +1989,7 @@ Despite limitations, works well in practice for RLHF.
 <summary>Answer</summary>
 
 **Reasons:**
+
 1. **Better starting point**: SFT model already generates reasonable outputs
 2. **Faster convergence**: Less exploration needed
 3. **Prevents catastrophic forgetting**: Maintains language modeling capabilities
@@ -2098,6 +1997,7 @@ Despite limitations, works well in practice for RLHF.
 5. **Reduces reward hacking**: Harder to drift into degenerate solutions
 
 Without SFT initialization:
+
 - RL might converge to nonsensical but high-reward outputs
 - Exploration in text space is extremely difficult
 - Training is much slower and less stable
@@ -2109,10 +2009,12 @@ Without SFT initialization:
 <summary>Answer</summary>
 
 **Measurement:**
+
 - Calculate inter-annotator agreement (Fleiss' kappa, Krippendorff's alpha)
 - Track per-annotator agreement with majority/expert
 
 **Handling strategies:**
+
 1. **Majority vote**: Use most common preference
 2. **Weighted voting**: Weight by annotator reliability
 3. **Discard high-disagreement examples**: They're likely ambiguous
@@ -2121,6 +2023,7 @@ Without SFT initialization:
 6. **Improve guidelines**: Address common disagreement sources
 
 **For training:**
+
 - Can model soft preferences: P(y_w ≻ y_l) = fraction of annotators who preferred y_w
 - Helps reward model learn uncertainty
 </details>
@@ -2130,22 +2033,26 @@ Without SFT initialization:
 <summary>Answer</summary>
 
 **During data collection:**
+
 1. **Diverse prompt set**: Cover many domains, styles, difficulties
 2. **Include edge cases**: Adversarial, ambiguous, multi-step prompts
 3. **Regular updates**: Continuously add new prompt types
 
 **During training:**
+
 1. **Regularization**: Dropout, weight decay to prevent overfitting
 2. **Data augmentation**: Paraphrase prompts, vary response styles
 3. **Domain-specific splits**: Ensure validation set covers all domains
 
 **Evaluation:**
+
 1. **Hold-out test sets**: Different domains than training
 2. **Monitor RL outputs**: Check for reward hacking patterns
 3. **Human evaluation**: Regular checks on RL-generated samples
 4. **Red-teaming**: Actively try to find failure modes
 
 **Continuous improvement:**
+
 - Retrain reward model on RL-generated distribution
 - Active learning to find informative new comparisons
 </details>

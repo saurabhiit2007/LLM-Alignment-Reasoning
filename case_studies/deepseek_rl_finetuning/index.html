@@ -1106,123 +1106,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reasoning_techniques/test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reasoning_techniques/test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reasoning_techniques/test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1969,10 +1852,14 @@
 <h3 id="22-key-features">2.2 Key Features<a class="headerlink" href="#22-key-features" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Group-based candidate sampling</strong>: Group size <span class="arithmatex">\(G\)</span> typically ranges from 8–16</li>
-<li><strong>Advantage computation</strong>:
+<li>
+<p><strong>Advantage computation</strong>:
   <span class="arithmatex">\(<span class="arithmatex">\(A_i = \frac{r_i - \mathrm{mean}(r_{1..G})}{\mathrm{std}(r_{1..G})}\)</span>\)</span>
-  where <span class="arithmatex">\(r_i\)</span> is the reward of candidate <span class="arithmatex">\(o_i\)</span></li>
-<li><strong>PPO-style clipped ratio</strong>: Applied to new policy versus old policy for each candidate</li>
+  where <span class="arithmatex">\(r_i\)</span> is the reward of candidate <span class="arithmatex">\(o_i\)</span></p>
+</li>
+<li>
+<p><strong>PPO-style clipped ratio</strong>: Applied to new policy versus old policy for each candidate</p>
+</li>
 <li><strong>KL regularization</strong>: Prevents drift from a reference policy</li>
 <li><strong>No explicit value function</strong>: Critical for large-scale LLM fine-tuning efficiency</li>
 </ul>
@@ -2106,14 +1993,18 @@
 <p>The distillation process leverages the high-capability teacher model to generate large "reasoning-rich" datasets. Student models are then fine-tuned via SFT (not full RL) to inherit reasoning patterns. While smaller models may underperform the teacher, they offer substantial cost and efficiency improvements.</p>
 <hr />
 <h3 id="64-observed-strengths-weaknesses">6.4 Observed Strengths &amp; Weaknesses<a class="headerlink" href="#64-observed-strengths-weaknesses" title="Permanent link">&para;</a></h3>
-<p><strong>Strengths:</strong>
-- Emergent reasoning capability via RL
-- High performance on reasoning benchmarks
-- Efficient multi-stage training approach</p>
-<p><strong>Weaknesses:</strong>
-- R1-Zero exhibits readability and language mixing issues due to skipping SFT
-- Distilled models experience some performance degradation compared to the full model
-- General instruction-following may lag in smaller or early-stage variants</p>
+<p><strong>Strengths:</strong></p>
+<ul>
+<li>Emergent reasoning capability via RL</li>
+<li>High performance on reasoning benchmarks</li>
+<li>Efficient multi-stage training approach</li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul>
+<li>R1-Zero exhibits readability and language mixing issues due to skipping SFT</li>
+<li>Distilled models experience some performance degradation compared to the full model</li>
+<li>General instruction-following may lag in smaller or early-stage variants</li>
+</ul>
 <hr />
 <hr />
 <h2 id="7-summary-table">7. Summary Table<a class="headerlink" href="#7-summary-table" title="Permanent link">&para;</a></h2>

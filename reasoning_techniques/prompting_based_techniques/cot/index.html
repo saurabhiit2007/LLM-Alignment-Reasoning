@@ -1384,123 +1384,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2088,25 +1971,31 @@ Q: [New problem]
 <p><strong>A</strong>: Standard prompting asks for direct answers, while CoT prompts the model to show intermediate reasoning steps. This improves accuracy on complex tasks by allowing the model to break down problems, similar to how humans solve difficult problems step-by-step.</p>
 <hr />
 <h3 id="q2-when-should-you-use-chain-of-thought">Q2: When should you use Chain of Thought?<a class="headerlink" href="#q2-when-should-you-use-chain-of-thought" title="Permanent link">&para;</a></h3>
-<p><strong>A</strong>: Use CoT for:
-- Multi-step arithmetic and mathematical problems
-- Complex logical reasoning
-- Commonsense reasoning requiring multiple inference steps
-- Tasks where interpretability is important</p>
+<p><strong>A</strong>: Use CoT for:</p>
+<ul>
+<li>Multi-step arithmetic and mathematical problems</li>
+<li>Complex logical reasoning</li>
+<li>Commonsense reasoning requiring multiple inference steps</li>
+<li>Tasks where interpretability is important</li>
+</ul>
 <p>Avoid for simple factual queries where direct answers are more efficient.</p>
 <hr />
 <h3 id="q3-explain-zero-shot-cot-vs-few-shot-cot">Q3: Explain Zero-Shot CoT vs Few-Shot CoT<a class="headerlink" href="#q3-explain-zero-shot-cot-vs-few-shot-cot" title="Permanent link">&para;</a></h3>
-<p><strong>A</strong>: 
-- <strong>Zero-Shot CoT</strong>: Add phrases like "Let's think step by step" without examples. Simple but effective.
-- <strong>Few-Shot CoT</strong>: Provide example problems with reasoning steps. More accurate but requires careful example selection and uses more tokens.</p>
+<p><strong>A</strong>: </p>
+<ul>
+<li><strong>Zero-Shot CoT</strong>: Add phrases like "Let's think step by step" without examples. Simple but effective.</li>
+<li><strong>Few-Shot CoT</strong>: Provide example problems with reasoning steps. More accurate but requires careful example selection and uses more tokens.</li>
+</ul>
 <hr />
 <h3 id="q4-what-are-the-limitations-of-chain-of-thought">Q4: What are the limitations of Chain of Thought?<a class="headerlink" href="#q4-what-are-the-limitations-of-chain-of-thought" title="Permanent link">&para;</a></h3>
-<p><strong>A</strong>:
-- Higher computational cost (more tokens)
-- Can generate incorrect reasoning paths
-- Less effective on small models (&lt;10B parameters)
-- May overthink simple problems
-- Reasoning quality depends on model capabilities</p>
+<p><strong>A</strong>:</p>
+<ul>
+<li>Higher computational cost (more tokens)</li>
+<li>Can generate incorrect reasoning paths</li>
+<li>Less effective on small models (&lt;10B parameters)</li>
+<li>May overthink simple problems</li>
+<li>Reasoning quality depends on model capabilities</li>
+</ul>
 <hr />
 <h3 id="q5-how-does-self-consistency-improve-cot">Q5: How does Self-Consistency improve CoT?<a class="headerlink" href="#q5-how-does-self-consistency-improve-cot" title="Permanent link">&para;</a></h3>
 <p><strong>A</strong>: Self-Consistency samples multiple reasoning paths (e.g., 5-40 paths) for the same question and selects the most frequently occurring answer. This reduces variance and improves accuracy by 10-20% compared to single-path CoT, at the cost of increased computation.</p>
@@ -2115,12 +2004,14 @@ Q: [New problem]
 <p><strong>A</strong>: Tree of Thoughts (ToT) extends CoT by exploring multiple reasoning branches simultaneously, like a search algorithm. It can backtrack and explore alternatives, whereas standard CoT follows a single sequential path. ToT is better for problems requiring strategic lookahead (e.g., Game of 24, creative writing).</p>
 <hr />
 <h3 id="q7-how-would-you-implement-cot-in-production">Q7: How would you implement CoT in production?<a class="headerlink" href="#q7-how-would-you-implement-cot-in-production" title="Permanent link">&para;</a></h3>
-<p><strong>A</strong>: Consider:
-- <strong>Caching</strong>: Cache reasoning for common queries
-- <strong>Hybrid approach</strong>: Use CoT only for complex queries, direct prompting for simple ones
-- <strong>Monitoring</strong>: Track reasoning quality and failure modes
-- <strong>Cost optimization</strong>: Balance accuracy vs. token usage
-- <strong>Validation</strong>: Verify final answers when possible</p>
+<p><strong>A</strong>: Consider:</p>
+<ul>
+<li><strong>Caching</strong>: Cache reasoning for common queries</li>
+<li><strong>Hybrid approach</strong>: Use CoT only for complex queries, direct prompting for simple ones</li>
+<li><strong>Monitoring</strong>: Track reasoning quality and failure modes</li>
+<li><strong>Cost optimization</strong>: Balance accuracy vs. token usage</li>
+<li><strong>Validation</strong>: Verify final answers when possible</li>
+</ul>
 <hr />
 <h3 id="q8-what-role-does-cot-play-in-modern-ai-agents">Q8: What role does CoT play in modern AI agents?<a class="headerlink" href="#q8-what-role-does-cot-play-in-modern-ai-agents" title="Permanent link">&para;</a></h3>
 <p><strong>A</strong>: CoT is foundational for agentic systems. Techniques like ReAct combine CoT reasoning with tool use, allowing agents to plan, execute actions, and reflect on results. This enables autonomous task completion in systems like AutoGPT, LangChain agents, and Claude's computer use features.</p>

@@ -1459,123 +1459,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../reasoning_techniques/test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2193,17 +2076,23 @@
 </code></pre></div>
 <hr />
 <h3 id="preference-quality-control">Preference Quality Control<a class="headerlink" href="#preference-quality-control" title="Permanent link">&para;</a></h3>
-<p><strong>Agreement filtering:</strong>
-- Generate multiple judgments per pair (e.g., 3-5 times)
-- Only keep pairs where judge agrees ≥80% of the time
-- Reduces label noise from judge inconsistency</p>
-<p><strong>Confidence thresholding:</strong>
-- Extract confidence scores from judge explanations
-- Filter out low-confidence comparisons
-- Prevents training on ambiguous preferences</p>
-<p><strong>Human validation sampling:</strong>
-- Measure human-AI judge agreement on 5-10% of data
-- If agreement &lt;70-80%, reconsider judge prompting or model choice</p>
+<p><strong>Agreement filtering:</strong></p>
+<ul>
+<li>Generate multiple judgments per pair (e.g., 3-5 times)</li>
+<li>Only keep pairs where judge agrees ≥80% of the time</li>
+<li>Reduces label noise from judge inconsistency</li>
+</ul>
+<p><strong>Confidence thresholding:</strong></p>
+<ul>
+<li>Extract confidence scores from judge explanations</li>
+<li>Filter out low-confidence comparisons</li>
+<li>Prevents training on ambiguous preferences</li>
+</ul>
+<p><strong>Human validation sampling:</strong></p>
+<ul>
+<li>Measure human-AI judge agreement on 5-10% of data</li>
+<li>If agreement &lt;70-80%, reconsider judge prompting or model choice</li>
+</ul>
 <hr />
 <h3 id="response-generation-for-comparison">Response Generation for Comparison<a class="headerlink" href="#response-generation-for-comparison" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2214,13 +2103,17 @@
 </ul>
 <hr />
 <h3 id="judge-explanation-utilization">Judge Explanation Utilization<a class="headerlink" href="#judge-explanation-utilization" title="Permanent link">&para;</a></h3>
-<p><strong>Chain-of-thought judging:</strong>
-- Force judge to explain reasoning before giving preference
-- Improves judgment quality and provides interpretability
-- Can be used as auxiliary training signal</p>
-<p><strong>Critique revision:</strong>
-- Use judge's critiques to iteratively improve responses
-- Constitutional AI approach: generate response → critique → revise → repeat</p>
+<p><strong>Chain-of-thought judging:</strong></p>
+<ul>
+<li>Force judge to explain reasoning before giving preference</li>
+<li>Improves judgment quality and provides interpretability</li>
+<li>Can be used as auxiliary training signal</li>
+</ul>
+<p><strong>Critique revision:</strong></p>
+<ul>
+<li>Use judge's critiques to iteratively improve responses</li>
+<li>Constitutional AI approach: generate response → critique → revise → repeat</li>
+</ul>
 <hr />
 <h3 id="scaling-laws-for-rlaif">Scaling Laws for RLAIF<a class="headerlink" href="#scaling-laws-for-rlaif" title="Permanent link">&para;</a></h3>
 <ul>

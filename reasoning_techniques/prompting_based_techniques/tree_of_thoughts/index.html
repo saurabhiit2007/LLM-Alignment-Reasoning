@@ -1354,123 +1354,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2009,7 +1892,7 @@
 </ul>
 <hr />
 <h3 id="algorithmic-flow">Algorithmic Flow<a class="headerlink" href="#algorithmic-flow" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">tree_of_thoughts</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">breadth</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tree_of_thoughts</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">breadth</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="c1"># 1. Generate initial thoughts</span>
     <span class="n">thoughts</span> <span class="o">=</span> <span class="n">generate_thoughts</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">breadth</span><span class="p">)</span>
 
@@ -2070,55 +1953,73 @@
 <hr />
 <h2 id="5-common-interview-questions">5. Common Interview Questions<a class="headerlink" href="#5-common-interview-questions" title="Permanent link">&para;</a></h2>
 <h3 id="conceptual-questions">Conceptual Questions<a class="headerlink" href="#conceptual-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q1: What is Tree of Thoughts and how does it differ from Chain-of-Thought?</strong>
-- <strong>Answer</strong>: ToT is a prompting framework that explores multiple reasoning paths simultaneously, allowing backtracking and evaluation of different approaches. Unlike CoT's linear progression, ToT maintains a tree structure of intermediate thoughts, evaluates them, and selects the most promising paths.</p>
+<p><strong>Q1: What is Tree of Thoughts and how does it differ from Chain-of-Thought?</strong></p>
+<ul>
+<li><strong>Answer</strong>: ToT is a prompting framework that explores multiple reasoning paths simultaneously, allowing backtracking and evaluation of different approaches. Unlike CoT's linear progression, ToT maintains a tree structure of intermediate thoughts, evaluates them, and selects the most promising paths.</li>
+</ul>
 <hr />
-<p><strong>Q2: When would you use ToT over standard prompting?</strong>
-- <strong>Answer</strong>: Use ToT for:
-  - Complex planning tasks (e.g., Game of 24, creative writing)
-  - Problems requiring exploration of multiple solutions
-  - Tasks where backtracking is valuable
-  - Scenarios needing strategic lookahead</p>
+<p><strong>Q2: When would you use ToT over standard prompting?</strong></p>
+<ul>
+<li><strong>Answer</strong>: Use ToT for:</li>
+<li>Complex planning tasks (e.g., Game of 24, creative writing)</li>
+<li>Problems requiring exploration of multiple solutions</li>
+<li>Tasks where backtracking is valuable</li>
+<li>Scenarios needing strategic lookahead</li>
+</ul>
 <hr />
-<p><strong>Q3: What are the computational trade-offs of ToT?</strong>
-- <strong>Answer</strong>: ToT requires multiple LLM calls (generation + evaluation), increasing latency and cost. The trade-off is between solution quality and computational resources. Optimization techniques include pruning, limiting depth/breadth, and caching.</p>
+<p><strong>Q3: What are the computational trade-offs of ToT?</strong></p>
+<ul>
+<li><strong>Answer</strong>: ToT requires multiple LLM calls (generation + evaluation), increasing latency and cost. The trade-off is between solution quality and computational resources. Optimization techniques include pruning, limiting depth/breadth, and caching.</li>
+</ul>
 <hr />
 <h3 id="technical-questions">Technical Questions<a class="headerlink" href="#technical-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q4: Explain the thought generation process in ToT.</strong>
-- <strong>Answer</strong>: Thoughts can be generated through:
-  - <strong>Sampling</strong>: Generate diverse candidates using temperature &gt; 0
-  - <strong>Proposing</strong>: LLM explicitly proposes next steps
-  - The number of thoughts (breadth) is a hyperparameter balancing exploration vs. cost</p>
+<p><strong>Q4: Explain the thought generation process in ToT.</strong></p>
+<ul>
+<li><strong>Answer</strong>: Thoughts can be generated through:</li>
+<li><strong>Sampling</strong>: Generate diverse candidates using temperature &gt; 0</li>
+<li><strong>Proposing</strong>: LLM explicitly proposes next steps</li>
+<li>The number of thoughts (breadth) is a hyperparameter balancing exploration vs. cost</li>
+</ul>
 <hr />
-<p><strong>Q5: How do you evaluate intermediate thoughts?</strong>
-- <strong>Answer</strong>: Common methods:
-  - Prompt LLM to score thoughts (1-10)
-  - Classification (promising/unpromising)
-  - Compare thoughts pairwise
-  - Use domain-specific heuristics</p>
+<p><strong>Q5: How do you evaluate intermediate thoughts?</strong></p>
+<ul>
+<li><strong>Answer</strong>: Common methods:</li>
+<li>Prompt LLM to score thoughts (1-10)</li>
+<li>Classification (promising/unpromising)</li>
+<li>Compare thoughts pairwise</li>
+<li>Use domain-specific heuristics</li>
+</ul>
 <hr />
-<p><strong>Q6: Describe how to implement backtracking in ToT.</strong>
-- <strong>Answer</strong>: Maintain a state tree with parent pointers. When a path reaches low evaluation or dead-end, backtrack to parent node and explore alternative branches. Use BFS/DFS algorithms to manage traversal.</p>
+<p><strong>Q6: Describe how to implement backtracking in ToT.</strong></p>
+<ul>
+<li><strong>Answer</strong>: Maintain a state tree with parent pointers. When a path reaches low evaluation or dead-end, backtrack to parent node and explore alternative branches. Use BFS/DFS algorithms to manage traversal.</li>
+</ul>
 <hr />
 <h3 id="practical-questions">Practical Questions<a class="headerlink" href="#practical-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q7: How would you optimize ToT for production use?</strong>
-- <strong>Answer</strong>:
-  - Implement aggressive pruning (top-k selection)
-  - Cache evaluated thoughts
-  - Use parallel API calls
-  - Adaptive depth based on problem complexity
-  - Implement timeout mechanisms</p>
+<p><strong>Q7: How would you optimize ToT for production use?</strong></p>
+<ul>
+<li><strong>Answer</strong>:</li>
+<li>Implement aggressive pruning (top-k selection)</li>
+<li>Cache evaluated thoughts</li>
+<li>Use parallel API calls</li>
+<li>Adaptive depth based on problem complexity</li>
+<li>Implement timeout mechanisms</li>
+</ul>
 <hr />
-<p><strong>Q8: What are real-world applications of ToT?</strong>
-- <strong>Answer</strong>:
-  - Code generation with multiple solution approaches
-  - Strategic game playing
-  - Mathematical problem-solving
-  - Creative content generation
-  - Multi-step planning and scheduling</p>
+<p><strong>Q8: What are real-world applications of ToT?</strong></p>
+<ul>
+<li><strong>Answer</strong>:</li>
+<li>Code generation with multiple solution approaches</li>
+<li>Strategic game playing</li>
+<li>Mathematical problem-solving</li>
+<li>Creative content generation</li>
+<li>Multi-step planning and scheduling</li>
+</ul>
 <hr />
-<p><strong>Q9: How does ToT handle error correction?</strong>
-- <strong>Answer</strong>: Through evaluation and backtracking. If a thought path leads to incorrect or low-quality results, the evaluation mechanism identifies this, and the search algorithm explores alternative branches, effectively self-correcting.</p>
+<p><strong>Q9: How does ToT handle error correction?</strong></p>
+<ul>
+<li><strong>Answer</strong>: Through evaluation and backtracking. If a thought path leads to incorrect or low-quality results, the evaluation mechanism identifies this, and the search algorithm explores alternative branches, effectively self-correcting.</li>
+</ul>
 <hr />
 <hr />
 

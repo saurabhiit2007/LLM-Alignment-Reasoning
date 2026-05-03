@@ -75,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#react" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -895,6 +900,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -1091,123 +1098,6 @@
   
   <span class="md-ellipsis">
     System2 Attention
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/best_of_n_sampling/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Best-of-n-sampling
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute_scaling/orm_prm/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ORMs & PRMs
     
   </span>
   
@@ -1458,6 +1348,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -1473,9 +1365,25 @@
 
 
 
-  <h1>ReAcT</h1>
-
-
+<h1 id="react">ReAct<a class="headerlink" href="#react" title="Permanent link">&para;</a></h1>
+<p>ReAct (Reasoning + Acting) is covered in the <a href="https://github.com/saurabhiit2007/RAG-and-Agents">RAG and Agents repo</a> under Agent Fundamentals — it is the foundational agentic pattern and is documented there in full.</p>
+<p><strong>Quick summary:</strong></p>
+<p>ReAct interleaves reasoning traces (Thought) with actions (Action) and their results (Observation) in a loop:</p>
+<div class="highlight"><pre><span></span><code>Thought: I need to find the population of Tokyo.
+Action: search(&quot;Tokyo population 2024&quot;)
+Observation: Tokyo population is approximately 13.96 million (city) / 37.4 million (metro).
+Thought: I have the answer.
+Action: finish(&quot;13.96 million in the city proper&quot;)
+</code></pre></div>
+<p><strong>Key properties:</strong></p>
+<ul>
+<li>Thought steps are not executed — they are internal scratchpad reasoning</li>
+<li>Actions call external tools (search, calculator, code executor, database)</li>
+<li>The loop continues until the agent emits a finish action</li>
+<li>Introduced by Yao et al. (2023); shown to outperform CoT-only and Act-only baselines on HotpotQA, Fever, AlfWorld</li>
+</ul>
+<p><strong>In the context of alignment:</strong> ReAct reasoning traces serve as interpretable audit logs — each decision step is visible, which supports human oversight and reward model training on reasoning quality.</p>
+<p><strong>Reference:</strong> Yao et al. (2023) — "ReAct: Synergizing Reasoning and Acting in Language Models." ICLR 2023.</p>
 
 
 

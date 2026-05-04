@@ -13,25 +13,25 @@
       
       
       
-        <link rel="prev" href="../../advanced_reasoning_models/system2_attention/">
+        <link rel="prev" href="../reinforce/">
       
       
-        <link rel="next" href="../best_of_n_sampling/">
+        <link rel="next" href="../dapo/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
-        <title>Compute Optimal Inference - LLM Alignment & Reasoning</title>
+        <title>RLOO - LLM Alignment & Reasoning</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.84d31ad4.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -92,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="LLM Alignment &amp; Reasoning" class="md-header__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
+    <a href="../../../.." title="LLM Alignment &amp; Reasoning" class="md-header__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Compute Optimal Inference
+              RLOO
             
           </span>
         </div>
@@ -213,7 +213,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="LLM Alignment &amp; Reasoning" class="md-nav__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
+    <a href="../../../.." title="LLM Alignment &amp; Reasoning" class="md-nav__button md-logo" aria-label="LLM Alignment & Reasoning" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -231,7 +231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -250,20 +250,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -279,7 +279,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Alignment Methods
@@ -290,20 +290,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
         
           
           <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
@@ -319,7 +319,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_1">
             <span class="md-nav__icon md-icon"></span>
             RLHF
@@ -333,7 +333,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rlhf_pipeline/" class="md-nav__link">
+      <a href="../../rlhf_pipeline/" class="md-nav__link">
         
   
   
@@ -353,20 +353,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
@@ -382,7 +382,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_1_2">
             <span class="md-nav__icon md-icon"></span>
             RL Optimization Methods
@@ -396,7 +396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/ppo/" class="md-nav__link">
+      <a href="../ppo/" class="md-nav__link">
         
   
   
@@ -419,7 +419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/dpo/" class="md-nav__link">
+      <a href="../dpo/" class="md-nav__link">
         
   
   
@@ -442,7 +442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/grpo/" class="md-nav__link">
+      <a href="../grpo/" class="md-nav__link">
         
   
   
@@ -465,7 +465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/reinforce/" class="md-nav__link">
+      <a href="../reinforce/" class="md-nav__link">
         
   
   
@@ -485,10 +485,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/rloo/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RLOO
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -499,6 +519,120 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-big-picture-from-reinforce-to-rloo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Big Picture: From REINFORCE to RLOO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Formulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Formulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-rloo-gradient-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 RLOO Gradient Estimator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-why-this-baseline-is-effective" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Why This Baseline Is Effective
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-relationship-to-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Relationship to GRPO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-why-rloo-instead-of-ppo" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Why RLOO Instead of PPO?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-comparison-with-other-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Comparison with Other Methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Limitations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -511,7 +645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/rl_optimization_methods/dapo/" class="md-nav__link">
+      <a href="../dapo/" class="md-nav__link">
         
   
   
@@ -542,7 +676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/rlhf/kl_penalty_reward_hacking/" class="md-nav__link">
+      <a href="../../kl_penalty_reward_hacking/" class="md-nav__link">
         
   
   
@@ -613,7 +747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/alternate_approaches/rlaif/" class="md-nav__link">
+      <a href="../../../alternate_approaches/rlaif/" class="md-nav__link">
         
   
   
@@ -636,7 +770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/alternate_approaches/context_distillation/" class="md-nav__link">
+      <a href="../../../alternate_approaches/context_distillation/" class="md-nav__link">
         
   
   
@@ -659,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/alternate_approaches/constitutional_ai/" class="md-nav__link">
+      <a href="../../../alternate_approaches/constitutional_ai/" class="md-nav__link">
         
   
   
@@ -730,7 +864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/safety_and_evaluation/safety_evaluation_frameworks/" class="md-nav__link">
+      <a href="../../../safety_and_evaluation/safety_evaluation_frameworks/" class="md-nav__link">
         
   
   
@@ -753,7 +887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/safety_and_evaluation/adversarial_testing/" class="md-nav__link">
+      <a href="../../../safety_and_evaluation/adversarial_testing/" class="md-nav__link">
         
   
   
@@ -776,7 +910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../alignment_methods/safety_and_evaluation/red_teaming/" class="md-nav__link">
+      <a href="../../../safety_and_evaluation/red_teaming/" class="md-nav__link">
         
   
   
@@ -811,20 +945,20 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -840,7 +974,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Reasoning Techniques
@@ -894,7 +1028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompting_based_techniques/cot/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/prompting_based_techniques/cot/" class="md-nav__link">
         
   
   
@@ -917,7 +1051,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompting_based_techniques/tree_of_thoughts/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/prompting_based_techniques/tree_of_thoughts/" class="md-nav__link">
         
   
   
@@ -940,7 +1074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompting_based_techniques/self_consistency/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/prompting_based_techniques/self_consistency/" class="md-nav__link">
         
   
   
@@ -963,7 +1097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompting_based_techniques/react/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/prompting_based_techniques/react/" class="md-nav__link">
         
   
   
@@ -1034,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../iterative_refinement/self_critic_methods/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/iterative_refinement/self_critic_methods/" class="md-nav__link">
         
   
   
@@ -1057,7 +1191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../iterative_refinement/debate_and_multi_agent/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/iterative_refinement/debate_and_multi_agent/" class="md-nav__link">
         
   
   
@@ -1128,7 +1262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../advanced_reasoning_models/STAR_self_taught_reasoner/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner/" class="md-nav__link">
         
   
   
@@ -1151,7 +1285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../advanced_reasoning_models/system2_attention/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/advanced_reasoning_models/system2_attention/" class="md-nav__link">
         
   
   
@@ -1179,20 +1313,20 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
         
           
           <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
@@ -1208,7 +1342,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_4">
             <span class="md-nav__icon md-icon"></span>
             Test-Time Compute Scaling
@@ -1219,30 +1353,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../reasoning_techniques/test_time_compute/compute_optimal_inference/" class="md-nav__link">
         
   
   
@@ -1253,144 +1367,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Overview
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#core-principle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core Principle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-why-it-matters" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Why It Matters
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-core-techniques" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Core Techniques
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Core Techniques">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-parallel-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Parallel Scaling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-sequential-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Sequential Scaling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-hybrid" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.3 Hybrid
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-compute-optimal-inference" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Compute-Optimal Inference
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-training-for-test-time-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Training for Test-Time Scaling
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-key-models-20242025" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. Key Models (2024–2025)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-when-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. When to Use
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-interaction-with-other-inference-topics" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. Interaction with Other Inference Topics
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1403,7 +1379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../best_of_n_sampling/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/test_time_compute/best_of_n_sampling/" class="md-nav__link">
         
   
   
@@ -1426,7 +1402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../orm_prm/" class="md-nav__link">
+      <a href="../../../../reasoning_techniques/test_time_compute/orm_prm/" class="md-nav__link">
         
   
   
@@ -1504,7 +1480,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../evaluation_and_metrics/alignment_evaluation/" class="md-nav__link">
+      <a href="../../../../evaluation_and_metrics/alignment_evaluation/" class="md-nav__link">
         
   
   
@@ -1527,7 +1503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../evaluation_and_metrics/verification_metrics/" class="md-nav__link">
+      <a href="../../../../evaluation_and_metrics/verification_metrics/" class="md-nav__link">
         
   
   
@@ -1597,7 +1573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../case_studies/deepseek_rl_finetuning/" class="md-nav__link">
+      <a href="../../../../case_studies/deepseek_rl_finetuning/" class="md-nav__link">
         
   
   
@@ -1627,7 +1603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../references/" class="md-nav__link">
+      <a href="../../../../references/" class="md-nav__link">
         
   
   
@@ -1673,13 +1649,49 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Overview">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-big-picture-from-reinforce-to-rloo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Big Picture: From REINFORCE to RLOO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Formulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Formulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#core-principle" class="md-nav__link">
+  <a href="#31-rloo-gradient-estimator" class="md-nav__link">
     <span class="md-ellipsis">
-      Core Principle
+      3.1 RLOO Gradient Estimator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-why-this-baseline-is-effective" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Why This Baseline Is Effective
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-relationship-to-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Relationship to GRPO
     </span>
   </a>
   
@@ -1691,96 +1703,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-why-it-matters" class="md-nav__link">
+  <a href="#4-implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Why It Matters
+      4. Implementation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-core-techniques" class="md-nav__link">
+  <a href="#5-why-rloo-instead-of-ppo" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Core Techniques
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Core Techniques">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-parallel-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Parallel Scaling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-sequential-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Sequential Scaling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-hybrid" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.3 Hybrid
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-compute-optimal-inference" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Compute-Optimal Inference
+      5. Why RLOO Instead of PPO?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-training-for-test-time-scaling" class="md-nav__link">
+  <a href="#6-comparison-with-other-methods" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Training for Test-Time Scaling
+      6. Comparison with Other Methods
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-key-models-20242025" class="md-nav__link">
+  <a href="#7-limitations" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Key Models (2024–2025)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-when-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. When to Use
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-interaction-with-other-inference-topics" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. Interaction with Other Inference Topics
+      7. Limitations
     </span>
   </a>
   
@@ -1802,133 +1754,231 @@
 
 
 
-  <h1>Compute Optimal Inference</h1>
+  <h1>RLOO</h1>
 
 <h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
-<p><strong>Test-time compute scaling</strong> (also called <strong>inference-time scaling</strong>) allocates additional computational resources during inference — rather than training — to improve performance on complex tasks. Instead of scaling model parameters, it uses techniques like multiple sampling, extended reasoning chains, or search algorithms at inference time.</p>
-<h3 id="core-principle">Core Principle<a class="headerlink" href="#core-principle" title="Permanent link">&para;</a></h3>
-<p>A smaller model with smart inference can outperform a larger model with standard decoding. Research shows this is often more cost-effective than training larger models for hard reasoning tasks.</p>
+<p><strong>REINFORCE Leave-One-Out (RLOO)</strong> is a multi-sample variant of REINFORCE that uses the mean reward of the <em>other</em> samples in a group as the baseline for each individual sample. It was applied to LLM fine-tuning by Ahmadian et al. (2024) in <em>"Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs"</em> (ACL 2024).</p>
+<p><strong>Key result:</strong> RLOO consistently outperforms PPO, DPO, and RAFT across all tested models and datasets while using 50–70% less GPU memory and running 2–3× faster than PPO.</p>
 <hr />
-<h2 id="2-why-it-matters">2. Why It Matters<a class="headerlink" href="#2-why-it-matters" title="Permanent link">&para;</a></h2>
+<h2 id="2-the-big-picture-from-reinforce-to-rloo">2. The Big Picture: From REINFORCE to RLOO<a class="headerlink" href="#2-the-big-picture-from-reinforce-to-rloo" title="Permanent link">&para;</a></h2>
+<p>Vanilla REINFORCE estimates the gradient from a single sample per prompt, leading to high variance. The solution: sample <span class="arithmatex">\(k\)</span> responses per prompt and use the other <span class="arithmatex">\(k-1\)</span> responses as a baseline.</p>
 <table>
 <thead>
 <tr>
-<th>Claim</th>
-<th>Evidence</th>
+<th>Method</th>
+<th>Samples per prompt</th>
+<th>Baseline</th>
+<th>Variance</th>
+<th>Critic needed</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Smaller model + test-time search &gt; larger model</td>
-<td>7B model with BoN/MCTS can match 34B greedy decoding on MATH</td>
-</tr>
-<tr>
-<td>Inference compute can substitute for training compute</td>
-<td>OpenAI o1/o3, DeepSeek R1</td>
-</tr>
-<tr>
-<td>System 2 thinking is unlockable at inference</td>
-<td>Extended CoT enables deliberate step-by-step reasoning</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="3-core-techniques">3. Core Techniques<a class="headerlink" href="#3-core-techniques" title="Permanent link">&para;</a></h2>
-<h3 id="31-parallel-scaling">3.1 Parallel Scaling<a class="headerlink" href="#31-parallel-scaling" title="Permanent link">&para;</a></h3>
-<p><strong>Best-of-N (BoN):</strong> Generate N candidate outputs, score each with a reward model or verifier, return the highest-scoring one. Error reduction follows approximately <code>error ∝ e^(-cN)</code>. See <a href="../best_of_n_sampling/">Best-of-N Sampling</a>.</p>
-<p><strong>Majority Voting / Self-Consistency:</strong> Sample N reasoning paths, select the most frequent answer. No reward model required — works well for multiple-choice and math tasks.</p>
-<p><strong>Weighted Voting:</strong> Assign confidence weights to candidates before aggregating.</p>
-<hr />
-<h3 id="32-sequential-scaling">3.2 Sequential Scaling<a class="headerlink" href="#32-sequential-scaling" title="Permanent link">&para;</a></h3>
-<p><strong>Chain-of-Thought (CoT):</strong> Decompose into intermediate steps. Longer reasoning chains improve performance on hard tasks.</p>
-<p><strong>Self-Refinement:</strong> Model critiques and revises its own output iteratively.</p>
-<p><strong>Tree Search (MCTS, Beam Search + PRM):</strong> Explore the reasoning tree with a <a href="../orm_prm/">Process Reward Model</a> scoring intermediate steps. Prunes bad paths early; more efficient than BoN for structured problems.</p>
-<hr />
-<h3 id="33-hybrid">3.3 Hybrid<a class="headerlink" href="#33-hybrid" title="Permanent link">&para;</a></h3>
-<p>Generate multiple chains in parallel, refine each sequentially, select the best final answer. Used internally by o1/o3 and R1.</p>
-<hr />
-<h2 id="4-compute-optimal-inference">4. Compute-Optimal Inference<a class="headerlink" href="#4-compute-optimal-inference" title="Permanent link">&para;</a></h2>
-<p>Performance follows a power law: <code>Performance ∝ Compute^α</code> up to a saturation point N* beyond which gains diminish.</p>
-<p><strong>Allocation strategy by budget:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Budget</th>
-<th>Recommended Approach</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Low</td>
-<td>Better base model, greedy decoding</td>
-</tr>
-<tr>
-<td>Medium</td>
-<td>Best-of-N (N=4–16) or CoT</td>
-</tr>
-<tr>
+<td>REINFORCE</td>
+<td>1</td>
+<td>Running mean (batched)</td>
 <td>High</td>
-<td>Tree search + PRM; extended CoT</td>
+<td>No</td>
+</tr>
+<tr>
+<td>RLOO</td>
+<td>k</td>
+<td>Leave-one-out mean</td>
+<td>Low</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PPO</td>
+<td>1</td>
+<td>Trained value function</td>
+<td>Lowest</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GRPO</td>
+<td>k</td>
+<td>Group-normalized</td>
+<td>Low</td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Memory bottleneck:</strong> Long reasoning chains stress the KV-cache. Sparse attention (top-k or block-sparse) mitigates this.</p>
 <hr />
-<h2 id="5-training-for-test-time-scaling">5. Training for Test-Time Scaling<a class="headerlink" href="#5-training-for-test-time-scaling" title="Permanent link">&para;</a></h2>
-<p>Models need to be trained to exploit extra compute effectively.</p>
-<p><strong>Supervised Fine-Tuning (SFT):</strong> Train on long CoT examples (synthetic or distilled). Models learn to imitate extended reasoning.</p>
-<p><strong>Reinforcement Learning (RL):</strong> Train with outcome rewards on verifiable tasks (math, code). RL discovers reasoning strategies without labeled chains. DeepSeek R1-Zero achieved strong reasoning from pure RL with no SFT.</p>
-<p><strong>RLVR (RL from Verifiable Rewards):</strong> Automatic reward generation in domains with ground truth — enables scalable RL training without human labeling.</p>
-<hr />
-<h2 id="6-key-models-20242025">6. Key Models (2024–2025)<a class="headerlink" href="#6-key-models-20242025" title="Permanent link">&para;</a></h2>
+<h2 id="3-formulation">3. Formulation<a class="headerlink" href="#3-formulation" title="Permanent link">&para;</a></h2>
+<h3 id="31-rloo-gradient-estimator">3.1 RLOO Gradient Estimator<a class="headerlink" href="#31-rloo-gradient-estimator" title="Permanent link">&para;</a></h3>
+<p>For a prompt <span class="arithmatex">\(x\)</span>, sample <span class="arithmatex">\(k\)</span> responses <span class="arithmatex">\(\{y_1, \ldots, y_k\}\)</span> from the current policy. The gradient for the <span class="arithmatex">\(i\)</span>-th sample uses the mean reward of the remaining <span class="arithmatex">\(k-1\)</span> samples as baseline:</p>
+<div class="arithmatex">\[
+\nabla_\theta J(\theta) = \frac{1}{k} \sum_{i=1}^k \nabla_\theta \log \pi_\theta(y_i | x) \cdot \underbrace{\left( R_i - \frac{1}{k-1} \sum_{j \neq i} R_j \right)}_{\text{leave-one-out advantage } \hat{A}_i}
+\]</div>
+<p>where <span class="arithmatex">\(R_i = r_\phi(x, y_i) - \beta \log \frac{\pi_\theta(y_i|x)}{\pi_{\text{ref}}(y_i|x)}\)</span> is the KL-penalized reward.</p>
+<h3 id="32-why-this-baseline-is-effective">3.2 Why This Baseline Is Effective<a class="headerlink" href="#32-why-this-baseline-is-effective" title="Permanent link">&para;</a></h3>
+<p>The leave-one-out baseline is:</p>
+<ul>
+<li><strong>Unbiased:</strong> <span class="arithmatex">\(\mathbb{E}[\hat{A}_i] = \mathbb{E}[R_i - b_i] = \mathbb{E}[R_i] - \mathbb{E}[b_i]\)</span>, and since <span class="arithmatex">\(y_i \perp \{y_j\}_{j \neq i}\)</span>, the baseline does not correlate with the gradient term.</li>
+<li><strong>Low variance:</strong> The baseline is computed on-the-fly for each sample at each step — no moving average lag or critic bias.</li>
+<li><strong>Free:</strong> No extra model or training required — just multiple forward passes.</li>
+</ul>
+<h3 id="33-relationship-to-grpo">3.3 Relationship to GRPO<a class="headerlink" href="#33-relationship-to-grpo" title="Permanent link">&para;</a></h3>
+<p>RLOO and GRPO both sample <span class="arithmatex">\(k\)</span> responses per prompt and use group-based baselines. The key difference is in the clipping:</p>
 <table>
 <thead>
 <tr>
-<th>Model</th>
-<th>Approach</th>
-<th>Notable Result</th>
+<th></th>
+<th>RLOO</th>
+<th>GRPO</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>OpenAI o1 (Sept 2024)</td>
-<td>Hidden CoT + test-time search</td>
-<td>Strong STEM benchmarks</td>
+<td><strong>Base algorithm</strong></td>
+<td>REINFORCE (no clipping)</td>
+<td>PPO (with clipping)</td>
 </tr>
 <tr>
-<td>OpenAI o3 (Dec 2024)</td>
-<td>Deliberative alignment</td>
-<td>87.7% GPQA Diamond, 87.5% ARC-AGI</td>
+<td><strong>Advantage</strong></td>
+<td>Leave-one-out mean</td>
+<td>Group mean (z-score normalized)</td>
 </tr>
 <tr>
-<td>DeepSeek R1 (Jan 2025)</td>
-<td>Pure RL, visible <code>&lt;think&gt;</code> tags, MoE (671B / 37B active)</td>
-<td>97.3% MATH-500, ~20× cheaper than o1</td>
+<td><strong>KL constraint</strong></td>
+<td>Explicit additive penalty</td>
+<td>Explicit additive penalty</td>
+</tr>
+<tr>
+<td><strong>Bias</strong></td>
+<td>Unbiased</td>
+<td>Group normalization introduces slight bias</td>
+</tr>
+</tbody>
+</table>
+<p>RLOO's gradient is theoretically unbiased; GRPO's z-score normalization changes the effective gradient scale.</p>
+<hr />
+<h2 id="4-implementation">4. Implementation<a class="headerlink" href="#4-implementation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">rloo_loss</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">ref_policy</span><span class="p">,</span> <span class="n">reward_model</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    batch: dict with &#39;prompts&#39; (B,) and &#39;responses&#39; (B, k) —</span>
+<span class="sd">           k responses already sampled per prompt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prompts</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">]</span>          <span class="c1"># (B,)</span>
+    <span class="n">responses</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;responses&#39;</span><span class="p">]</span>      <span class="c1"># (B, k)</span>
+
+    <span class="n">B</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompts</span><span class="p">)</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">logp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">logp_ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">rewards</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">reward_model</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">responses</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">logp</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">responses</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">logp_ref</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_policy</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">responses</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># KL-penalized returns: (B, k)</span>
+    <span class="n">returns</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">logp</span> <span class="o">-</span> <span class="n">logp_ref</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+
+    <span class="c1"># Leave-one-out baseline for sample i: mean of the other k-1 returns</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">returns</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>          <span class="c1"># (B, 1)</span>
+    <span class="n">loo_baseline</span> <span class="o">=</span> <span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="n">returns</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>        <span class="c1"># (B, k)</span>
+
+    <span class="n">advantages</span> <span class="o">=</span> <span class="p">(</span><span class="n">returns</span> <span class="o">-</span> <span class="n">loo_baseline</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+
+    <span class="c1"># Policy gradient loss</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">logp</span> <span class="o">*</span> <span class="n">advantages</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div>
+<p><strong>Key details:</strong></p>
+<ul>
+<li><code>logp_ref</code> must be computed with <code>torch.no_grad()</code> — reference policy is frozen</li>
+<li><code>advantages</code> must be detached before multiplying by <code>logp</code> — baseline must not receive gradients</li>
+<li>Use gradient clipping (max norm 1.0) for stability</li>
+</ul>
+<hr />
+<h2 id="5-why-rloo-instead-of-ppo">5. Why RLOO Instead of PPO?<a class="headerlink" href="#5-why-rloo-instead-of-ppo" title="Permanent link">&para;</a></h2>
+<p>Ahmadian et al. (2024) argue that most of PPO's complexity was designed for RL from scratch, which does not apply to LLM fine-tuning:</p>
+<p><strong>PPO's value function is unnecessary:</strong> A pre-trained LLM already generates high-quality text. The variance of single-sample REINFORCE is low enough that the bias introduced by a learned value function outweighs the variance reduction benefit.</p>
+<p><strong>Empirical results (Ahmadian et al., 2024):</strong></p>
+<ul>
+<li>RLOO outperforms PPO on helpfulness and harmlessness benchmarks</li>
+<li>RLOO uses 50–70% less vRAM than PPO</li>
+<li>RLOO runs 2× faster (1B models) to 3× faster (6.9B models) than PPO</li>
+<li>RLOO outperforms DPO and RAFT on all tested datasets</li>
+</ul>
+<hr />
+<h2 id="6-comparison-with-other-methods">6. Comparison with Other Methods<a class="headerlink" href="#6-comparison-with-other-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>RLOO</th>
+<th>PPO</th>
+<th>GRPO</th>
+<th>DPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critic needed</strong></td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Samples per prompt</strong></td>
+<td>k</td>
+<td>1</td>
+<td>k (G)</td>
+<td>N/A (offline)</td>
+</tr>
+<tr>
+<td><strong>Baseline</strong></td>
+<td>Leave-one-out</td>
+<td>Value function</td>
+<td>Group z-score</td>
+<td>Implicit</td>
+</tr>
+<tr>
+<td><strong>Unbiased gradient</strong></td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Memory vs PPO</strong></td>
+<td>−50–70%</td>
+<td>baseline</td>
+<td>−50%</td>
+<td>−50%</td>
+</tr>
+<tr>
+<td><strong>Speed vs PPO</strong></td>
+<td>2–3× faster</td>
+<td>baseline</td>
+<td>~2× faster</td>
+<td>~2× faster</td>
+</tr>
+<tr>
+<td><strong>Clipping</strong></td>
+<td>None</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>General RLHF</td>
+<td>Stable RL</td>
+<td>Verifiable rewards</td>
+<td>Preference data</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="7-when-to-use">7. When to Use<a class="headerlink" href="#7-when-to-use" title="Permanent link">&para;</a></h2>
-<p><strong>Use test-time scaling for:</strong></p>
-<ul>
-<li>Complex multi-step reasoning (math, code, planning)</li>
-<li>Tasks with verifiable correctness</li>
-<li>When a smaller model must match a larger one</li>
-</ul>
-<p><strong>Avoid when:</strong></p>
-<ul>
-<li>Latency is the primary constraint</li>
-<li>Task is simple factual lookup</li>
-<li>Compute budget is very tight</li>
-</ul>
-<p><strong>Known failure mode — Overthinking:</strong> Beyond a saturation point, additional inference compute yields diminishing returns while latency keeps growing. Models trained with RL rewards on reasoning length can also learn to generate redundant chains that look thorough but add no correctness signal. Mitigation: adaptive early stopping once a confidence threshold is met, and length penalties during RL training.</p>
-<hr />
-<h2 id="8-interaction-with-other-inference-topics">8. Interaction with Other Inference Topics<a class="headerlink" href="#8-interaction-with-other-inference-topics" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Speculative decoding</strong> can reduce latency of long reasoning chains — see LLM-Inference-Speed repo</li>
-<li><strong>KV-cache pressure</strong> from long CoT is managed via Paged Attention (see LLM-Inference-Speed repo)</li>
-<li><strong>BoN and PRM</strong> are the two core primitives — covered in this section</li>
-</ul>
+<h2 id="7-limitations">7. Limitations<a class="headerlink" href="#7-limitations" title="Permanent link">&para;</a></h2>
+<p><strong>No clipping:</strong> Without a trust-region constraint, RLOO can take large gradient steps on high-variance batches. Gradient clipping is the primary safeguard, but it is less principled than PPO's clip ratio.</p>
+<p><strong>Memory scales with k:</strong> Storing <span class="arithmatex">\(k\)</span> responses and their log-probabilities per prompt increases memory linearly with <span class="arithmatex">\(k\)</span>. Typical <span class="arithmatex">\(k = 4\)</span>–8 is manageable.</p>
+<p><strong>Online sampling required:</strong> Like all on-policy methods, RLOO must generate new samples at each training step. This is more expensive than DPO, which trains on a static offline dataset.</p>
+<p><strong>No token-level credit assignment:</strong> The same advantage is applied to every token in a sequence. For long chain-of-thought responses, this means early tokens receive incorrect credit signals. See <a href="../dapo/">DAPO</a> for token-level loss.</p>
 
 
 
@@ -1983,10 +2033,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.top", "search.highlight", "search.share", "content.code.copy", "mathjax"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.expand", "navigation.top", "search.highlight", "search.share", "content.code.copy", "mathjax"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

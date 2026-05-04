@@ -1,130 +1,96 @@
 ## 1. Overview
 
-**Tree of Thoughts** is an advanced prompting framework that enhances Large Language Model (LLM) reasoning by exploring multiple reasoning paths simultaneously, similar to human problem-solving strategies.
-
-### Key Concept
-Unlike Chain-of-Thought (CoT) which follows a linear reasoning path, ToT enables deliberate exploration of multiple thought sequences, self-evaluation, and backtracking.
+Tree of Thoughts (ToT) is a prompting framework introduced by Yao et al. (NeurIPS 2023) that frames problem-solving as a **search over a tree of intermediate reasoning steps** ("thoughts"). Unlike Chain-of-Thought, which commits to a single linear path, ToT generates multiple candidate thoughts at each step, evaluates them, and uses a search algorithm (BFS or DFS) to explore the most promising branches — backtracking when a path looks unpromising.
 
 ---
 
+## 2. Motivation: Where CoT Falls Short
+
+CoT works well when each step has an obvious next move. It fails on problems that require:
+
+- **Lookahead** — the correct step now depends on what it enables later
+- **Exploration** — multiple plausible next moves with very different outcomes
+- **Backtracking** — recognising a path is wrong and trying a different one
+
+**Paper benchmark:** Game of 24 (use four numbers and arithmetic to reach 24). CoT with GPT-4 solved only **4%** of problems. ToT solved **74%**.
+
 ---
 
-## 2. Core Fundamentals
-
-### 2.1 **Basic Structure**
-
-- **Thought Decomposition**: Break problems into intermediate thinking steps
-- **Thought Generation**: Generate multiple candidate thoughts per step
-- **State Evaluation**: Assess progress toward problem solution
-- **Search Algorithm**: Navigate through the thought tree (BFS/DFS)
-
----
-### 2.2 **Key Components**
+## 3. How ToT Works
 
 ```
-Problem → Thought 1 → Evaluation → Decision
-       → Thought 2 → Evaluation → Decision
-       → Thought 3 → Evaluation → Decision
+Problem
+  ├── Thought A  →  eval: promising  →  expand
+  │     ├── Thought A1  →  eval: good  →  solution
+  │     └── Thought A2  →  eval: dead end  →  backtrack
+  ├── Thought B  →  eval: weak  →  prune
+  └── Thought C  →  eval: promising  →  expand
+        └── ...
 ```
 
----
+### 3.1 Thought Generation
 
-### 2.3 **Difference from CoT**
+Two strategies from the paper:
 
-| Feature | Chain-of-Thought | Tree of Thoughts |
-|---------|-----------------|------------------|
-| Path | Linear | Multi-path |
-| Exploration | Single | Multiple branches |
-| Backtracking | No | Yes |
-| Best for | Simple reasoning | Complex planning |
+| Strategy | How | When to use |
+|----------|-----|-------------|
+| **Sampling** | Generate k thoughts independently in parallel (temperature > 0) | When thoughts are short and diverse (e.g. one sentence) |
+| **Proposing** | Generate thoughts sequentially in a single prompt, using a "propose prompt" | When thoughts are longer or need to be distinct from each other |
 
----
+### 3.2 Thought Evaluation
 
----
+The LLM evaluates each thought to guide the search — this replaces the hand-crafted heuristic in classical search:
 
-## 3. Technical Details
+- **Value**: prompt the LLM to score each thought independently (e.g. 1–10, or sure/likely/impossible)
+- **Vote**: prompt the LLM to compare thoughts and pick the most promising one
 
-### Implementation Approaches
+### 3.3 Search Algorithm
 
-**1. Breadth-First Search (BFS)**
+- **BFS**: expand all thoughts at depth d before going to d+1; keeps the top-k states at each level; better for problems needing global comparison
+- **DFS**: explore one branch fully before backtracking; more memory-efficient but risks getting stuck
 
-- Explores all thoughts at current depth before moving deeper
-- Better for problems requiring comprehensive exploration
-- Higher computational cost
-
-**2. Depth-First Search (DFS)**
-
-- Explores one path completely before backtracking
-- More memory efficient
-- Risk of local optima
+**Key hyperparameters:** tree depth, branching factor (number of thoughts per step), and number of states kept at each BFS level.
 
 ---
 
-### Algorithmic Flow
+## 4. Results from the Paper
 
-```python
-def tree_of_thoughts(problem, depth=3, breadth=5):
-    # 1. Generate initial thoughts
-    thoughts = generate_thoughts(problem, k=breadth)
-    
-    # 2. Evaluate each thought
-    scores = evaluate_thoughts(thoughts)
-    
-    # 3. Select best thoughts
-    best_thoughts = select_top_k(thoughts, scores, k=breadth)
-    
-    # 4. Recursively expand (if depth > 0)
-    if depth > 0:
-        for thought in best_thoughts:
-            tree_of_thoughts(thought, depth-1, breadth)
-    
-    # 5. Return best solution
-    return select_best_solution(best_thoughts)
-```
+| Task | CoT (best) | ToT | Notes |
+|------|-----------|-----|-------|
+| **Game of 24** | 4% | 74% | GPT-4; ToT used BFS with k=5 |
+| **Mini Crosswords** | 16% | 60% | 5×5 crossword; DFS with backtracking |
+| **Creative Writing** | ~6.9/10 | ~7.6/10 | Human coherence rating; smaller gap |
+
+The crossword result illustrates backtracking: the model fills a word, discovers it conflicts with a crossing word, and backs up to try a different fill — something a linear CoT cannot do.
 
 ---
 
-### Evaluation Strategies
+## 5. Cost vs. Benefit
 
-- **Value-based**: Assign numeric scores to each thought
-- **Vote-based**: LLM votes on most promising thoughts
-- **Heuristic-based**: Domain-specific evaluation functions
+ToT is significantly more expensive than CoT:
 
----
+- Game of 24 required ~$1 of API calls per problem (GPT-4 pricing at time of paper)
+- Branching factor k=5 and depth=3 means up to 5³ = 125 LLM calls per problem vs. 1 for CoT
 
----
-
-## 4. Recent Developments (2024-2025)
-
-### 1. **Graph of Thoughts (GoT)**
-
-- Extension allowing arbitrary graph structures
-- Combines thoughts from multiple branches
-- Better for complex, interdependent reasoning
-
-### 2. **Self-Consistency ToT**
-
-- Multiple ToT runs with majority voting
-- Improved reliability and accuracy
-- Used in production systems
-
-### 3. **Hybrid Approaches**
-
-- ToT + Retrieval-Augmented Generation (RAG)
-- ToT + Fine-tuning for domain-specific tasks
-- Integration with multi-modal models
-
-### 4. **Optimization Techniques**
-
-- Pruning strategies to reduce computational cost
-- Parallel thought generation
-- Adaptive depth/breadth selection
-
-### 5. **Tool-Augmented ToT**
-
-- Integration with external tools (calculators, code interpreters)
-- Enhanced problem-solving for technical tasks
+**When ToT is worth it:** problems with discrete, verifiable intermediate states where backtracking has clear value (puzzles, planning, formal reasoning). For open-ended generation or tasks where CoT already works well, the cost is rarely justified.
 
 ---
 
+## 6. Extensions
+
+**Graph of Thoughts (Besta et al., 2024)** — generalises ToT from a tree to an arbitrary directed graph. Thoughts from different branches can be merged (aggregated), allowing the model to combine partial solutions. Improves performance on sorting and set operations where results from parallel branches need to be combined.
+
 ---
+
+## 7. Comparison with Related Techniques
+
+| Technique | Structure | Evaluation | Backtracking | Cost |
+|-----------|-----------|-----------|--------------|------|
+| CoT | Linear chain | None | No | 1× |
+| Self-Consistency | Parallel chains | Majority vote | No | k× |
+| ToT | Tree | LLM value/vote | Yes | k^d × |
+| GoT | Graph | LLM value | Yes | higher |
+
+---
+
+*Source: Yao et al. (2023) — "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." NeurIPS 2023. [[arXiv:2305.10601]](https://arxiv.org/abs/2305.10601)*

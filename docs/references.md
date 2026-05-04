@@ -103,6 +103,9 @@
 * **Shinn et al. (2023)** — *Reflexion: Language Agents with Verbal Reinforcement Learning.* [[arXiv:2303.11366]](https://arxiv.org/abs/2303.11366)
 * **Gou et al. (2023)** — *CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing.* [[arXiv:2305.11738]](https://arxiv.org/abs/2305.11738)
 * **Zelikman et al. (2022)** — *STaR: Bootstrapping Reasoning With Reasoning.* (NeurIPS 2022) [[arXiv:2203.14465]](https://arxiv.org/abs/2203.14465)
+* **Yao et al. (2023)** — *Tree of Thoughts: Deliberate Problem Solving with Large Language Models.* (NeurIPS 2023) [[arXiv:2305.10601]](https://arxiv.org/abs/2305.10601)
+* **Besta et al. (2024)** — *Graph of Thoughts: Solving Elaborate Problems with Large Language Models.* (AAAI 2024) [[arXiv:2308.09687]](https://arxiv.org/abs/2308.09687)
+* **Wei et al. (2022)** — *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* (NeurIPS 2022) [[arXiv:2201.11903]](https://arxiv.org/abs/2201.11903)
 
 ---
 

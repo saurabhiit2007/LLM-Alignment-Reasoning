@@ -1729,7 +1729,7 @@
 <h2 id="6-failure-modes">6. Failure Modes<a class="headerlink" href="#6-failure-modes" title="Permanent link">&para;</a></h2>
 <p><strong>Reward hacking:</strong> Model exploits weaknesses in the reward model to score highly without genuine quality. Mitigations: ensemble reward models, KL regularisation from base model, diverse reward training data.</p>
 <p><strong>Diminishing returns:</strong> Beyond N*, additional samples provide negligible improvement. Always plot a quality-vs-N curve before committing to large N.</p>
-<p><strong>Latency in production:</strong> N × generation time is too slow for real-time applications. Use <a href="../decoding_strategies/speculative_decoding.md">speculative decoding</a> or distil BoN-selected examples into a fine-tuned model for deployment.</p>
+<p><strong>Latency in production:</strong> N × generation time is too slow for real-time applications. Use speculative decoding (see LLM-Inference-Speed repo) or distil BoN-selected examples into a fine-tuned model for deployment.</p>
 
 
 

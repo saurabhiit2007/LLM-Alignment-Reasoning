@@ -4,6 +4,26 @@ Evaluating whether an LLM is truly *aligned* is fundamentally harder than measur
 
 ---
 
+## 0. What Are We Evaluating?
+
+The subject of alignment evaluation is always the **response an LLM generates for a given prompt or task**:
+
+```
+Prompt / Task  →  LLM  →  Response
+                               ↑
+                        How good is this?
+```
+
+For capability tasks (math, code), correctness is verifiable — the answer is right or wrong. Alignment evaluation covers the harder cases where there is **no automatic ground truth**:
+
+- Is this response *helpful* to the user who asked?
+- Is it *safe* — free of harmful, biased, or misleading content?
+- Is it *honest* — factually accurate and appropriately uncertain?
+
+Because these qualities cannot be checked automatically with a formula, two approaches exist: have a **human judge the response** (Section 2) or have a **strong LLM judge the response** (Section 3). Sections 4–7 cover specific benchmarks that provide structured prompts and scoring rubrics so that evaluation is reproducible across models.
+
+---
+
 ## 1. The HHH Framework
 
 Anthropic's Helpful–Harmless–Honest (HHH) triplet is the most widely adopted conceptual framework for alignment evaluation. Each axis targets a distinct failure mode:
@@ -19,6 +39,8 @@ Real tensions exist between axes: a model becomes more harmless by refusing more
 ---
 
 ## 2. Human Preference Evaluation
+
+A human reads the LLM's response (or two responses side by side) and judges its quality. This is the ground truth signal but is expensive to collect at scale.
 
 ### 2.1 Pairwise Comparisons
 
@@ -56,7 +78,7 @@ A live crowdsourced platform where users converse with two anonymous models and 
 
 ## 3. LLM-as-Judge Evaluation
 
-Rather than expensive human annotation, a strong model (typically GPT-4) acts as an automated judge. This scales evaluation dramatically while retaining reasonable correlation with human preferences.
+A strong LLM (typically GPT-4) reads the response produced by the model under evaluation and scores or ranks it — replacing the human annotator. Rather than expensive human annotation, a strong model (typically GPT-4) acts as an automated judge. This scales evaluation dramatically while retaining reasonable correlation with human preferences.
 
 ### 3.1 MT-Bench
 

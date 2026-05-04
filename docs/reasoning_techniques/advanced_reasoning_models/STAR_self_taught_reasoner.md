@@ -63,7 +63,7 @@ Fine-tuning:
 
 ---
 
-## Performance Improvements
+## 4. Performance Improvements
 
 ### Benchmark Results
 
@@ -84,17 +84,13 @@ Fine-tuning:
 
 ---
 
-## Recent Developments (2024-2025)
+## 5. Recent Developments (2024-2025)
 
 ### 1. **Quiet-STaR** (March 2024)
 
 - Extends STaR to arbitrary text, not just Q&A
-- Models generate internal "thoughts" at each token
-- Special tokens: `<|startofthought|>` and `<|endofthought|>`
-- **Results**: 
-  - GSM8K: 5.9% → 10.9% (zero-shot)
-  - CommonsenseQA: 36.3% → 47.2%
-  - Improved perplexity on difficult tokens
+- Models generate internal "thoughts" at each token using special tokens `<|startofthought|>` / `<|endofthought|>`
+- Results: GSM8K 5.9% → 10.9% (zero-shot), CommonsenseQA 36.3% → 47.2%
 
 ### 2. **V-STaR (Verification-STaR)** (2024)
 
@@ -113,19 +109,15 @@ Fine-tuning:
 
 ### 4. **START (Self-Taught Reasoner with Tools)** (March 2025)
 
-- Integrates external tools (code execution, calculators)
-- Combines long chain-of-thought with tool use
+- Integrates external tools (code execution, calculators) with long chain-of-thought
 - Includes "Hint-infer" and "Hint-RFT" techniques
-- **Performance**:
-  - GPQA (PhD-level science): 63.6%
-  - AIME 2025 (competition math): 47.1%
-  - Comparable to o1-Preview and R1-Distill
+- Results: GPQA 63.6%, AIME 2025 47.1% — comparable to o1-Preview and R1-Distill
 
 ---
 
 ---
 
-## Limitations & Challenges
+## 6. Limitations & Challenges
 
 ### Known Issues
 

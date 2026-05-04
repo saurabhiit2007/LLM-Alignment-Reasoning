@@ -20,15 +20,15 @@ System 2 Attention (S2A) is a technique designed to improve reasoning in Large L
 
 ### Architecture
 
-1. **Context Regeneration Phase:**
-   - Given input context C and question Q
-   - Generate cleaned context C' that contains only relevant information
-   - Use prompt: "Given the context, rewrite it to remove irrelevant information for answering the question"
+**Stage 1 — Context Regeneration:**
 
-2. **Reasoning Phase:**
-   - Use regenerated context C' instead of original C
-   - Apply standard attention and reasoning mechanisms
-   - Generate final answer based on filtered context
+- Given input context C and question Q, generate a cleaned context C' containing only relevant information
+- Prompt: *"Given the context, rewrite it to remove irrelevant information for answering the question"*
+
+**Stage 2 — Reasoning:**
+
+- Feed cleaned context C' (not the original C) to the reasoning model
+- Apply standard attention and generation to produce the final answer
 
 ---
 

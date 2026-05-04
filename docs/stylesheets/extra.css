@@ -12,6 +12,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: #37474f;        /* dark slate */
+  padding-left: 1.2rem;
 }
 
 /* ── Level 3: individual pages ── */
@@ -19,6 +20,7 @@
   font-size: 0.72rem;
   font-weight: 400;
   color: #546e7a;        /* muted blue-grey */
+  padding-left: 2.0rem;
 }
 
 /* ── Level 4: pages nested one deeper ── */
@@ -26,6 +28,7 @@
   font-size: 0.70rem;
   font-weight: 400;
   color: #78909c;        /* lighter grey */
+  padding-left: 2.8rem;
 }
 
 /* ── Active / current page highlight ── */

@@ -53,6 +53,56 @@ The LLM evaluates each thought to guide the search — this replaces the hand-cr
 
 ---
 
+### 3.4 Worked Example — Game of 24 (numbers: 4, 9, 10, 13)
+
+Game of 24: combine four numbers with +, −, ×, ÷ to make 24.
+
+**Step 1 — Generate candidate first moves (branching factor k=5):**
+
+The model proposes several ways to combine two of the four numbers:
+
+```
+Candidate 1: 13 - 9 = 4   → remaining: 4, 4, 10
+Candidate 2: 10 - 4 = 6   → remaining: 6, 9, 13
+Candidate 3: 9 + 4 = 13   → remaining: 10, 13, 13
+Candidate 4: 13 + 9 = 22  → remaining: 4, 10, 22
+Candidate 5: 4 × 9 = 36   → remaining: 10, 13, 36
+```
+
+**Step 2 — Evaluate each candidate:**
+
+The LLM scores each state: *"Given these remaining numbers, how likely is it that they can be combined to reach 24? Answer sure / likely / impossible."*
+
+```
+13 - 9 = 4  → remaining 4, 4, 10  → "sure"   ✓ keep
+10 - 4 = 6  → remaining 6, 9, 13  → "likely" ✓ keep
+9  + 4 = 13 → remaining 10,13,13  → "likely" ✓ keep
+13 + 9 = 22 → remaining 4, 10, 22 → "impossible" ✗ prune
+4  × 9 = 36 → remaining 10,13,36  → "impossible" ✗ prune
+```
+
+**Step 3 — Expand the kept states (BFS moves to depth 2):**
+
+For state `[4, 4, 10]`, the model proposes next moves:
+
+```
+4 × 4 = 16  → remaining: 10, 16  → eval: "sure" (10 + 16 = 26? no... 16 - 10 = 6? no... wait)
+              → actually eval: "likely"
+10 - 4 = 6  → remaining: 4, 6   → eval: "impossible"
+4 + 4 = 8   → remaining: 8, 10  → eval: "likely"
+10 + 4 = 14 → remaining: 4, 14  → eval: "likely"
+10 × 4 = 40 → remaining: 4, 40  → eval: "impossible" ✗ prune
+```
+
+**Step 4 — Backtracking in DFS:**
+
+If the model is using DFS and reaches a dead end (e.g. remaining numbers [6, 6] with no way to make 24), it **backs up to the parent node** and tries the next unexplored branch — exactly like a human scratching out a dead-end calculation and trying a different first step.
+
+**Final solution found:** 13 − 9 = 4 → 4 × 4 = 16 → 10 + 16 = 26... (not this branch)
+Actually: 10 − 4 = 6 → 13 − 9 = 4 → 6 × 4 = 24 ✓
+
+---
+
 ## 4. Results from the Paper
 
 | Task | CoT (best) | ToT | Notes |

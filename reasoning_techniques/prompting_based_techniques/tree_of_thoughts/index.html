@@ -1130,48 +1130,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#5-common-interview-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Common Interview Questions
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Common Interview Questions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#conceptual-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conceptual Questions
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#technical-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technical Questions
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#practical-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Practical Questions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1924,48 +1882,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#5-common-interview-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Common Interview Questions
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Common Interview Questions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#conceptual-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conceptual Questions
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#technical-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technical Questions
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#practical-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Practical Questions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2111,77 +2027,6 @@
 <ul>
 <li>Integration with external tools (calculators, code interpreters)</li>
 <li>Enhanced problem-solving for technical tasks</li>
-</ul>
-<hr />
-<hr />
-<h2 id="5-common-interview-questions">5. Common Interview Questions<a class="headerlink" href="#5-common-interview-questions" title="Permanent link">&para;</a></h2>
-<h3 id="conceptual-questions">Conceptual Questions<a class="headerlink" href="#conceptual-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q1: What is Tree of Thoughts and how does it differ from Chain-of-Thought?</strong></p>
-<ul>
-<li><strong>Answer</strong>: ToT is a prompting framework that explores multiple reasoning paths simultaneously, allowing backtracking and evaluation of different approaches. Unlike CoT's linear progression, ToT maintains a tree structure of intermediate thoughts, evaluates them, and selects the most promising paths.</li>
-</ul>
-<hr />
-<p><strong>Q2: When would you use ToT over standard prompting?</strong></p>
-<ul>
-<li><strong>Answer</strong>: Use ToT for:</li>
-<li>Complex planning tasks (e.g., Game of 24, creative writing)</li>
-<li>Problems requiring exploration of multiple solutions</li>
-<li>Tasks where backtracking is valuable</li>
-<li>Scenarios needing strategic lookahead</li>
-</ul>
-<hr />
-<p><strong>Q3: What are the computational trade-offs of ToT?</strong></p>
-<ul>
-<li><strong>Answer</strong>: ToT requires multiple LLM calls (generation + evaluation), increasing latency and cost. The trade-off is between solution quality and computational resources. Optimization techniques include pruning, limiting depth/breadth, and caching.</li>
-</ul>
-<hr />
-<h3 id="technical-questions">Technical Questions<a class="headerlink" href="#technical-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q4: Explain the thought generation process in ToT.</strong></p>
-<ul>
-<li><strong>Answer</strong>: Thoughts can be generated through:</li>
-<li><strong>Sampling</strong>: Generate diverse candidates using temperature &gt; 0</li>
-<li><strong>Proposing</strong>: LLM explicitly proposes next steps</li>
-<li>The number of thoughts (breadth) is a hyperparameter balancing exploration vs. cost</li>
-</ul>
-<hr />
-<p><strong>Q5: How do you evaluate intermediate thoughts?</strong></p>
-<ul>
-<li><strong>Answer</strong>: Common methods:</li>
-<li>Prompt LLM to score thoughts (1-10)</li>
-<li>Classification (promising/unpromising)</li>
-<li>Compare thoughts pairwise</li>
-<li>Use domain-specific heuristics</li>
-</ul>
-<hr />
-<p><strong>Q6: Describe how to implement backtracking in ToT.</strong></p>
-<ul>
-<li><strong>Answer</strong>: Maintain a state tree with parent pointers. When a path reaches low evaluation or dead-end, backtrack to parent node and explore alternative branches. Use BFS/DFS algorithms to manage traversal.</li>
-</ul>
-<hr />
-<h3 id="practical-questions">Practical Questions<a class="headerlink" href="#practical-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q7: How would you optimize ToT for production use?</strong></p>
-<ul>
-<li><strong>Answer</strong>:</li>
-<li>Implement aggressive pruning (top-k selection)</li>
-<li>Cache evaluated thoughts</li>
-<li>Use parallel API calls</li>
-<li>Adaptive depth based on problem complexity</li>
-<li>Implement timeout mechanisms</li>
-</ul>
-<hr />
-<p><strong>Q8: What are real-world applications of ToT?</strong></p>
-<ul>
-<li><strong>Answer</strong>:</li>
-<li>Code generation with multiple solution approaches</li>
-<li>Strategic game playing</li>
-<li>Mathematical problem-solving</li>
-<li>Creative content generation</li>
-<li>Multi-step planning and scheduling</li>
-</ul>
-<hr />
-<p><strong>Q9: How does ToT handle error correction?</strong></p>
-<ul>
-<li><strong>Answer</strong>: Through evaluation and backtracking. If a thought path leads to incorrect or low-quality results, the evaluation mechanism identifies this, and the search algorithm explores alternative branches, effectively self-correcting.</li>
 </ul>
 <hr />
 <hr />

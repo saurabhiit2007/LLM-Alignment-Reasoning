@@ -75,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -1059,6 +1064,19 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Debate & Multi-Agent
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1070,6 +1088,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-debate-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Debate Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-self-critique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison with Self-Critique
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relation-to-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation to Alignment
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1505,6 +1594,68 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-debate-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Debate Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-self-critique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison with Self-Critique
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relation-to-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relation to Alignment
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1521,7 +1672,71 @@
 
   <h1>Debate & Multi-Agent</h1>
 
-
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Multi-agent debate is a reasoning technique in which two or more LLM instances independently generate answers and then iteratively challenge each other's reasoning. A judge model (or majority vote) selects the final answer. The technique improves factuality and reduces hallucinations by forcing each model to defend its position against adversarial critique.</p>
+<hr />
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>Round 1:  Agent A answers → Agent B answers
+Round N:  Agent A critiques B → Agent B critiques A
+Final:    Judge (or majority) selects winner
+</code></pre></div>
+<p><strong>Key design choices:</strong></p>
+<ul>
+<li><strong>Number of agents</strong>: Typically 2–4; more agents improve quality but increase cost</li>
+<li><strong>Number of rounds</strong>: 2–3 rounds typically capture most quality gain</li>
+<li><strong>Judge</strong>: A separate model, or majority vote over the agents</li>
+</ul>
+<hr />
+<h2 id="why-debate-works">Why Debate Works<a class="headerlink" href="#why-debate-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Models are stronger critics than generators — identifying flaws in others' reasoning is easier than avoiding all flaws in one's own</li>
+<li>Adversarial pressure forces models to surface hidden assumptions</li>
+<li>Consensus under critique is more reliable than single-model confidence</li>
+</ul>
+<hr />
+<h2 id="comparison-with-self-critique">Comparison with Self-Critique<a class="headerlink" href="#comparison-with-self-critique" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Self-Critique (Self-Refine)</th>
+<th>Multi-Agent Debate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agents</strong></td>
+<td>One model critiques itself</td>
+<td>Multiple independent models</td>
+</tr>
+<tr>
+<td><strong>Bias</strong></td>
+<td>May reinforce own errors</td>
+<td>Adversarial pressure breaks echo chambers</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Moderate (2–3× calls)</td>
+<td>High (N agents × R rounds)</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Single-model refinement</td>
+<td>Factual QA, complex reasoning</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Cost</strong>: Scales as O(agents × rounds)</li>
+<li><strong>Convergence risk</strong>: Agents can reach false consensus if they share the same systematic bias</li>
+<li><strong>Diminishing returns</strong>: Most gain from round 1; additional rounds add less</li>
+</ul>
+<hr />
+<h2 id="relation-to-alignment">Relation to Alignment<a class="headerlink" href="#relation-to-alignment" title="Permanent link">&para;</a></h2>
+<p>Debate was proposed as an alignment mechanism by Irving et al. (2018): if two AI agents debate with a human judge, a weaker human can identify correct answers even for tasks beyond their own expertise, because the losing agent is incentivized to expose flaws. This connects debate to scalable oversight — a core open problem in AI safety.</p>
+<p>See: <a href="../self_critic_methods/">Self-Critic Methods</a> · <a href="https://saurabhiit2007.github.io/RAG_And_Context_Engineering/agents/agent_evaluation/">Agent Evaluation</a></p>
 
 
 

@@ -72,4 +72,4 @@ Error reduction is approximately exponential: `error ∝ e^(-cN)` up to a satura
 
 **Diminishing returns:** Beyond N*, additional samples provide negligible improvement. Always plot a quality-vs-N curve before committing to large N.
 
-**Latency in production:** N × generation time is too slow for real-time applications. Use [speculative decoding](../decoding_strategies/speculative_decoding.md) or distil BoN-selected examples into a fine-tuned model for deployment.
+**Latency in production:** N × generation time is too slow for real-time applications. Use speculative decoding (see LLM-Inference-Speed repo) or distil BoN-selected examples into a fine-tuned model for deployment.

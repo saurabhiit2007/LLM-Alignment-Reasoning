@@ -102,6 +102,6 @@ Models need to be trained to exploit extra compute effectively.
 
 ## 8. Interaction with Other Inference Topics
 
-- **Speculative decoding** can reduce latency of long reasoning chains — see [Speculative Decoding](../decoding_strategies/speculative_decoding.md)
-- **KV-cache pressure** from long CoT is managed via [Paged Attention](../attention_optimization/paged_attention.md)
+- **Speculative decoding** can reduce latency of long reasoning chains — see LLM-Inference-Speed repo
+- **KV-cache pressure** from long CoT is managed via Paged Attention (see LLM-Inference-Speed repo)
 - **BoN and PRM** are the two core primitives — covered in this section

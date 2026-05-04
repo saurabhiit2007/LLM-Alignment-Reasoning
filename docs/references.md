@@ -96,7 +96,17 @@
 
 ---
 
-### 🤝 9. Debate & Multi-Agent Reasoning
+### 🧠 9. Reasoning Techniques
+
+* **Weston & Sukhbaatar (2023)** — *System 2 Attention (is something you might need too).* (Meta AI) [[arXiv:2311.11829]](https://arxiv.org/abs/2311.11829)
+* **Madaan et al. (2023)** — *Self-Refine: Iterative Refinement with Self-Feedback.* [[arXiv:2303.17651]](https://arxiv.org/abs/2303.17651)
+* **Shinn et al. (2023)** — *Reflexion: Language Agents with Verbal Reinforcement Learning.* [[arXiv:2303.11366]](https://arxiv.org/abs/2303.11366)
+* **Gou et al. (2023)** — *CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing.* [[arXiv:2305.11738]](https://arxiv.org/abs/2305.11738)
+* **Zelikman et al. (2022)** — *STaR: Bootstrapping Reasoning With Reasoning.* (NeurIPS 2022) [[arXiv:2203.14465]](https://arxiv.org/abs/2203.14465)
+
+---
+
+### 🤝 10. Debate & Multi-Agent Reasoning
 
 * **Irving et al. (2018)** — *AI Safety via Debate.* (OpenAI) [[arXiv:1805.00899]](https://arxiv.org/abs/1805.00899)
 * **Du et al. (2023)** — *Improving Factuality and Reasoning in Language Models through Multiagent Debate.* [[arXiv:2305.14325]](https://arxiv.org/abs/2305.14325)

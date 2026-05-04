@@ -1,126 +1,81 @@
 ## 1. Overview
 
-System 2 Attention (S2A) is a technique designed to improve reasoning in Large Language Models (LLMs) by separating context extraction from reasoning, inspired by human cognitive processes. The name draws from Kahneman's dual-process theory: System 1 (fast, intuitive) and System 2 (slow, deliberate reasoning).
+System 2 Attention (S2A) is a prompting technique introduced by Weston & Sukhbaatar (Meta AI, 2023) that improves LLM reasoning by running the model twice: once to regenerate a cleaner context, and once to answer the question from that cleaned context. The name is drawn from Kahneman's dual-process theory — System 1 (fast, automatic) vs. System 2 (slow, deliberate).
+
+**No fine-tuning required.** S2A works at inference time on any instruction-following LLM.
 
 ---
 
+## 2. Motivation: Sycophancy and Irrelevant Context
+
+The paper was motivated by a specific failure mode: **sycophancy**. When the input context contains an opinion or irrelevant statement, LLMs tend to incorporate it into their answer even when the question does not require it.
+
+**Example:**
+
+```
+Context: "John thinks the answer is 42. A store has 15 items.
+          Each item costs $3. How much does everything cost?"
+Standard LLM → may anchor on 42 despite the math being straightforward
+S2A          → strips "John thinks the answer is 42" before reasoning
+```
+
+Standard attention has no mechanism to ignore irrelevant tokens — all context competes for attention weight. S2A removes the distractor *before* the reasoning step rather than relying on the model to suppress it internally.
+
 ---
 
-## 2. Core Concept
+## 3. How S2A Works
 
-**Problem:** Standard attention mechanisms in transformers process all input tokens equally, making models susceptible to irrelevant context, distractors, and spurious correlations that can degrade reasoning performance.
+```
+Standard:  Answer = LLM(C, Q)
 
-**Solution:** System 2 Attention regenerates the input context to include only information relevant to the question, effectively removing irrelevant details before the reasoning step.
-
----
-
----
-
-## 3. How System 2 Attention Works
-
-### Architecture
+S2A:       C' = LLM_regenerate(C, Q)   ← strip irrelevant content
+           Answer = LLM_reason(C', Q)   ← reason on clean context
+```
 
 **Stage 1 — Context Regeneration:**
 
-- Given input context C and question Q, generate a cleaned context C' containing only relevant information
-- Prompt: *"Given the context, rewrite it to remove irrelevant information for answering the question"*
+The model is prompted to rewrite the context, keeping only what is necessary to answer the question:
+
+> *"Given the following text: {context}. And the question: {question}. Rewrite the text so that it only contains information relevant to answering the question, and remove any opinions, distractors, or irrelevant details."*
 
 **Stage 2 — Reasoning:**
 
-- Feed cleaned context C' (not the original C) to the reasoning model
-- Apply standard attention and generation to produce the final answer
+The cleaned context C' replaces the original C. The model answers the question using only the filtered information.
+
+The same model can be used for both stages with different prompts, or a smaller model can handle Stage 1 and a larger one Stage 2.
 
 ---
 
-### Mathematical Formulation
+## 4. Evaluation Results
 
-```
-Standard Attention: Answer = LLM(Context, Question)
-System 2 Attention: 
-  - C' = LLM_regenerate(C, Q)  # Context regeneration
-  - Answer = LLM_reason(C', Q)  # Reasoning on clean context
-```
+The paper evaluated on two benchmarks designed to stress-test context robustness:
 
----
+| Benchmark | What it tests | S2A result |
+|-----------|--------------|------------|
+| **OpinionsQA** | Factual QA where the context contains a stated opinion that conflicts with the correct answer | Large accuracy gain vs. baseline; model stops deferring to stated opinions |
+| **GSM-IC** | GSM8K math problems with an irrelevant sentence injected into the context | Maintains near-original accuracy; baseline degrades significantly |
 
----
-
-## 4. Key Benefits
-
-1. **Improved Factual Accuracy:** Reduces hallucinations by filtering irrelevant information
-2. **Better Opinion Bias Handling:** Less susceptible to biased opinions in context
-3. **Enhanced Robustness:** More resilient to adversarial context and distractors
-4. **Multi-hop Reasoning:** Better performance on complex reasoning chains
-5. **Computational Efficiency:** Can use smaller models for regeneration, larger for reasoning
+Key finding: LLaMA-2-70B-chat with S2A recovered most of the accuracy lost due to irrelevant context injection, bringing performance close to the clean-context baseline.
 
 ---
 
----
+## 5. Limitations
 
-## 5. Technical Details
-
-### Implementation Considerations
-
-**Two-Stage Processing:**
-
-- Stage 1: Use LLM to extract relevant facts (can be same or different model)
-- Stage 2: Feed extracted context to reasoning model
-
-**Prompt Engineering:**
-```
-Regeneration prompt template:
-"Given the following text: {context}
-And the question: {question}
-Extract and rewrite only the relevant information needed to answer the question.
-Remove any irrelevant details, opinions, or distracting information."
-```
-
-**Model Selection:**
-
-- Regeneration: Can use smaller, faster models (cost-effective)
-- Reasoning: Larger models for complex reasoning tasks
-- Can use same model for both with different prompts
+| Limitation | Detail |
+|-----------|--------|
+| **Latency** | Two LLM forward passes instead of one |
+| **Information loss** | The regeneration step may accidentally drop relevant nuance |
+| **Regeneration quality cap** | If Stage 1 removes the wrong content, Stage 2 cannot recover |
+| **Scope** | Most effective when the distractor is clearly separable (opinion, off-topic sentence); less effective when relevant and irrelevant content are interleaved |
 
 ---
 
-### Limitations
+## 6. Relation to Other Techniques
 
-1. **Latency:** Requires two forward passes (regeneration + reasoning)
-2. **Information Loss:** May accidentally filter important contextual nuances
-3. **Dependence on Regeneration Quality:** Reasoning quality bounded by regeneration effectiveness
-4. **Cost:** Higher computational cost than single-pass inference
-
----
+- **RAG**: S2A can act as a post-retrieval filter — regenerate the retrieved chunks to strip noise before the reader LLM sees them
+- **Self-Refine / Self-Critique**: Both use multi-pass LLM calls, but S2A's two passes target context quality, not answer quality
+- **Constitutional AI**: CAI critiques the *output*; S2A critiques the *input context*
 
 ---
 
-## 6. Recent Developments (2023-2025)
-
-### Integration with Chain-of-Thought (CoT)
-
-- **Hybrid Approaches:** Combining S2A with CoT prompting for enhanced reasoning
-- S2A filters context → CoT performs step-by-step reasoning
-- Shows significant improvements on mathematical and logical reasoning benchmarks
-
-### Attention Mechanisms Evolution
-
-- **Sparse Attention Variants:** Combining S2A principles with sparse attention patterns
-- **Dynamic Context Pruning:** Real-time relevance scoring during inference
-- **Multi-stage Attention:** Iterative refinement of context across multiple passes
-
-### Production Systems
-
-- **RAG + S2A:** Using S2A to filter retrieved documents before reasoning
-- **Long Context Windows:** Applying S2A principles to manage 100K+ token contexts
-- **Agentic Systems:** S2A as preprocessing step in multi-agent reasoning frameworks
-
-### Research Directions
-
-- **Learned Regeneration:** Training specialized models for context filtering
-- **End-to-End Training:** Joint optimization of regeneration and reasoning
-- **Multimodal S2A:** Extending to image/video context filtering
-- **Benchmark Performance:** Consistent improvements on GSM8K, StrategyQA, DROP datasets
-
----
-
----
+*Source: Weston & Sukhbaatar (2023) — "System 2 Attention (is something you might need too)." Meta AI. [[arXiv:2311.11829]](https://arxiv.org/abs/2311.11829)*

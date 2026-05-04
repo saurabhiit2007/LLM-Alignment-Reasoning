@@ -53,3 +53,28 @@
 
 * **Ouyang et al. (2022)** — *Training Language Models to Follow Instructions with Human Feedback (InstructGPT).* [[arXiv:2203.02155]](https://arxiv.org/abs/2203.02155)
 * **Bai et al. (2022)** — *Training a Helpful and Harmless Assistant with RLHF.* [[arXiv:2204.05862]](https://arxiv.org/abs/2204.05862)
+
+---
+
+### 📊 7. Alignment Evaluation & LLM-as-Judge
+
+* **Zheng et al. (2023)** — *Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.* (NeurIPS 2023) [[arXiv:2306.05685]](https://arxiv.org/abs/2306.05685)
+* **Li et al. (2024)** — *From Crowdsourced Data to High-Quality Benchmarks: Arena-Hard and BenchBuilder Pipeline.* (ICML 2025) [[arXiv:2406.11939]](https://arxiv.org/abs/2406.11939)
+* **Dubois et al. (2024)** — *Length-Controlled AlpacaEval: A Simple Way to Debias Automatic Evaluators.* [[arXiv:2404.04475]](https://arxiv.org/abs/2404.04475)
+* **Lin et al. (2022)** — *TruthfulQA: Measuring How Models Mimic Human Falsehoods.* (ACL 2022) [[arXiv:2109.07958]](https://arxiv.org/abs/2109.07958)
+* **Zhou et al. (2023)** — *Instruction-Following Evaluation for Large Language Models (IFEval).* [[arXiv:2311.07911]](https://arxiv.org/abs/2311.07911)
+* **Lambert et al. (2024)** — *RewardBench: Evaluating Reward Models for Language Modeling.* [[arXiv:2403.13787]](https://arxiv.org/abs/2403.13787)
+* **Liu et al. (2024)** — *RM-Bench: Benchmarking Reward Models of Language Models with Subtlety and Style.* [[arXiv:2410.16184]](https://arxiv.org/abs/2410.16184)
+* **White et al. (2024)** — *LiveBench: A Challenging, Contamination-Free LLM Benchmark.* [[arXiv:2406.19314]](https://arxiv.org/abs/2406.19314)
+
+---
+
+### 🔢 8. Verification Metrics & Reasoning Benchmarks
+
+* **Chen et al. (2021)** — *Evaluating Large Language Models Trained on Code (HumanEval / pass@k).* [[arXiv:2107.03374]](https://arxiv.org/abs/2107.03374)
+* **Wang et al. (2023)** — *Self-Consistency Improves Chain of Thought Reasoning in Language Models.* (ICLR 2023) [[arXiv:2203.11171]](https://arxiv.org/abs/2203.11171)
+* **Lightman et al. (2023)** — *Let's Verify Step by Step (PRMs on MATH).* (ICLR 2024) [[arXiv:2305.20050]](https://arxiv.org/abs/2305.20050)
+* **Jimenez et al. (2024)** — *SWE-bench: Can Language Models Resolve Real-world Github Issues?* (ICLR 2024) [[arXiv:2310.06770]](https://arxiv.org/abs/2310.06770)
+* **Rein et al. (2023)** — *GPQA: A Graduate-Level Google-Proof Q&A Benchmark.* [[arXiv:2311.12022]](https://arxiv.org/abs/2311.12022)
+* **Hendrycks et al. (2021)** — *Measuring Mathematical Problem Solving With the MATH Dataset.* [[arXiv:2103.03874]](https://arxiv.org/abs/2103.03874)
+* **Hendrycks et al. (2021)** — *Measuring Massive Multitask Language Understanding (MMLU).* [[arXiv:2009.03300]](https://arxiv.org/abs/2009.03300)

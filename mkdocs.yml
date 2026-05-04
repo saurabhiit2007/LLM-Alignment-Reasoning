@@ -62,7 +62,6 @@ nav:
           - Best-of-N Sampling: ./reasoning_techniques/test_time_compute/best_of_n_sampling.md
           - ORMs & PRMs: ./reasoning_techniques/test_time_compute/orm_prm.md
   - Evaluation & Metrics:
-      - Reasoning & Evaluation Benchmarks: references.md
       - Alignment Evaluation: ./evaluation_and_metrics/alignment_evaluation.md
       - Verification Metrics: ./evaluation_and_metrics/verification_metrics.md
   - Case Studies:

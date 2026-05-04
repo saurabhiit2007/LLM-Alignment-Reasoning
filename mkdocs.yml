@@ -57,6 +57,10 @@ nav:
       - Advanced Reasoning Methods:
           - STAR-Self Taught Reasoner: ./reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner.md
           - System2 Attention: ./reasoning_techniques/advanced_reasoning_models/system2_attention.md
+      - Test-Time Compute Scaling:
+          - Compute Optimal Inference: ./reasoning_techniques/test_time_compute/compute_optimal_inference.md
+          - Best-of-N Sampling: ./reasoning_techniques/test_time_compute/best_of_n_sampling.md
+          - ORMs & PRMs: ./reasoning_techniques/test_time_compute/orm_prm.md
   - Evaluation & Metrics:
       - Reasoning & Evaluation Benchmarks: references.md
       - Alignment Evaluation: ./evaluation_and_metrics/alignment_evaluation.md

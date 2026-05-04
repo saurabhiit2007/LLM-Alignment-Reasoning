@@ -138,7 +138,9 @@ These benchmarks ask the model to respond to open-ended instructions and use an 
 
 ### 3.5 Reward Model Quality
 
-These benchmarks evaluate the reward model itself, not the policy — used to check that the reward signal used in RLHF training is reliable.
+In RLHF, a **reward model** is trained on human preference data to assign a scalar score to any (prompt, response) pair. This score then drives RL training — the policy is optimized to produce responses that get high reward. The reward model is therefore a proxy for human judgment, and if it is unreliable, the entire RLHF pipeline produces a misaligned model (reward hacking, verbosity inflation, sycophancy).
+
+Evaluating the reward model *before* using it for RL training is a critical quality gate. These benchmarks test whether a reward model's preferences match human preferences across a range of categories.
 
 **RewardBench**
 

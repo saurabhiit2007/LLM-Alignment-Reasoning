@@ -16,6 +16,9 @@ How to get LLMs to behave the way we want — the training pipelines, optimizati
 | [PPO](alignment_methods/rlhf/rl_optimization_methods/ppo.md) | Proximal Policy Optimization — the original RLHF optimizer |
 | [DPO](alignment_methods/rlhf/rl_optimization_methods/dpo.md) | Direct Preference Optimization — bypasses the reward model |
 | [GRPO](alignment_methods/rlhf/rl_optimization_methods/grpo.md) | Group Relative Policy Optimization — used in DeepSeek-R1 |
+| [REINFORCE](alignment_methods/rlhf/rl_optimization_methods/reinforce.md) | Foundational policy gradient — simpler than PPO, surprisingly effective |
+| [RLOO](alignment_methods/rlhf/rl_optimization_methods/rloo.md) | Leave-One-Out baseline — outperforms PPO at 2–3× the speed |
+| [DAPO](alignment_methods/rlhf/rl_optimization_methods/dapo.md) | Asymmetric clipping + dynamic sampling — GRPO for long-CoT at scale |
 | [KL Penalty & Reward Hacking](alignment_methods/rlhf/kl_penalty_reward_hacking.md) | Why the policy drifts and how to constrain it |
 | [RLAIF](alignment_methods/alternate_approaches/rlaif.md) | Replacing human feedback with AI feedback |
 | [Constitutional AI](alignment_methods/alternate_approaches/constitutional_ai.md) | Anthropic's principle-based self-critique method |

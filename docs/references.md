@@ -16,7 +16,22 @@
 
 ---
 
-### 🔁 3. GRPO - *Grouped Relative Policy Optimization*
+### 🎯 3. REINFORCE & RLOO
+
+* **Williams (1992)** — *Simple statistical gradient-following algorithms for connectionist reinforcement learning (REINFORCE).* [[Machine Learning]](https://link.springer.com/article/10.1007/BF00992696)
+* **Ahmadian et al. (2024)** — *Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs.* (ACL 2024) [[arXiv:2402.14740]](https://arxiv.org/abs/2402.14740)
+* **HuggingFace Blog (2024)** — *Putting RL Back in RLHF.* [[Blog]](https://huggingface.co/blog/putting_rl_back_in_rlhf_with_rloo)
+
+---
+
+### 🚀 3a. DAPO - *Decoupled Clip and Dynamic Sampling Policy Optimization*
+
+* **Yu et al. (2025)** — *DAPO: An Open-Source LLM Reinforcement Learning System at Scale.* (ByteDance Seed & Tsinghua AIR) [[arXiv:2503.14476]](https://arxiv.org/abs/2503.14476)
+* **DAPO Project Page** — [[dapo-sia.github.io]](https://dapo-sia.github.io/)
+
+---
+
+### 🔁 3b. GRPO - *Grouped Relative Policy Optimization*
 
 * **Shao et al. (2024)** — *DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models.* (Introduces GRPO) [[arXiv:2402.03300]](https://arxiv.org/abs/2402.03300)
 * **Mroueh et al. (2025)** — *Revisiting Group Relative Policy Optimization.* [[arXiv:2505.22257]](https://arxiv.org/abs/2505.22257)

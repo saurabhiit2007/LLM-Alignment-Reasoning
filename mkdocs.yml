@@ -36,6 +36,9 @@ nav:
               - PPO: ./alignment_methods/rlhf/rl_optimization_methods/ppo.md
               - DPO: ./alignment_methods/rlhf/rl_optimization_methods/dpo.md
               - GRPO: ./alignment_methods/rlhf/rl_optimization_methods/grpo.md
+              - REINFORCE: ./alignment_methods/rlhf/rl_optimization_methods/reinforce.md
+              - RLOO: ./alignment_methods/rlhf/rl_optimization_methods/rloo.md
+              - DAPO: ./alignment_methods/rlhf/rl_optimization_methods/dapo.md
           - KL Penalty & Reward Hacking: ./alignment_methods/rlhf/kl_penalty_reward_hacking.md
       - Alternate Approaches:
           - RLAIF: ./alignment_methods/alternate_approaches/rlaif.md

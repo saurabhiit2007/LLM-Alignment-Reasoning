@@ -1852,6 +1852,7 @@
 <li>Task is simple factual lookup</li>
 <li>Compute budget is very tight</li>
 </ul>
+<p><strong>Known failure mode — Overthinking:</strong> Beyond a saturation point, additional inference compute yields diminishing returns while latency keeps growing. Models trained with RL rewards on reasoning length can also learn to generate redundant chains that look thorough but add no correctness signal. Mitigation: adaptive early stopping once a confidence threshold is met, and length penalties during RL training.</p>
 <hr />
 <h2 id="8-interaction-with-other-inference-topics">8. Interaction with Other Inference Topics<a class="headerlink" href="#8-interaction-with-other-inference-topics" title="Permanent link">&para;</a></h2>
 <ul>

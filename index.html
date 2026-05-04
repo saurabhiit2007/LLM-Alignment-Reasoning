@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#llm-alignment-reasoning" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -230,6 +235,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
         
@@ -242,6 +262,85 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Inside
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s Inside">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alignment-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alignment Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning Techniques
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation &amp; Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-studies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Studies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Concepts at a Glance
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1433,6 +1532,76 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-inside" class="md-nav__link">
+    <span class="md-ellipsis">
+      What's Inside
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s Inside">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alignment-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alignment Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning Techniques
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation &amp; Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-studies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Studies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Concepts at a Glance
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1448,9 +1617,141 @@
 
 
 
-  <h1>Home</h1>
-
-
+<h1 id="llm-alignment-reasoning">LLM Alignment &amp; Reasoning<a class="headerlink" href="#llm-alignment-reasoning" title="Permanent link">&para;</a></h1>
+<p>Interview preparation and technical reference for LLM alignment, RLHF, reasoning techniques, and evaluation. Covers the methods used to train models like GPT-4, Claude, Gemini, and DeepSeek-R1.</p>
+<hr />
+<h2 id="whats-inside">What's Inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
+<h3 id="alignment-methods">Alignment Methods<a class="headerlink" href="#alignment-methods" title="Permanent link">&para;</a></h3>
+<p>How to get LLMs to behave the way we want — the training pipelines, optimization objectives, and alternative approaches.</p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="alignment_methods/rlhf/rlhf_pipeline/">RLHF Pipeline</a></td>
+<td>Preference data collection, reward model training, RL fine-tuning</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/rlhf/rl_optimization_methods/ppo/">PPO</a></td>
+<td>Proximal Policy Optimization — the original RLHF optimizer</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/rlhf/rl_optimization_methods/dpo/">DPO</a></td>
+<td>Direct Preference Optimization — bypasses the reward model</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/rlhf/rl_optimization_methods/grpo/">GRPO</a></td>
+<td>Group Relative Policy Optimization — used in DeepSeek-R1</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/rlhf/kl_penalty_reward_hacking/">KL Penalty &amp; Reward Hacking</a></td>
+<td>Why the policy drifts and how to constrain it</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/alternate_approaches/rlaif/">RLAIF</a></td>
+<td>Replacing human feedback with AI feedback</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/alternate_approaches/constitutional_ai/">Constitutional AI</a></td>
+<td>Anthropic's principle-based self-critique method</td>
+</tr>
+<tr>
+<td><a href="alignment_methods/safety_and_evaluation/red_teaming/">Red Teaming</a></td>
+<td>Adversarial probing for safety failures and jailbreaks</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reasoning-techniques">Reasoning Techniques<a class="headerlink" href="#reasoning-techniques" title="Permanent link">&para;</a></h3>
+<p>How to elicit better reasoning from LLMs — at prompting time and at inference time.</p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="reasoning_techniques/prompting_based_techniques/cot/">Chain-of-Thought</a></td>
+<td>Step-by-step reasoning via prompting</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/prompting_based_techniques/tree_of_thoughts/">Tree of Thoughts</a></td>
+<td>Search over reasoning paths</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/prompting_based_techniques/self_consistency/">Self-Consistency</a></td>
+<td>Majority voting over multiple CoT samples</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/prompting_based_techniques/react/">ReAct</a></td>
+<td>Interleaving reasoning and tool use</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/iterative_refinement/self_critic_methods/">Self-Critic Methods</a></td>
+<td>Models revising their own outputs</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/advanced_reasoning_models/STAR_self_taught_reasoner/">STAR</a></td>
+<td>Bootstrapping reasoning from rationales</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/test_time_compute/compute_optimal_inference/">Compute-Optimal Inference</a></td>
+<td>Scaling test-time compute for better answers</td>
+</tr>
+<tr>
+<td><a href="reasoning_techniques/test_time_compute/orm_prm/">ORMs &amp; PRMs</a></td>
+<td>Outcome vs. process reward models as verifiers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="evaluation-metrics">Evaluation &amp; Metrics<a class="headerlink" href="#evaluation-metrics" title="Permanent link">&para;</a></h3>
+<p>How to measure whether alignment and reasoning actually work.</p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="evaluation_and_metrics/alignment_evaluation/">Alignment Evaluation</a></td>
+<td>HHH framework, LLM-as-judge, TruthfulQA, IFEval, RewardBench</td>
+</tr>
+<tr>
+<td><a href="evaluation_and_metrics/verification_metrics/">Verification Metrics</a></td>
+<td>pass@k, maj@k, RLVR, functional correctness, benchmark saturation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="case-studies">Case Studies<a class="headerlink" href="#case-studies" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="case_studies/deepseek_rl_finetuning/">DeepSeek RL Fine-tuning</a></td>
+<td>How DeepSeek-R1 used GRPO + RLVR to develop reasoning</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-concepts-at-a-glance">Key Concepts at a Glance<a class="headerlink" href="#key-concepts-at-a-glance" title="Permanent link">&para;</a></h2>
+<p><strong>RLHF pipeline:</strong> SFT → reward model training (on human preferences) → RL optimization (PPO/DPO/GRPO) with KL penalty to prevent reward hacking.</p>
+<p><strong>DPO vs PPO:</strong> DPO eliminates the explicit reward model by reparameterizing the RL objective directly onto the policy. Simpler and more stable, but less flexible.</p>
+<p><strong>GRPO vs PPO:</strong> GRPO removes the value network by using group-relative baselines — key to DeepSeek-R1's scalable training without a critic model.</p>
+<p><strong>RLVR:</strong> Reinforcement Learning with Verifiable Rewards replaces the learned reward model with a deterministic verifier (math checker, test suite). No reward hacking possible.</p>
+<p><strong>LLM-as-judge:</strong> Automated evaluation using a strong model (GPT-4) as the judge. Scales human preference evaluation but introduces position, verbosity, and self-enhancement biases.</p>
+<p><strong>pass@k:</strong> Probability that at least one of k sampled completions passes all test cases — the standard metric for code and math evaluation.</p>
 
 
 

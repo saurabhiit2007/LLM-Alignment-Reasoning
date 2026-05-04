@@ -4,7 +4,9 @@ site_author: Saurabh Goyal
 theme:
   name: material
   features:
-    - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
     - navigation.top
     - search.highlight
     - search.share

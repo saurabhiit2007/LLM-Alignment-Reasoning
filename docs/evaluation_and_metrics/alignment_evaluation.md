@@ -181,5 +181,3 @@ Several widely-cited benchmarks have been saturated by frontier models:
 | HumanEval | Leading models exceed 90% pass@1 |
 
 **Consequence:** These benchmarks can no longer distinguish among frontier models. The community has shifted to harder benchmarks: GPQA Diamond, MATH-500, AIME 2025/2026, SWE-bench Verified, LiveCodeBench Pro.
-
-See [Reasoning & Evaluation Benchmarks](../references.md) for full benchmark listings with current SOTA scores.

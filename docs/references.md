@@ -106,6 +106,7 @@
 * **Yao et al. (2023)** — *Tree of Thoughts: Deliberate Problem Solving with Large Language Models.* (NeurIPS 2023) [[arXiv:2305.10601]](https://arxiv.org/abs/2305.10601)
 * **Besta et al. (2024)** — *Graph of Thoughts: Solving Elaborate Problems with Large Language Models.* (AAAI 2024) [[arXiv:2308.09687]](https://arxiv.org/abs/2308.09687)
 * **Wei et al. (2022)** — *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* (NeurIPS 2022) [[arXiv:2201.11903]](https://arxiv.org/abs/2201.11903)
+* **Kojima et al. (2022)** — *Large Language Models are Zero-Shot Reasoners.* (NeurIPS 2022) [[arXiv:2205.11916]](https://arxiv.org/abs/2205.11916)
 
 ---
 

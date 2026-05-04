@@ -1,109 +1,112 @@
 ## 1. Overview
 
-Chain of Thought is a prompting technique that encourages large language models (LLMs) to break down complex reasoning into intermediate steps, making their problem-solving process explicit and transparent. Instead of jumping directly to an answer, the model "thinks aloud" through the problem.
+Chain-of-Thought (CoT) prompting elicits step-by-step reasoning from LLMs by including explicit reasoning steps in the prompt — either as worked examples (few-shot) or via a simple instruction (zero-shot). Instead of predicting the answer directly, the model generates a reasoning chain that conditions each step on the previous one.
+
+Two papers introduced CoT in 2022:
+
+- **Few-Shot CoT** — Wei et al. (NeurIPS 2022): include example problems with reasoning chains in the prompt
+- **Zero-Shot CoT** — Kojima et al. (NeurIPS 2022): append *"Let's think step by step"* to any prompt; no examples needed
 
 ---
 
----
+## 2. Why CoT Works
 
-## 2. Core Concepts
+Standard prompting asks the model to map input → answer in one forward pass. For multi-step problems, this collapses all intermediate reasoning into latent space, giving the model no "scratch space" to work through sub-problems.
 
-### Basic CoT
+CoT addresses this by making intermediate steps explicit tokens:
 
-- **Sequential Reasoning**: Breaking problems into logical steps
-- **Explicit Thinking**: Making intermediate reasoning visible
-- **Improved Accuracy**: Particularly effective for arithmetic, commonsense, and symbolic reasoning tasks
+- Each reasoning step conditions the next, allowing the model to decompose the problem progressively
+- Errors in earlier steps are visible in the chain and can be caught (by the model or by the reader)
+- The reasoning trace shifts difficult computation from a single prediction to a sequence of simpler predictions
 
----
-
-### Types of CoT
-
-1. **Few-Shot CoT**: Providing examples with reasoning steps in the prompt
-2. **Zero-Shot CoT**: Simply adding "Let's think step by step" to the prompt
-
-See [Self-Consistency](self_consistency.md) and [Tree of Thoughts](tree_of_thoughts.md) for extensions that build on CoT.
+**Critical finding — emergence at scale:** CoT is an *emergent capability*. Wei et al. found essentially no benefit for models below ~100B parameters; smaller models may even perform worse with CoT because they generate plausible-looking but incorrect reasoning chains. The technique became reliable only with large models like PaLM 540B and GPT-4.
 
 ---
 
----
+## 3. Few-Shot vs Zero-Shot CoT
 
-## 3. Technical Implementation
+### Few-Shot CoT
 
-### Zero-Shot Example
+Include 4–8 worked examples with full reasoning chains before the target question:
+
 ```
-Prompt: "Solve: If John has 15 apples and gives away 40% to his friends, 
-how many does he have left? Let's think step by step."
+Q: Roger has 5 tennis balls. He buys 2 cans, each with 3 balls.
+   How many does he have now?
+A: Roger started with 5. 2 cans × 3 = 6 more. 5 + 6 = 11. Answer: 11.
 
-Response:
-Step 1: Calculate 40% of 15 apples
-Step 2: 15 × 0.40 = 6 apples given away
-Step 3: 15 - 6 = 9 apples remaining
-Answer: 9 apples
-```
+Q: If John has 15 apples and gives away 40%, how many remain?
+A: 40% of 15 = 6. 15 - 6 = 9. Answer: 9.
 
----
-
-### Few-Shot Example
-```
-Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. 
-Each can has 3 tennis balls. How many tennis balls does he have now?
-A: Roger started with 5 balls. 2 cans × 3 balls = 6 balls. 
-5 + 6 = 11 balls. Answer: 11
-
-Q: [New problem]
+Q: [new problem]
+A:
 ```
 
----
+**Strengths:** Higher accuracy; the examples anchor the format and reasoning style.
+
+**Weaknesses:** Requires manually crafted demonstrations; more tokens per call.
+
+### Zero-Shot CoT
+
+Append a trigger phrase — no examples needed:
+
+```
+Q: If John has 15 apples and gives away 40%, how many remain?
+   Let's think step by step.
+```
+
+Kojima et al. showed that "Let's think step by step" alone is surprisingly effective — the phrase activates latent reasoning capabilities without any worked examples. Other triggers like "Let's work through this carefully" also work but "step by step" was the most robust across tasks.
 
 ---
 
-## 4. Recent Developments (2023-2025)
+## 4. Key Results
 
-### 1. **Multimodal CoT**
+| Benchmark | Task type | Standard prompting | CoT prompting | Model |
+|-----------|-----------|-------------------|--------------|-------|
+| **GSM8K** | Math word problems | 17.9% | 56.9% | PaLM 540B |
+| **SVAMP** | Math (robustness) | ~69% | ~79% | PaLM 540B |
+| **StrategyQA** | Commonsense | ~75% | ~80% | PaLM 540B |
+| **GSM8K** | Math word problems | — | ~92% | GPT-4 |
 
-- Extending CoT to vision-language models
-- Incorporating visual reasoning steps
-- Used in models like GPT-4V, Gemini, Claude 3+
-
-### 2. **Automatic CoT (Auto-CoT)**
-
-- Automatically generating diverse reasoning demonstrations
-- Reduces manual prompt engineering
-- Clustering questions for better coverage
-
-### 3. **Program-Aided Language Models (PAL)**
-
-- Combining CoT with code execution
-- LLM generates reasoning + executable code
-- Interpreter runs code for final answer
-
-### 4. **Least-to-Most Prompting**
-
-- Breaking problems into subproblems
-- Solving simple cases first, building to complex
-- Particularly effective for compositional generalization
+The GSM8K result (17.9% → 56.9%) is the headline finding: a 3× improvement on grade-school math from a prompt change alone.
 
 ---
 
----
+## 5. Extensions
 
-## 5. Key Metrics & Performance
+### Least-to-Most Prompting (Zhou et al., 2022)
 
-- **Accuracy Improvement**: 20-50% on complex reasoning tasks
-- **Model Requirements**: Works better with larger models (>100B parameters)
-- **Computational Cost**: 2-10x more tokens than direct answering
-- **Error Analysis**: Makes reasoning failures more interpretable
+Decomposes a hard problem into a sequence of easier sub-problems, solves each in order, and uses the answers as context for the next. Particularly effective for compositional generalisation tasks where the difficulty scales with problem length.
 
----
+### Auto-CoT (Zhang et al., 2022)
 
----
+Automatically generates reasoning demonstrations by clustering the training questions and sampling a representative from each cluster, then generating a chain via zero-shot CoT. Eliminates manual demonstration writing while preserving diversity.
 
-## 6. Best Practices
+### Program-Aided Language Models / PAL (Gao et al., 2022)
 
-1. **Prompt Design**: Use clear instructions like "explain your reasoning" or "work through this step by step"
-2. **Example Selection**: Choose diverse, representative examples for few-shot CoT
-3. **Temperature Settings**: Lower temperature (0.3-0.7) for more consistent reasoning
-4. **Validation**: Verify critical answers through additional checks
-5. **Error Handling**: Parse and validate reasoning steps when possible
+The model generates Python code as its reasoning chain instead of natural language steps. An interpreter executes the code to produce the final answer — offloading precise arithmetic and symbolic manipulation to a reliable executor rather than the model's token prediction.
+
+### Multimodal CoT (Zhang et al., 2023)
+
+Extends CoT to vision-language models. The model generates a rationale that incorporates both image features and text before producing the answer, improving performance on science QA tasks with diagrams.
 
 ---
+
+## 6. Limitations
+
+- **Emergent — model size dependent:** unreliable below ~100B parameters
+- **Not self-verifying:** a fluent reasoning chain can lead to a wrong answer; the chain looks correct but contains a subtle error
+- **Faithfulness:** the generated chain may not reflect the model's actual computation — it is a post-hoc rationalisation, not a ground-truth trace of internal reasoning
+- **Cost:** 2–10× more output tokens than direct prompting
+
+---
+
+## 7. Best Practices
+
+1. Use diverse, representative examples for few-shot CoT — avoid examples that all follow the same template
+2. Lower temperature (0.3–0.7) gives more consistent reasoning chains
+3. Combine with [Self-Consistency](self_consistency.md) (majority vote over multiple chains) for +10–20% on math tasks
+4. For precise arithmetic, consider PAL to offload calculation to a code interpreter
+
+---
+
+*Sources: Wei et al. (2022) [[arXiv:2201.11903]](https://arxiv.org/abs/2201.11903) · Kojima et al. (2022) [[arXiv:2205.11916]](https://arxiv.org/abs/2205.11916)*

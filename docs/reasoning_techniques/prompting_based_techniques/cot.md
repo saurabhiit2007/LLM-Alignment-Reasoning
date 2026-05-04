@@ -20,8 +20,8 @@ Chain of Thought is a prompting technique that encourages large language models 
 
 1. **Few-Shot CoT**: Providing examples with reasoning steps in the prompt
 2. **Zero-Shot CoT**: Simply adding "Let's think step by step" to the prompt
-3. **Self-Consistency CoT**: Generating multiple reasoning paths and selecting the most consistent answer
-4. **Tree of Thoughts (ToT)**: Exploring multiple reasoning branches simultaneously
+
+See [Self-Consistency](self_consistency.md) and [Tree of Thoughts](tree_of_thoughts.md) for extensions that build on CoT.
 
 ---
 
@@ -83,12 +83,6 @@ Q: [New problem]
 - Solving simple cases first, building to complex
 - Particularly effective for compositional generalization
 
-### 5. **ReAct (Reasoning + Acting)**
-
-- Interleaving reasoning traces with actions
-- Used in agentic systems and tool-using LLMs
-- Foundation for many modern AI agents
-
 ---
 
 ---
@@ -104,72 +98,7 @@ Q: [New problem]
 
 ---
 
-## 6. Common Interview Questions
-
-### Q1: What's the difference between CoT and standard prompting?
-**A**: Standard prompting asks for direct answers, while CoT prompts the model to show intermediate reasoning steps. This improves accuracy on complex tasks by allowing the model to break down problems, similar to how humans solve difficult problems step-by-step.
-
----
-### Q2: When should you use Chain of Thought?
-**A**: Use CoT for:
-
-- Multi-step arithmetic and mathematical problems
-- Complex logical reasoning
-- Commonsense reasoning requiring multiple inference steps
-- Tasks where interpretability is important
-
-Avoid for simple factual queries where direct answers are more efficient.
-
----
-
-### Q3: Explain Zero-Shot CoT vs Few-Shot CoT
-**A**: 
-
-- **Zero-Shot CoT**: Add phrases like "Let's think step by step" without examples. Simple but effective.
-- **Few-Shot CoT**: Provide example problems with reasoning steps. More accurate but requires careful example selection and uses more tokens.
-
----
-
-### Q4: What are the limitations of Chain of Thought?
-**A**:
-
-- Higher computational cost (more tokens)
-- Can generate incorrect reasoning paths
-- Less effective on small models (<10B parameters)
-- May overthink simple problems
-- Reasoning quality depends on model capabilities
-
----
-
-### Q5: How does Self-Consistency improve CoT?
-**A**: Self-Consistency samples multiple reasoning paths (e.g., 5-40 paths) for the same question and selects the most frequently occurring answer. This reduces variance and improves accuracy by 10-20% compared to single-path CoT, at the cost of increased computation.
-
----
-
-### Q6: What is Tree of Thoughts and how does it differ from CoT?
-**A**: Tree of Thoughts (ToT) extends CoT by exploring multiple reasoning branches simultaneously, like a search algorithm. It can backtrack and explore alternatives, whereas standard CoT follows a single sequential path. ToT is better for problems requiring strategic lookahead (e.g., Game of 24, creative writing).
-
----
-
-### Q7: How would you implement CoT in production?
-**A**: Consider:
-
-- **Caching**: Cache reasoning for common queries
-- **Hybrid approach**: Use CoT only for complex queries, direct prompting for simple ones
-- **Monitoring**: Track reasoning quality and failure modes
-- **Cost optimization**: Balance accuracy vs. token usage
-- **Validation**: Verify final answers when possible
-
----
-
-### Q8: What role does CoT play in modern AI agents?
-**A**: CoT is foundational for agentic systems. Techniques like ReAct combine CoT reasoning with tool use, allowing agents to plan, execute actions, and reflect on results. This enables autonomous task completion in systems like AutoGPT, LangChain agents, and Claude's computer use features.
-
----
-
----
-
-## 7. Best Practices
+## 6. Best Practices
 
 1. **Prompt Design**: Use clear instructions like "explain your reasoning" or "work through this step by step"
 2. **Example Selection**: Choose diverse, representative examples for few-shot CoT

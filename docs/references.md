@@ -93,3 +93,10 @@
 * **Rein et al. (2023)** — *GPQA: A Graduate-Level Google-Proof Q&A Benchmark.* [[arXiv:2311.12022]](https://arxiv.org/abs/2311.12022)
 * **Hendrycks et al. (2021)** — *Measuring Mathematical Problem Solving With the MATH Dataset.* [[arXiv:2103.03874]](https://arxiv.org/abs/2103.03874)
 * **Hendrycks et al. (2021)** — *Measuring Massive Multitask Language Understanding (MMLU).* [[arXiv:2009.03300]](https://arxiv.org/abs/2009.03300)
+
+---
+
+### 🤝 9. Debate & Multi-Agent Reasoning
+
+* **Irving et al. (2018)** — *AI Safety via Debate.* (OpenAI) [[arXiv:1805.00899]](https://arxiv.org/abs/1805.00899)
+* **Du et al. (2023)** — *Improving Factuality and Reasoning in Language Models through Multiagent Debate.* [[arXiv:2305.14325]](https://arxiv.org/abs/2305.14325)

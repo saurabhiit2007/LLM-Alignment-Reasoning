@@ -25,6 +25,9 @@ Two orthogonal dimensions organize everything on this page:
 - **Evaluation method** — *who* judges the response: a human or a strong LLM (Section 2)
 - **Benchmark** — the specific prompt set, scoring rubric, and leaderboard used to make evaluation reproducible (Section 3)
 
+!!! note "Scope: single LLM responses only"
+    This page covers evaluation of a **single LLM response** to a prompt. For agentic systems — where an LLM executes multi-step tool-calling sequences, or multiple agents coordinate — see [Agent Evaluation](https://saurabhiit2007.github.io/RAG_And_Context_Engineering/agents/agent_evaluation/) in the RAG & Agents reference.
+
 ---
 
 ## 1. The HHH Framework

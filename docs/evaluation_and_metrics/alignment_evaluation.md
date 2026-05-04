@@ -4,7 +4,7 @@ Evaluating whether an LLM is truly *aligned* is fundamentally harder than measur
 
 ---
 
-## 0. What Are We Evaluating?
+## What Are We Evaluating?
 
 The subject of alignment evaluation is always the **response an LLM generates for a given prompt or task**:
 

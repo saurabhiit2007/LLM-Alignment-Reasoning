@@ -66,6 +66,7 @@
 
 ### 🧩 Others
 
+* **Christiano et al. (2017)** — *Deep Reinforcement Learning from Human Preferences.* (NeurIPS 2017) [[arXiv:1706.03741]](https://arxiv.org/abs/1706.03741)
 * **Ouyang et al. (2022)** — *Training Language Models to Follow Instructions with Human Feedback (InstructGPT).* [[arXiv:2203.02155]](https://arxiv.org/abs/2203.02155)
 * **Bai et al. (2022)** — *Training a Helpful and Harmless Assistant with RLHF.* [[arXiv:2204.05862]](https://arxiv.org/abs/2204.05862)
 

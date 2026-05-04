@@ -1,455 +1,167 @@
-## Overview
+# RLHF Pipeline
 
-RLHF (Reinforcement Learning from Human Feedback) is a three-stage pipeline to align language models with human preferences:
+## 1. Overview
 
-1. **Supervised Fine-Tuning (SFT)**: Train base model on high-quality demonstrations
-2. **Reward Model Training**: Learn human preferences via a reward function
-3. **RL Optimization**: Fine-tune policy using the reward model (PPO, etc.)
+RLHF (Reinforcement Learning from Human Feedback) is a three-stage pipeline to align language models with human preferences, introduced in Christiano et al. (2017) and scaled to modern LLMs by Ouyang et al. (2022) via InstructGPT:
 
-This document focuses on stages 2 and the data collection needed for it.
+1. **Supervised Fine-Tuning (SFT)** — Train a base model on high-quality human demonstrations
+2. **Reward Model Training** — Learn a scalar reward function from human preference comparisons
+3. **RL Optimization** — Fine-tune the SFT policy to maximize the learned reward (via PPO or alternatives)
+
+Each stage builds on the previous: SFT gives a competent starting policy, the reward model encodes human judgment, and RL shifts the policy toward higher-reward outputs while a KL penalty prevents it from drifting too far.
 
 ---
 
+## 2. Supervised Fine-Tuning (SFT)
+
+The base pretrained model is fine-tuned on a curated set of prompt–response pairs written or selected by human labelers. The goal is to teach the model to follow instructions before any preference signal is introduced.
+
+**Key choices:**
+
+- Dataset: 10K–100K high-quality demonstrations (InstructGPT used ~13K)
+- Labelers write ideal responses; lower-quality responses are filtered out
+- Standard cross-entropy training on the response tokens only
+- Learning rate ~1e-5, 1–3 epochs to avoid overfitting the small dataset
+
+The SFT model becomes both the starting point for RL optimization and the reference policy for the KL penalty.
+
 ---
 
-## 1. Preference Data Collection
+## 3. Preference Data Collection
 
-### 1.1 Data Generation Process
+### 3.1 Data Generation
 
-**Prompt Selection:**
+**Prompt selection:**
 
 - Curate diverse prompts covering target use cases
 - Include different difficulty levels and domains
 - Sources: user interactions, seed datasets, synthetic generation
 
-**Response Sampling:**
+**Response sampling:**
 
-- Generate 2-4 completions per prompt using:
-
-  - **Temperature sampling** (T ∈ [0.7, 1.0]) for diversity
-  - **Different models/checkpoints** to ensure variety
-  - **Varied decoding** (top-k, nucleus sampling)
-- Goal: Create meaningfully different responses worth comparing
+- Generate 2–4 completions per prompt using temperature sampling (T ∈ [0.7, 1.0]) and varied decoding (top-k, nucleus) to ensure meaningful differences worth comparing
 
 ---
 
-### 1.2 Human Annotation
+### 3.2 Human Annotation
 
-**Comparison Types:**
+**Comparison types:**
 
-- **Pairwise**: Choose better response (A > B or B > A or Tie)
+- **Pairwise**: Choose the better response (A > B, B > A, or Tie)
 - **Ranking**: Order k responses from best to worst
-- **Likert Scale**: Rate each independently (1-5 stars)
+- **Likert Scale**: Rate each independently (1–5 stars)
 
-**Annotation Criteria:**
+Pairwise comparison is generally preferred — relative judgments are easier for humans, more reliable, and fit naturally into the Bradley-Terry model used for reward training.
+
+**Annotation criteria (InstructGPT):**
 
 - **Helpfulness**: Does it answer the question well?
 - **Harmlessness**: Is it safe and appropriate?
 - **Honesty**: Is it truthful and admits uncertainty?
 
-**Best Practices:**
+**Best practices:**
 
-- Clear guidelines with examples
-- Inter-annotator agreement checks (Fleiss' kappa, Krippendorff's alpha)
-- Multiple annotators per comparison (typically 3-5)
-- Quality control: gold standard examples, spot checks
+- Clear guidelines with worked examples
+- Inter-annotator agreement checks (Fleiss' κ, Krippendorff's α)
+- Multiple annotators per comparison (typically 3–5)
+- Gold-standard examples for quality control
 
 ---
 
-### 1.3 Data Quality Considerations
+### 3.3 Data Quality
 
-**Common Issues:**
+**Common issues:**
 
 - **Annotation bias**: Personal preferences vs. general quality
 - **Low agreement**: Ambiguous prompts or subjective criteria
 - **Gaming**: Annotators choosing randomly or following patterns
 
-**Solutions:**
+**Mitigations:**
 
-- Calibration sessions with annotators
+- Calibration sessions before annotation begins
 - Disagreement resolution protocols
 - Monitor annotation time and patterns
-- Bonus for high-agreement annotations
+- Discard high-disagreement pairs (likely ambiguous)
 
-**Dataset Size:**
-
-- Typical: 10K-100K preference pairs
-- Quality > quantity (InstructGPT used ~50K comparisons)
-- More data needed for complex/multi-domain tasks
+**Dataset size:** 10K–100K preference pairs; InstructGPT used ~50K comparisons. Quality dominates quantity.
 
 ---
 
----
+## 4. Reward Model Training
 
-## 2. Reward Model Training
+### 4.1 Architecture
 
-### 2.1 Model Architecture
+The reward model is typically initialized from the SFT model with the final language-modeling head replaced by a linear layer that outputs a scalar `r(x, y)` for prompt `x` and completion `y`. The shared backbone retains language understanding.
 
-**Base Model:**
+### 4.2 Training Objective
 
-- Usually the SFT model with final layer replaced
-- Outputs scalar reward: `r(x, y)` for prompt x and completion y
-- Shared backbone leverages language understanding
+The Bradley-Terry model treats preferences probabilistically. For a preference pair $(y_w, y_l)$ where $y_w \succ y_l$:
 
-**Training Objective (Bradley-Terry Model):**
+$$\mathcal{L} = -\log \sigma\bigl(r(x, y_w) - r(x, y_l)\bigr)$$
 
-For preference pair ($y_w$, $y_l$) where $y_w ≻ y_l$:
+This maximizes the probability that the preferred completion receives a higher reward. For ranking over $k > 2$ completions:
 
-```
-Loss = -log σ(r(x, y_w) - r(x, y_l))
-```
+$$\mathcal{L} = -\sum_{i < j} \log \sigma\bigl(r(x, y_i) - r(x, y_j)\bigr)$$
 
-Where σ is sigmoid function. This maximizes probability that preferred completion gets higher reward.
+where $y_i$ is ranked above $y_j$.
 
-**Alternative: Ranking Loss (for k > 2 completions):**
+**Bradley-Terry assumptions:**
 
-```
-Loss = -∑_{i<j} log σ(r(x, y_i) - r(x, y_j))
-```
+- *Transitivity*: if A > B and B > C, then A > C
+- *Independence*: the A vs. B preference doesn't depend on other options
+- Real human preferences can violate both; the model works well in practice despite this
 
-Where $y_i$ is ranked higher than $y_j$.
-
----
-
-### 2.2 Training Process
-
-**Data Preparation:**
-
-- Split: 80% train, 10% validation, 10% test
-- Ensure prompt diversity across splits
-- Balance difficulty levels
-
-**Training Details:**
+### 4.3 Training Details
 
 - Learning rate: ~1e-5 (lower than SFT)
-- Batch size: 32-64 comparison pairs
-- Epochs: 1-3 (avoid overfitting)
-- Monitor validation accuracy
+- Batch size: 32–64 comparison pairs
+- Epochs: 1–3 (avoid overfitting)
+- Regularization: dropout, weight decay, early stopping on validation accuracy
+- Split: 80% train / 10% validation / 10% test
 
-**Regularization:**
+### 4.4 Evaluation
 
-- Dropout in final layers
-- Early stopping based on validation accuracy
-- Weight decay
-
----
-
-### 2.3 Reward Model Evaluation
-
-**Accuracy Metrics:**
-
-- **Pairwise accuracy**: % of correct preference predictions
+- **Pairwise accuracy**: % of held-out preferences predicted correctly (target: >65–70%)
 - **Ranking correlation**: Spearman's ρ with human rankings
-- Typical target: >65-70% accuracy on held-out test set
-
-**Calibration:**
-
-- Check if reward magnitude correlates with confidence
-- Avoid overconfident predictions
-
-**Out-of-Distribution Detection:**
-
-- Test on novel prompts/domains
-- Reward model should be robust to distribution shift
+- Test on novel prompts to check out-of-distribution robustness
 
 ---
 
----
+## 5. RL Optimization
 
-## 3. Key Challenges
+The SFT policy $\pi_\theta$ is fine-tuned to maximize expected reward while staying close to the SFT reference via a KL penalty:
 
-### 3.1 Reward Hacking
+$$\mathcal{J}(\theta) = \mathbb{E}_{x \sim \mathcal{D},\, y \sim \pi_\theta(\cdot|x)}\bigl[r(x, y) - \beta \cdot \mathrm{KL}(\pi_\theta(\cdot|x) \,\|\, \pi_\mathrm{SFT}(\cdot|x))\bigr]$$
 
-**Problem:** Policy exploits reward model weaknesses, generating high-reward but low-quality outputs.
+**KL penalty role:** High $\beta$ keeps the policy close to SFT (stable, lower reward hacking risk); low $\beta$ allows more optimization freedom but risks generating high-reward but incoherent outputs. Typical values: $\beta \in [0.01, 0.1]$.
 
-**Mitigation:**
-
-- KL penalty to stay close to SFT model: `r_total = r_RM - β * KL(π || π_SFT)`
-- Reward model ensembles
-- Regular reward model updates during RL
+**Optimization algorithm:** InstructGPT used PPO. Alternatives include REINFORCE, RLOO, GRPO, and DPO (which eliminates the reward model entirely). See the [RL Optimization Methods](rl_optimization_methods/ppo.md) pages for details.
 
 ---
 
-### 3.2 Reward Model Limitations
+## 6. Key Challenges
 
-**Issues:**
+### 6.1 Reward Hacking
 
-- Limited to training distribution
-- May not capture all aspects of quality
-- Can be fooled by surface-level patterns
+The policy exploits reward model weaknesses — generating long, verbose, or surface-level impressive outputs that score well but lack quality. Mitigations:
 
-**Solutions:**
+- KL penalty (primary defense)
+- Reward model ensembles (harder to fool multiple models simultaneously)
+- Iterative reward model updates trained on RL-generated outputs
+- Rule-based hard constraints (length limits, repetition penalties)
 
-- Diverse training data
-- Constitutional AI for principled constraints
-- Human oversight during RL
+### 6.2 Reward Model Limitations
 
----
+The reward model is a fixed approximation of human preferences — it generalizes imperfectly, can be fooled by surface-level patterns, and doesn't update during RL. Solutions: diverse training data, Constitutional AI for principled constraints, and periodic human evaluation on RL outputs.
 
-### 3.3 Scalability
+### 6.3 Scalability
 
-**Challenges:**
+Human annotation is expensive and slow. Approaches to scale:
 
-- Human annotation is expensive and slow
-- Need continuous data for model updates
-
-**Approaches:**
-
-- **RLAIF:** Use AI feedback to scale
-- **Active learning:** Select most informative comparisons. Prioritize labeling examples where the reward model is most uncertain or disagrees (e.g., close reward scores), maximizing learning per annotatio
-- **Automated filters before human review:** Use automated checks (toxicity filters, length limits, format validators) to screen out obviously bad responses before sending to human annotators, reducing annotation cost.
+- **RLAIF**: Use AI feedback to replace or augment human labels
+- **Active learning**: Prioritize labeling examples where the reward model is most uncertain (close reward scores), maximizing learning per annotation budget
+- **Automated pre-filtering**: Use toxicity filters, length limits, and format validators to screen out obvious failures before sending to human annotators
 
 ---
 
----
-
-## 4. Interview Questions
-
-### Conceptual Questions
-
-**Q1: Why do we need a separate reward modeling phase instead of directly using human feedback during RL?**
-
-<details>
-<summary>Answer</summary>
-
-- **Sample efficiency**: RL requires millions of samples; human labeling can't scale to that
-- **Cost**: Human feedback is expensive; reward model provides unlimited free evaluations
-- **Speed**: Reward model inference is fast; enables real-time RL training
-- **Consistency**: Reward model provides consistent scores; humans may have variance
-
-However, reward model introduces approximation error and potential reward hacking.
-</details>
-
-**Q2: What's the difference between pairwise comparisons and absolute ratings? Which is better for RLHF?**
-
-<details>
-<summary>Answer</summary>
-
-**Pairwise comparisons:**
-
-- Pros: Easier for humans (relative judgment), more reliable, handles subjectivity better
-- Cons: Requires more data (combinatorial), doesn't give absolute scale
-
-**Absolute ratings:**
-
-- Pros: Efficient data collection, provides absolute scale
-- Cons: Harder to calibrate, annotator disagreement higher, scale ambiguity
-
-**Pairwise is generally preferred** for RLHF because:
-
-- Human preferences are more consistent in relative judgments
-- Bradley-Terry model naturally fits preference data
-- Reduces annotator bias (no need to agree on absolute scale)
-</details>
-
-**Q3: How does the Bradley-Terry model work, and what assumptions does it make?**
-
-<details>
-<summary>Answer</summary>
-
-**Model**: Assumes P(y_w ≻ y_l) = σ(r(y_w) - r(y_l))
-
-**Assumptions:**
-
-1. **Transitivity**: If A > B and B > C, then A > C
-2. **Independence**: Preference between A and B doesn't depend on other options
-3. **Scale invariance**: Only reward differences matter, not absolute values
-
-**Limitations:**
-
-- Real human preferences may violate transitivity
-- Context matters (preferences may not be independent)
-- Doesn't model uncertainty or indifference well
-
-Despite limitations, works well in practice for RLHF.
-</details>
-
-**Q4: What is reward hacking and how do we prevent it in RLHF?**
-
-<details>
-<summary>Answer</summary>
-
-**Reward hacking**: Policy exploits flaws in the reward model to achieve high scores without actually improving quality.
-
-**Examples:**
-
-- Generating very long responses (reward model correlates length with quality)
-- Using fancy words or formatting without substance
-- Exploiting reward model's lack of factual knowledge
-
-**Prevention strategies:**
-
-1. **KL penalty**: `r_total = r_RM - β·KL(π || π_SFT)` keeps policy close to SFT baseline
-2. **Reward model ensembles**: Harder to hack multiple models simultaneously
-3. **Iterative reward model updates**: Retrain on RL-generated outputs
-4. **Rule-based constraints**: Hard limits on length, repetition, etc.
-5. **Human-in-the-loop**: Regular human evaluation during RL training
-</details>
-
-**Q5: Why do we initialize the RL policy from the SFT model rather than training from scratch?**
-
-<details>
-<summary>Answer</summary>
-
-**Reasons:**
-
-1. **Better starting point**: SFT model already generates reasonable outputs
-2. **Faster convergence**: Less exploration needed
-3. **Prevents catastrophic forgetting**: Maintains language modeling capabilities
-4. **KL penalty works better**: Meaningful to constrain distance from SFT model
-5. **Reduces reward hacking**: Harder to drift into degenerate solutions
-
-Without SFT initialization:
-
-- RL might converge to nonsensical but high-reward outputs
-- Exploration in text space is extremely difficult
-- Training is much slower and less stable
-</details>
-
-### Technical Questions
-
-**Q6: How would you handle disagreement between human annotators?**
-
-<details>
-<summary>Answer</summary>
-
-**Measurement:**
-
-- Calculate inter-annotator agreement (Fleiss' kappa, Krippendorff's alpha)
-- Track per-annotator agreement with majority/expert
-
-**Handling strategies:**
-
-1. **Majority vote**: Use most common preference
-2. **Weighted voting**: Weight by annotator reliability
-3. **Discard high-disagreement examples**: They're likely ambiguous
-4. **Model uncertainty**: Train ensemble or probabilistic reward model
-5. **Consensus building**: Resolve disagreements through discussion
-6. **Improve guidelines**: Address common disagreement sources
-
-**For training:**
-
-- Can model soft preferences: P(y_w ≻ y_l) = fraction of annotators who preferred y_w
-- Helps reward model learn uncertainty
-</details>
-
-**Q7: How do you ensure your reward model generalizes to out-of-distribution prompts?**
-
-<details>
-<summary>Answer</summary>
-
-**During data collection:**
-
-1. **Diverse prompt set**: Cover many domains, styles, difficulties
-2. **Include edge cases**: Adversarial, ambiguous, multi-step prompts
-3. **Regular updates**: Continuously add new prompt types
-
-**During training:**
-
-1. **Regularization**: Dropout, weight decay to prevent overfitting
-2. **Data augmentation**: Paraphrase prompts, vary response styles
-3. **Domain-specific splits**: Ensure validation set covers all domains
-
-**Evaluation:**
-
-1. **Hold-out test sets**: Different domains than training
-2. **Monitor RL outputs**: Check for reward hacking patterns
-3. **Human evaluation**: Regular checks on RL-generated samples
-4. **Red-teaming**: Actively try to find failure modes
-
-**Continuous improvement:**
-
-- Retrain reward model on RL-generated distribution
-- Active learning to find informative new comparisons
-</details>
-
-**Q8: What's the trade-off in choosing the β parameter for the KL penalty?**
-
-<details>
-<summary>Answer</summary>
-
-The total reward is: `r_total = r_RM(x,y) - β·KL(π(y|x) || π_SFT(y|x))`
-
-**High β (strong penalty):**
-
-- Pros: Policy stays very close to SFT, prevents reward hacking, stable training
-- Cons: Limited improvement, may not fully leverage reward signal
-
-**Low β (weak penalty):**
-
-- Pros: More optimization freedom, potentially better performance
-- Cons: Higher reward hacking risk, may drift into nonsensical outputs
-
-**Typical values**: β ∈ [0.01, 0.1]
-
-**Adaptive strategies:**
-
-- Start with high β, gradually decrease
-- Use different β for different layers
-- Monitor KL divergence and adjust dynamically
-- Per-example β based on reward model confidence
-
-**In practice**: Tune β on validation set balancing reward model score and human evaluation.
-</details>
-
-**Q9: Compare RLHF with Direct Preference Optimization (DPO). What are the trade-offs?**
-
-<details>
-<summary>Answer</summary>
-
-**RLHF (PPO-based):**
-
-- Pros: Explicit reward model (interpretable), flexible (can update RM), handles complex rewards
-- Cons: Complex pipeline (3 stages), RL instability, reward hacking risks, computationally expensive
-
-**DPO:**
-
-- Pros: Simpler (single-stage), more stable, no reward model to hack, lower compute
-- Cons: Less flexible (bakes in Bradley-Terry assumption), harder to update preferences, no explicit reward signal
-
-**Key difference**: DPO reparameterizes the RL objective to directly optimize policy from preferences, eliminating reward model.
-
-**When to use:**
-
-- **RLHF**: Need interpretable rewards, complex multi-objective optimization, iterative updates
-- **DPO**: Simpler use cases, want stability, limited compute
-
-**Trend**: DPO gaining popularity due to simplicity, but RLHF still useful for complex alignment tasks.
-</details>
-
-**Q10: How would you design an active learning strategy for preference data collection?**
-
-<details>
-<summary>Answer</summary>
-
-**Goal**: Select most informative comparisons to minimize annotation cost while maximizing reward model quality.
-
-**Uncertainty-based sampling:**
-
-1. **Model disagreement**: Query pairs where ensemble models disagree most
-2. **Entropy**: Select comparisons with highest prediction entropy
-3. **Margin**: Choose pairs with smallest reward difference (close calls)
-
-**Diversity-based sampling:**
-
-1. **Prompt coverage**: Ensure diverse prompt types are covered
-2. **Response diversity**: Sample varied response styles
-3. **Cluster-based**: Select representatives from different clusters
-
-**Performance-based sampling:**
-
-1. **Error analysis**: Focus on domains where RM performs poorly
-2. **Gradient-based**: Select examples with high expected gradient norm
-3. **Policy-aware**: Sample from current RL policy distribution
-
-**Practical approach:**
-
-- Combine strategies: 50% uncertainty + 30% diversity + 20% error-focused
-- Regular cold-start: Include random samples to prevent bias
-- Batch selection: Consider redundancy within each batch
-- Monitor distribution shift: Ensure coverage of evolving policy
-
-**Metrics**: Track validation accuracy vs. number of labels to measure efficiency.
-</details>
-
----
+*Sources: Christiano et al. (2017) [[arXiv:1706.03741]](https://arxiv.org/abs/1706.03741) · Ouyang et al. (2022) — InstructGPT [[arXiv:2203.02155]](https://arxiv.org/abs/2203.02155)*

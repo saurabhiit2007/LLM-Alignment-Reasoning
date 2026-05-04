@@ -1401,6 +1401,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#0-what-are-we-evaluating" class="md-nav__link">
+    <span class="md-ellipsis">
+      0. What Are We Evaluating?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-the-hhh-framework" class="md-nav__link">
     <span class="md-ellipsis">
       1. The HHH Framework
@@ -1784,6 +1793,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#0-what-are-we-evaluating" class="md-nav__link">
+    <span class="md-ellipsis">
+      0. What Are We Evaluating?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-the-hhh-framework" class="md-nav__link">
     <span class="md-ellipsis">
       1. The HHH Framework
@@ -2023,6 +2041,20 @@
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Evaluating whether an LLM is truly <em>aligned</em> is fundamentally harder than measuring raw capability. A model that scores well on academic benchmarks may still refuse reasonable requests, hallucinate facts, or produce subtly harmful outputs. This page covers the frameworks and benchmarks used to measure alignment.</p>
 <hr />
+<h2 id="0-what-are-we-evaluating">0. What Are We Evaluating?<a class="headerlink" href="#0-what-are-we-evaluating" title="Permanent link">&para;</a></h2>
+<p>The subject of alignment evaluation is always the <strong>response an LLM generates for a given prompt or task</strong>:</p>
+<div class="highlight"><pre><span></span><code>Prompt / Task  →  LLM  →  Response
+                               ↑
+                        How good is this?
+</code></pre></div>
+<p>For capability tasks (math, code), correctness is verifiable — the answer is right or wrong. Alignment evaluation covers the harder cases where there is <strong>no automatic ground truth</strong>:</p>
+<ul>
+<li>Is this response <em>helpful</em> to the user who asked?</li>
+<li>Is it <em>safe</em> — free of harmful, biased, or misleading content?</li>
+<li>Is it <em>honest</em> — factually accurate and appropriately uncertain?</li>
+</ul>
+<p>Because these qualities cannot be checked automatically with a formula, two approaches exist: have a <strong>human judge the response</strong> (Section 2) or have a <strong>strong LLM judge the response</strong> (Section 3). Sections 4–7 cover specific benchmarks that provide structured prompts and scoring rubrics so that evaluation is reproducible across models.</p>
+<hr />
 <h2 id="1-the-hhh-framework">1. The HHH Framework<a class="headerlink" href="#1-the-hhh-framework" title="Permanent link">&para;</a></h2>
 <p>Anthropic's Helpful–Harmless–Honest (HHH) triplet is the most widely adopted conceptual framework for alignment evaluation. Each axis targets a distinct failure mode:</p>
 <table>
@@ -2054,6 +2086,7 @@
 <p>Real tensions exist between axes: a model becomes more harmless by refusing more, but less helpful. Good alignment evaluation must measure all three simultaneously.</p>
 <hr />
 <h2 id="2-human-preference-evaluation">2. Human Preference Evaluation<a class="headerlink" href="#2-human-preference-evaluation" title="Permanent link">&para;</a></h2>
+<p>A human reads the LLM's response (or two responses side by side) and judges its quality. This is the ground truth signal but is expensive to collect at scale.</p>
 <h3 id="21-pairwise-comparisons">2.1 Pairwise Comparisons<a class="headerlink" href="#21-pairwise-comparisons" title="Permanent link">&para;</a></h3>
 <p>The most direct signal: show two model outputs to a human, ask which is better. This maps cleanly to the Bradley-Terry reward model objective used in RLHF.</p>
 <p><strong>Data collection:</strong></p>
@@ -2084,7 +2117,7 @@
 </ul>
 <hr />
 <h2 id="3-llm-as-judge-evaluation">3. LLM-as-Judge Evaluation<a class="headerlink" href="#3-llm-as-judge-evaluation" title="Permanent link">&para;</a></h2>
-<p>Rather than expensive human annotation, a strong model (typically GPT-4) acts as an automated judge. This scales evaluation dramatically while retaining reasonable correlation with human preferences.</p>
+<p>A strong LLM (typically GPT-4) reads the response produced by the model under evaluation and scores or ranks it — replacing the human annotator. Rather than expensive human annotation, a strong model (typically GPT-4) acts as an automated judge. This scales evaluation dramatically while retaining reasonable correlation with human preferences.</p>
 <h3 id="31-mt-bench">3.1 MT-Bench<a class="headerlink" href="#31-mt-bench" title="Permanent link">&para;</a></h3>
 <p><strong>What it is:</strong> 80 multi-turn questions across 8 categories (coding, math, reasoning, roleplay, writing, extraction, STEM, humanities).</p>
 <p><strong>How it works:</strong> GPT-4 scores each response 1–10. A second "turn" tests multi-turn coherence.</p>

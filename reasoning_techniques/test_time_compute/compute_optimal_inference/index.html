@@ -13,10 +13,10 @@
       
       
       
-        <link rel="prev" href="../STAR_self_taught_reasoner/">
+        <link rel="prev" href="../../advanced_reasoning_models/system2_attention/">
       
       
-        <link rel="next" href="../../test_time_compute/compute_optimal_inference/">
+        <link rel="next" href="../best_of_n_sampling/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>System2 Attention - LLM Alignment & Reasoning</title>
+        <title>Compute Optimal Inference - LLM Alignment & Reasoning</title>
       
     
     
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              System2 Attention
+              Compute Optimal Inference
             
           </span>
         </div>
@@ -1016,20 +1016,20 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -1045,7 +1045,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             Advanced Reasoning Methods
@@ -1059,7 +1059,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../STAR_self_taught_reasoner/" class="md-nav__link">
+      <a href="../../advanced_reasoning_models/STAR_self_taught_reasoner/" class="md-nav__link">
         
   
   
@@ -1074,6 +1074,77 @@
   
 
               
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced_reasoning_models/system2_attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System2 Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Test-Time Compute Scaling
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Test-Time Compute Scaling
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -1094,7 +1165,7 @@
   
   
   <span class="md-ellipsis">
-    System2 Attention
+    Compute Optimal Inference
     
   </span>
   
@@ -1107,7 +1178,7 @@
   
   
   <span class="md-ellipsis">
-    System2 Attention
+    Compute Optimal Inference
     
   </span>
   
@@ -1134,40 +1205,13 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-core-concept" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Core Concept
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-how-system-2-attention-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. How System 2 Attention Works
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. How System 2 Attention Works">
+    <nav class="md-nav" aria-label="1. Overview">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#core-principle" class="md-nav__link">
     <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mathematical-formulation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mathematical Formulation
+      Core Principle
     </span>
   </a>
   
@@ -1179,37 +1223,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-key-benefits" class="md-nav__link">
+  <a href="#2-why-it-matters" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Key Benefits
+      2. Why It Matters
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-technical-details" class="md-nav__link">
+  <a href="#3-core-techniques" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Technical Details
+      3. Core Techniques
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Technical Details">
+    <nav class="md-nav" aria-label="3. Core Techniques">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#implementation-considerations" class="md-nav__link">
+  <a href="#31-parallel-scaling" class="md-nav__link">
     <span class="md-ellipsis">
-      Implementation Considerations
+      3.1 Parallel Scaling
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+  <a href="#32-sequential-scaling" class="md-nav__link">
     <span class="md-ellipsis">
-      Limitations
+      3.2 Sequential Scaling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-hybrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Hybrid
     </span>
   </a>
   
@@ -1221,140 +1274,47 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-recent-developments-2023-2025" class="md-nav__link">
+  <a href="#4-compute-optimal-inference" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Recent Developments (2023-2025)
+      4. Compute-Optimal Inference
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Recent Developments (2023-2025)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#integration-with-chain-of-thought-cot" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integration with Chain-of-Thought (CoT)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#attention-mechanisms-evolution" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attention Mechanisms Evolution
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-systems" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Systems
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#research-directions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Research Directions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-interview-questions" class="md-nav__link">
+  <a href="#5-training-for-test-time-scaling" class="md-nav__link">
     <span class="md-ellipsis">
-      Common Interview Questions
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common Interview Questions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#q1-what-is-system-2-attention-and-why-is-it-needed" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q1: What is System 2 Attention and why is it needed?
+      5. Training for Test-Time Scaling
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#q2-how-does-s2a-differ-from-standard-attention-mechanisms" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#6-key-models-20242025" class="md-nav__link">
     <span class="md-ellipsis">
-      Q2: How does S2A differ from standard attention mechanisms?
+      6. Key Models (2024–2025)
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#q3-what-are-the-computational-trade-offs-of-using-s2a" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#7-when-to-use" class="md-nav__link">
     <span class="md-ellipsis">
-      Q3: What are the computational trade-offs of using S2A?
+      7. When to Use
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#q4-how-would-you-implement-s2a-in-a-production-rag-system" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#8-interaction-with-other-inference-topics" class="md-nav__link">
     <span class="md-ellipsis">
-      Q4: How would you implement S2A in a production RAG system?
+      8. Interaction with Other Inference Topics
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q5-what-are-the-limitations-of-s2a" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q5: What are the limitations of S2A?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q6-how-does-s2a-handle-adversarial-or-biased-context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q6: How does S2A handle adversarial or biased context?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q7-can-s2a-be-combined-with-other-techniques-like-chain-of-thought" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q7: Can S2A be combined with other techniques like Chain-of-Thought?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q8-what-metrics-would-you-use-to-evaluate-s2a-effectiveness" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q8: What metrics would you use to evaluate S2A effectiveness?
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1367,54 +1327,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Test-Time Compute Scaling
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            Test-Time Compute Scaling
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
               
                 
   
@@ -1422,30 +1334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../test_time_compute/compute_optimal_inference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Compute Optimal Inference
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../test_time_compute/best_of_n_sampling/" class="md-nav__link">
+      <a href="../best_of_n_sampling/" class="md-nav__link">
         
   
   
@@ -1468,7 +1357,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../test_time_compute/orm_prm/" class="md-nav__link">
+      <a href="../orm_prm/" class="md-nav__link">
         
   
   
@@ -1738,40 +1627,13 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-core-concept" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Core Concept
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-how-system-2-attention-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. How System 2 Attention Works
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. How System 2 Attention Works">
+    <nav class="md-nav" aria-label="1. Overview">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#core-principle" class="md-nav__link">
     <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mathematical-formulation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mathematical Formulation
+      Core Principle
     </span>
   </a>
   
@@ -1783,37 +1645,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-key-benefits" class="md-nav__link">
+  <a href="#2-why-it-matters" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Key Benefits
+      2. Why It Matters
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-technical-details" class="md-nav__link">
+  <a href="#3-core-techniques" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Technical Details
+      3. Core Techniques
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Technical Details">
+    <nav class="md-nav" aria-label="3. Core Techniques">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#implementation-considerations" class="md-nav__link">
+  <a href="#31-parallel-scaling" class="md-nav__link">
     <span class="md-ellipsis">
-      Implementation Considerations
+      3.1 Parallel Scaling
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+  <a href="#32-sequential-scaling" class="md-nav__link">
     <span class="md-ellipsis">
-      Limitations
+      3.2 Sequential Scaling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-hybrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Hybrid
     </span>
   </a>
   
@@ -1825,140 +1696,47 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-recent-developments-2023-2025" class="md-nav__link">
+  <a href="#4-compute-optimal-inference" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Recent Developments (2023-2025)
+      4. Compute-Optimal Inference
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="6. Recent Developments (2023-2025)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#integration-with-chain-of-thought-cot" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integration with Chain-of-Thought (CoT)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#attention-mechanisms-evolution" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attention Mechanisms Evolution
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#production-systems" class="md-nav__link">
-    <span class="md-ellipsis">
-      Production Systems
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#research-directions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Research Directions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-interview-questions" class="md-nav__link">
+  <a href="#5-training-for-test-time-scaling" class="md-nav__link">
     <span class="md-ellipsis">
-      Common Interview Questions
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common Interview Questions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#q1-what-is-system-2-attention-and-why-is-it-needed" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q1: What is System 2 Attention and why is it needed?
+      5. Training for Test-Time Scaling
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#q2-how-does-s2a-differ-from-standard-attention-mechanisms" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#6-key-models-20242025" class="md-nav__link">
     <span class="md-ellipsis">
-      Q2: How does S2A differ from standard attention mechanisms?
+      6. Key Models (2024–2025)
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#q3-what-are-the-computational-trade-offs-of-using-s2a" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#7-when-to-use" class="md-nav__link">
     <span class="md-ellipsis">
-      Q3: What are the computational trade-offs of using S2A?
+      7. When to Use
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#q4-how-would-you-implement-s2a-in-a-production-rag-system" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#8-interaction-with-other-inference-topics" class="md-nav__link">
     <span class="md-ellipsis">
-      Q4: How would you implement S2A in a production RAG system?
+      8. Interaction with Other Inference Topics
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q5-what-are-the-limitations-of-s2a" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q5: What are the limitations of S2A?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q6-how-does-s2a-handle-adversarial-or-biased-context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q6: How does S2A handle adversarial or biased context?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q7-can-s2a-be-combined-with-other-techniques-like-chain-of-thought" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q7: Can S2A be combined with other techniques like Chain-of-Thought?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#q8-what-metrics-would-you-use-to-evaluate-s2a-effectiveness" class="md-nav__link">
-    <span class="md-ellipsis">
-      Q8: What metrics would you use to evaluate S2A effectiveness?
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1978,187 +1756,132 @@
 
 
 
-  <h1>System2 Attention</h1>
+  <h1>Compute Optimal Inference</h1>
 
 <h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
-<p>System 2 Attention (S2A) is a technique designed to improve reasoning in Large Language Models (LLMs) by separating context extraction from reasoning, inspired by human cognitive processes. The name draws from Kahneman's dual-process theory: System 1 (fast, intuitive) and System 2 (slow, deliberate reasoning).</p>
+<p><strong>Test-time compute scaling</strong> (also called <strong>inference-time scaling</strong>) allocates additional computational resources during inference — rather than training — to improve performance on complex tasks. Instead of scaling model parameters, it uses techniques like multiple sampling, extended reasoning chains, or search algorithms at inference time.</p>
+<h3 id="core-principle">Core Principle<a class="headerlink" href="#core-principle" title="Permanent link">&para;</a></h3>
+<p>A smaller model with smart inference can outperform a larger model with standard decoding. Research shows this is often more cost-effective than training larger models for hard reasoning tasks.</p>
 <hr />
+<h2 id="2-why-it-matters">2. Why It Matters<a class="headerlink" href="#2-why-it-matters" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Smaller model + test-time search &gt; larger model</td>
+<td>7B model with BoN/MCTS can match 34B greedy decoding on MATH</td>
+</tr>
+<tr>
+<td>Inference compute can substitute for training compute</td>
+<td>OpenAI o1/o3, DeepSeek R1</td>
+</tr>
+<tr>
+<td>System 2 thinking is unlockable at inference</td>
+<td>Extended CoT enables deliberate step-by-step reasoning</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="2-core-concept">2. Core Concept<a class="headerlink" href="#2-core-concept" title="Permanent link">&para;</a></h2>
-<p><strong>Problem:</strong> Standard attention mechanisms in transformers process all input tokens equally, making models susceptible to irrelevant context, distractors, and spurious correlations that can degrade reasoning performance.</p>
-<p><strong>Solution:</strong> System 2 Attention regenerates the input context to include only information relevant to the question, effectively removing irrelevant details before the reasoning step.</p>
+<h2 id="3-core-techniques">3. Core Techniques<a class="headerlink" href="#3-core-techniques" title="Permanent link">&para;</a></h2>
+<h3 id="31-parallel-scaling">3.1 Parallel Scaling<a class="headerlink" href="#31-parallel-scaling" title="Permanent link">&para;</a></h3>
+<p><strong>Best-of-N (BoN):</strong> Generate N candidate outputs, score each with a reward model or verifier, return the highest-scoring one. Error reduction follows approximately <code>error ∝ e^(-cN)</code>. See <a href="../best_of_n_sampling/">Best-of-N Sampling</a>.</p>
+<p><strong>Majority Voting / Self-Consistency:</strong> Sample N reasoning paths, select the most frequent answer. No reward model required — works well for multiple-choice and math tasks.</p>
+<p><strong>Weighted Voting:</strong> Assign confidence weights to candidates before aggregating.</p>
 <hr />
+<h3 id="32-sequential-scaling">3.2 Sequential Scaling<a class="headerlink" href="#32-sequential-scaling" title="Permanent link">&para;</a></h3>
+<p><strong>Chain-of-Thought (CoT):</strong> Decompose into intermediate steps. Longer reasoning chains improve performance on hard tasks.</p>
+<p><strong>Self-Refinement:</strong> Model critiques and revises its own output iteratively.</p>
+<p><strong>Tree Search (MCTS, Beam Search + PRM):</strong> Explore the reasoning tree with a <a href="../orm_prm/">Process Reward Model</a> scoring intermediate steps. Prunes bad paths early; more efficient than BoN for structured problems.</p>
 <hr />
-<h2 id="3-how-system-2-attention-works">3. How System 2 Attention Works<a class="headerlink" href="#3-how-system-2-attention-works" title="Permanent link">&para;</a></h2>
-<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Context Regeneration Phase:</strong></li>
-<li>Given input context C and question Q</li>
-<li>Generate cleaned context C' that contains only relevant information</li>
-<li>
-<p>Use prompt: "Given the context, rewrite it to remove irrelevant information for answering the question"</p>
-</li>
-<li>
-<p><strong>Reasoning Phase:</strong></p>
-</li>
-<li>Use regenerated context C' instead of original C</li>
-<li>Apply standard attention and reasoning mechanisms</li>
-<li>Generate final answer based on filtered context</li>
-</ol>
+<h3 id="33-hybrid">3.3 Hybrid<a class="headerlink" href="#33-hybrid" title="Permanent link">&para;</a></h3>
+<p>Generate multiple chains in parallel, refine each sequentially, select the best final answer. Used internally by o1/o3 and R1.</p>
 <hr />
-<h3 id="mathematical-formulation">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>Standard Attention: Answer = LLM(Context, Question)
-System 2 Attention: 
-  - C&#39; = LLM_regenerate(C, Q)  # Context regeneration
-  - Answer = LLM_reason(C&#39;, Q)  # Reasoning on clean context
-</code></pre></div>
+<h2 id="4-compute-optimal-inference">4. Compute-Optimal Inference<a class="headerlink" href="#4-compute-optimal-inference" title="Permanent link">&para;</a></h2>
+<p>Performance follows a power law: <code>Performance ∝ Compute^α</code> up to a saturation point N* beyond which gains diminish.</p>
+<p><strong>Allocation strategy by budget:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Budget</th>
+<th>Recommended Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low</td>
+<td>Better base model, greedy decoding</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>Best-of-N (N=4–16) or CoT</td>
+</tr>
+<tr>
+<td>High</td>
+<td>Tree search + PRM; extended CoT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Memory bottleneck:</strong> Long reasoning chains stress the KV-cache. Sparse attention (top-k or block-sparse) mitigates this.</p>
 <hr />
+<h2 id="5-training-for-test-time-scaling">5. Training for Test-Time Scaling<a class="headerlink" href="#5-training-for-test-time-scaling" title="Permanent link">&para;</a></h2>
+<p>Models need to be trained to exploit extra compute effectively.</p>
+<p><strong>Supervised Fine-Tuning (SFT):</strong> Train on long CoT examples (synthetic or distilled). Models learn to imitate extended reasoning.</p>
+<p><strong>Reinforcement Learning (RL):</strong> Train with outcome rewards on verifiable tasks (math, code). RL discovers reasoning strategies without labeled chains. DeepSeek R1-Zero achieved strong reasoning from pure RL with no SFT.</p>
+<p><strong>RLVR (RL from Verifiable Rewards):</strong> Automatic reward generation in domains with ground truth — enables scalable RL training without human labeling.</p>
 <hr />
-<h2 id="4-key-benefits">4. Key Benefits<a class="headerlink" href="#4-key-benefits" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Improved Factual Accuracy:</strong> Reduces hallucinations by filtering irrelevant information</li>
-<li><strong>Better Opinion Bias Handling:</strong> Less susceptible to biased opinions in context</li>
-<li><strong>Enhanced Robustness:</strong> More resilient to adversarial context and distractors</li>
-<li><strong>Multi-hop Reasoning:</strong> Better performance on complex reasoning chains</li>
-<li><strong>Computational Efficiency:</strong> Can use smaller models for regeneration, larger for reasoning</li>
-</ol>
+<h2 id="6-key-models-20242025">6. Key Models (2024–2025)<a class="headerlink" href="#6-key-models-20242025" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Approach</th>
+<th>Notable Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI o1 (Sept 2024)</td>
+<td>Hidden CoT + test-time search</td>
+<td>Strong STEM benchmarks</td>
+</tr>
+<tr>
+<td>OpenAI o3 (Dec 2024)</td>
+<td>Deliberative alignment</td>
+<td>87.7% GPQA Diamond, 87.5% ARC-AGI</td>
+</tr>
+<tr>
+<td>DeepSeek R1 (Jan 2025)</td>
+<td>Pure RL, visible <code>&lt;think&gt;</code> tags, MoE (671B / 37B active)</td>
+<td>97.3% MATH-500, ~20× cheaper than o1</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<hr />
-<h2 id="5-technical-details">5. Technical Details<a class="headerlink" href="#5-technical-details" title="Permanent link">&para;</a></h2>
-<h3 id="implementation-considerations">Implementation Considerations<a class="headerlink" href="#implementation-considerations" title="Permanent link">&para;</a></h3>
-<p><strong>Two-Stage Processing:</strong></p>
+<h2 id="7-when-to-use">7. When to Use<a class="headerlink" href="#7-when-to-use" title="Permanent link">&para;</a></h2>
+<p><strong>Use test-time scaling for:</strong></p>
 <ul>
-<li>Stage 1: Use LLM to extract relevant facts (can be same or different model)</li>
-<li>Stage 2: Feed extracted context to reasoning model</li>
+<li>Complex multi-step reasoning (math, code, planning)</li>
+<li>Tasks with verifiable correctness</li>
+<li>When a smaller model must match a larger one</li>
 </ul>
-<p><strong>Prompt Engineering:</strong>
-<div class="highlight"><pre><span></span><code>Regeneration prompt template:
-&quot;Given the following text: {context}
-And the question: {question}
-Extract and rewrite only the relevant information needed to answer the question.
-Remove any irrelevant details, opinions, or distracting information.&quot;
-</code></pre></div></p>
-<p><strong>Model Selection:</strong></p>
+<p><strong>Avoid when:</strong></p>
 <ul>
-<li>Regeneration: Can use smaller, faster models (cost-effective)</li>
-<li>Reasoning: Larger models for complex reasoning tasks</li>
-<li>Can use same model for both with different prompts</li>
-</ul>
-<hr />
-<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Latency:</strong> Requires two forward passes (regeneration + reasoning)</li>
-<li><strong>Information Loss:</strong> May accidentally filter important contextual nuances</li>
-<li><strong>Dependence on Regeneration Quality:</strong> Reasoning quality bounded by regeneration effectiveness</li>
-<li><strong>Cost:</strong> Higher computational cost than single-pass inference</li>
-</ol>
-<hr />
-<hr />
-<h2 id="6-recent-developments-2023-2025">6. Recent Developments (2023-2025)<a class="headerlink" href="#6-recent-developments-2023-2025" title="Permanent link">&para;</a></h2>
-<h3 id="integration-with-chain-of-thought-cot">Integration with Chain-of-Thought (CoT)<a class="headerlink" href="#integration-with-chain-of-thought-cot" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Hybrid Approaches:</strong> Combining S2A with CoT prompting for enhanced reasoning</li>
-<li>S2A filters context → CoT performs step-by-step reasoning</li>
-<li>Shows significant improvements on mathematical and logical reasoning benchmarks</li>
-</ul>
-<h3 id="attention-mechanisms-evolution">Attention Mechanisms Evolution<a class="headerlink" href="#attention-mechanisms-evolution" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Sparse Attention Variants:</strong> Combining S2A principles with sparse attention patterns</li>
-<li><strong>Dynamic Context Pruning:</strong> Real-time relevance scoring during inference</li>
-<li><strong>Multi-stage Attention:</strong> Iterative refinement of context across multiple passes</li>
-</ul>
-<h3 id="production-systems">Production Systems<a class="headerlink" href="#production-systems" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>RAG + S2A:</strong> Using S2A to filter retrieved documents before reasoning</li>
-<li><strong>Long Context Windows:</strong> Applying S2A principles to manage 100K+ token contexts</li>
-<li><strong>Agentic Systems:</strong> S2A as preprocessing step in multi-agent reasoning frameworks</li>
-</ul>
-<h3 id="research-directions">Research Directions<a class="headerlink" href="#research-directions" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Learned Regeneration:</strong> Training specialized models for context filtering</li>
-<li><strong>End-to-End Training:</strong> Joint optimization of regeneration and reasoning</li>
-<li><strong>Multimodal S2A:</strong> Extending to image/video context filtering</li>
-<li><strong>Benchmark Performance:</strong> Consistent improvements on GSM8K, StrategyQA, DROP datasets</li>
-</ul>
-<hr />
-<hr />
-<h2 id="common-interview-questions">Common Interview Questions<a class="headerlink" href="#common-interview-questions" title="Permanent link">&para;</a></h2>
-<h3 id="q1-what-is-system-2-attention-and-why-is-it-needed">Q1: What is System 2 Attention and why is it needed?<a class="headerlink" href="#q1-what-is-system-2-attention-and-why-is-it-needed" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> System 2 Attention is a technique to improve LLM reasoning by separating context filtering from reasoning. Standard attention treats all input tokens equally, making models vulnerable to irrelevant information and distractors. S2A regenerates the input to extract only relevant facts before reasoning, mimicking deliberate human cognition (System 2 thinking).</p>
-<hr />
-<h3 id="q2-how-does-s2a-differ-from-standard-attention-mechanisms">Q2: How does S2A differ from standard attention mechanisms?<a class="headerlink" href="#q2-how-does-s2a-differ-from-standard-attention-mechanisms" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> </p>
-<ul>
-<li><strong>Standard Attention:</strong> Single-pass processing where all context tokens compete for attention weights</li>
-<li><strong>System 2 Attention:</strong> Two-stage process - first regenerate/filter context, then apply attention and reasoning</li>
-<li>S2A operates at the context level (filtering entire passages), while standard attention works at the token level</li>
-</ul>
-<hr />
-<h3 id="q3-what-are-the-computational-trade-offs-of-using-s2a">Q3: What are the computational trade-offs of using S2A?<a class="headerlink" href="#q3-what-are-the-computational-trade-offs-of-using-s2a" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong></p>
-<ul>
-<li><strong>Costs:</strong> 2x inference passes (regeneration + reasoning), higher latency, increased compute</li>
-<li><strong>Benefits:</strong> Better accuracy, reduced hallucinations, more robust to noise</li>
-<li><strong>Optimization:</strong> Use smaller models for regeneration, cache regenerated contexts for similar queries, apply selectively to complex questions only</li>
+<li>Latency is the primary constraint</li>
+<li>Task is simple factual lookup</li>
+<li>Compute budget is very tight</li>
 </ul>
 <hr />
-<h3 id="q4-how-would-you-implement-s2a-in-a-production-rag-system">Q4: How would you implement S2A in a production RAG system?<a class="headerlink" href="#q4-how-would-you-implement-s2a-in-a-production-rag-system" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong>
-<div class="highlight"><pre><span></span><code><span class="c1"># Conceptual implementation</span>
-<span class="k">def</span> <span class="nf">system2_rag</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">retrieved_docs</span><span class="p">):</span>
-    <span class="c1"># Stage 1: Regenerate/filter context</span>
-    <span class="n">filtered_context</span> <span class="o">=</span> <span class="n">regeneration_llm</span><span class="p">(</span>
-        <span class="n">prompt</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Extract relevant info from: </span><span class="si">{</span><span class="n">retrieved_docs</span><span class="si">}</span><span class="s2"> for question: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Stage 2: Reason on filtered context</span>
-    <span class="n">answer</span> <span class="o">=</span> <span class="n">reasoning_llm</span><span class="p">(</span>
-        <span class="n">context</span><span class="o">=</span><span class="n">filtered_context</span><span class="p">,</span>
-        <span class="n">question</span><span class="o">=</span><span class="n">query</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">answer</span>
-</code></pre></div></p>
-<p>Key considerations: prompt design, model selection, caching strategies, quality metrics.</p>
-<hr />
-<h3 id="q5-what-are-the-limitations-of-s2a">Q5: What are the limitations of S2A?<a class="headerlink" href="#q5-what-are-the-limitations-of-s2a" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong></p>
-<ol>
-<li><strong>Information loss during filtering</strong> - may remove important contextual nuances</li>
-<li><strong>Regeneration errors</strong> - mistakes in Stage 1 propagate to Stage 2</li>
-<li><strong>Latency overhead</strong> - not suitable for real-time applications without optimization</li>
-<li><strong>Limited benefit for simple tasks</strong> - overhead not justified for straightforward queries</li>
-<li><strong>Prompt sensitivity</strong> - regeneration quality depends heavily on prompt engineering</li>
-</ol>
-<hr />
-<h3 id="q6-how-does-s2a-handle-adversarial-or-biased-context">Q6: How does S2A handle adversarial or biased context?<a class="headerlink" href="#q6-how-does-s2a-handle-adversarial-or-biased-context" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> S2A is explicitly designed to be robust against adversarial context by:</p>
+<h2 id="8-interaction-with-other-inference-topics">8. Interaction with Other Inference Topics<a class="headerlink" href="#8-interaction-with-other-inference-topics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Filtering opinion-based content that may bias answers</li>
-<li>Removing contradictory or misleading information</li>
-<li>Focusing on factual, question-relevant information</li>
-<li>Studies show S2A models are significantly more resilient to context injection attacks compared to standard attention</li>
+<li><strong>Speculative decoding</strong> can reduce latency of long reasoning chains — see <a href="../decoding_strategies/speculative_decoding.md">Speculative Decoding</a></li>
+<li><strong>KV-cache pressure</strong> from long CoT is managed via <a href="../attention_optimization/paged_attention.md">Paged Attention</a></li>
+<li><strong>BoN and PRM</strong> are the two core primitives — covered in this section</li>
 </ul>
-<hr />
-<h3 id="q7-can-s2a-be-combined-with-other-techniques-like-chain-of-thought">Q7: Can S2A be combined with other techniques like Chain-of-Thought?<a class="headerlink" href="#q7-can-s2a-be-combined-with-other-techniques-like-chain-of-thought" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong> Yes, and this is increasingly common:</p>
-<ul>
-<li><strong>S2A + CoT:</strong> Filter context first (S2A), then reason step-by-step (CoT)</li>
-<li><strong>S2A + RAG:</strong> Apply S2A to filter retrieved documents</li>
-<li><strong>S2A + Few-shot:</strong> Use S2A with few-shot examples for better generalization</li>
-<li>Combinations often outperform individual techniques on complex reasoning benchmarks</li>
-</ul>
-<hr />
-<h3 id="q8-what-metrics-would-you-use-to-evaluate-s2a-effectiveness">Q8: What metrics would you use to evaluate S2A effectiveness?<a class="headerlink" href="#q8-what-metrics-would-you-use-to-evaluate-s2a-effectiveness" title="Permanent link">&para;</a></h3>
-<p><strong>Answer:</strong></p>
-<ul>
-<li><strong>Accuracy:</strong> Task-specific metrics (exact match, F1, etc.)</li>
-<li><strong>Robustness:</strong> Performance degradation with adversarial context</li>
-<li><strong>Efficiency:</strong> Inference latency, computational cost</li>
-<li><strong>Context Utilization:</strong> Precision/recall of relevant information extraction</li>
-<li><strong>Hallucination Rate:</strong> Factual consistency with source context</li>
-<li><strong>Ablation Studies:</strong> Compare against baseline (no S2A) and oracle (perfect filtering)</li>
-</ul>
-<hr />
 
 
 

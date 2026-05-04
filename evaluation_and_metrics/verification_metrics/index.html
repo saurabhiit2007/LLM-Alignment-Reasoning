@@ -75,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -1272,29 +1277,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../references/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Reasoning & Evaluation Benchmarks
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../alignment_evaluation/" class="md-nav__link">
         
   
@@ -1325,6 +1307,19 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Verification Metrics
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1336,6 +1331,209 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. pass@k
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. pass@k">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pass1-vs-passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      pass@1 vs pass@k
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-majority-voting-majk-self-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Majority Voting (maj@k / Self-Consistency)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-best-of-n-bon-with-a-verifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Best-of-N (BoN) with a Verifier
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-functional-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Functional Correctness
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Functional Correctness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#humaneval" class="md-nav__link">
+    <span class="md-ellipsis">
+      HumanEval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swe-bench-verified" class="md-nav__link">
+    <span class="md-ellipsis">
+      SWE-bench Verified
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#livecodebench" class="md-nav__link">
+    <span class="md-ellipsis">
+      LiveCodeBench
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-reinforcement-learning-with-verifiable-rewards-rlvr" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Reinforcement Learning with Verifiable Rewards (RLVR)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-process-level-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Process-Level Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Process-Level Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cot-passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoT-Pass@k
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-level-reward-prm-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-Level Reward (PRM Signal)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-math-benchmarks-as-verification-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Math Benchmarks as Verification Targets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-failure-modes-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Failure Modes and Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Failure Modes and Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metric-gaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metric Gaming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-incompleteness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Suite Incompleteness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contamination" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contamination
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1431,7 +1629,7 @@
   
   
   <span class="md-ellipsis">
-    Reasoning & Evaluation Benchmarks
+    References
     
   </span>
   
@@ -1459,6 +1657,200 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. pass@k
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. pass@k">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pass1-vs-passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      pass@1 vs pass@k
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-majority-voting-majk-self-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Majority Voting (maj@k / Self-Consistency)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-best-of-n-bon-with-a-verifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Best-of-N (BoN) with a Verifier
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-functional-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Functional Correctness
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Functional Correctness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#humaneval" class="md-nav__link">
+    <span class="md-ellipsis">
+      HumanEval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swe-bench-verified" class="md-nav__link">
+    <span class="md-ellipsis">
+      SWE-bench Verified
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#livecodebench" class="md-nav__link">
+    <span class="md-ellipsis">
+      LiveCodeBench
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-reinforcement-learning-with-verifiable-rewards-rlvr" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Reinforcement Learning with Verifiable Rewards (RLVR)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-process-level-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Process-Level Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Process-Level Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cot-passk" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoT-Pass@k
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-level-reward-prm-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-Level Reward (PRM Signal)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-math-benchmarks-as-verification-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Math Benchmarks as Verification Targets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-failure-modes-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Failure Modes and Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Failure Modes and Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metric-gaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metric Gaming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-incompleteness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Suite Incompleteness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contamination" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contamination
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1475,7 +1867,240 @@
 
   <h1>Verification Metrics</h1>
 
-
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Verification metrics measure whether a model's output can be checked for correctness without human judgment. They are the backbone of scalable evaluation for coding, mathematics, and formal reasoning — and increasingly, the reward signal in RL training pipelines.</p>
+<hr />
+<h2 id="1-passk">1. pass@k<a class="headerlink" href="#1-passk" title="Permanent link">&para;</a></h2>
+<p><strong>Origin:</strong> Chen et al. (2021), introduced with the HumanEval benchmark for code generation.</p>
+<p><strong>Definition:</strong> The probability that <em>at least one</em> of k independently sampled completions passes all test cases for a given problem.</p>
+<p><strong>Unbiased estimator</strong> (from the original paper):</p>
+<div class="arithmatex">\[\text{pass@}k = 1 - \frac{\binom{n-c}{k}}{\binom{n}{k}}\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\(n\)</span> = total samples generated per problem (typically <span class="arithmatex">\(n \geq k\)</span>)</li>
+<li><span class="arithmatex">\(c\)</span> = number of samples that pass all tests</li>
+<li><span class="arithmatex">\(k\)</span> = number of samples shown to the user</li>
+</ul>
+<p><strong>Why not just compute fraction correct?</strong> A naïve fraction is biased when <span class="arithmatex">\(c/n\)</span> is used as a point estimate. The formula above gives an unbiased estimate by averaging over all possible subsets of size <span class="arithmatex">\(k\)</span>.</p>
+<h3 id="pass1-vs-passk">pass@1 vs pass@k<a class="headerlink" href="#pass1-vs-passk" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What it measures</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>pass@1</strong></td>
+<td>Single-shot correctness</td>
+<td>Production: user gets one answer</td>
+</tr>
+<tr>
+<td><strong>pass@k (k&gt;1)</strong></td>
+<td>Coverage / diversity of solutions</td>
+<td>Evaluation or Best-of-N settings</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Typical values on HumanEval:</strong></p>
+<ul>
+<li>Early GPT-3: pass@1 ~28%</li>
+<li>GPT-4: pass@1 ~85%+</li>
+<li>Frontier models (2025): pass@1 90–95%+</li>
+</ul>
+<hr />
+<h2 id="2-majority-voting-majk-self-consistency">2. Majority Voting (maj@k / Self-Consistency)<a class="headerlink" href="#2-majority-voting-majk-self-consistency" title="Permanent link">&para;</a></h2>
+<p>Sample <span class="arithmatex">\(k\)</span> independent completions; take the most common final answer as the prediction.</p>
+<p><strong>Formal definition:</strong></p>
+<div class="arithmatex">\[\text{maj@}k = \mathbf{1}\!\left[\text{mode}\{y_1, \ldots, y_k\} = y^*\right]\]</div>
+<p><strong>Key insight (Wang et al., 2023):</strong> For reasoning tasks with a fixed final answer (math problems, multiple-choice), majority voting over chain-of-thought samples is significantly more accurate than greedy decoding alone.</p>
+<p><strong>When it works:</strong></p>
+<ul>
+<li>Tasks with discrete, verifiable final answers (GSM8K, MATH, AIME)</li>
+<li>When errors in individual samples are uncorrelated</li>
+</ul>
+<p><strong>When it fails:</strong></p>
+<ul>
+<li>Open-ended generation (no natural "mode")</li>
+<li>When the model is systematically wrong (correlated errors dominate)</li>
+</ul>
+<hr />
+<h2 id="3-best-of-n-bon-with-a-verifier">3. Best-of-N (BoN) with a Verifier<a class="headerlink" href="#3-best-of-n-bon-with-a-verifier" title="Permanent link">&para;</a></h2>
+<p>Generate <span class="arithmatex">\(N\)</span> candidates; a verifier selects the best one. The metric is the accuracy of the selected candidate.</p>
+<p><strong>Variants:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Verifier type</th>
+<th>Selection criterion</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Oracle</strong></td>
+<td>Ground truth answer</td>
+<td>Upper-bound measurement</td>
+</tr>
+<tr>
+<td><strong>ORM</strong> (Outcome Reward Model)</td>
+<td>Reward assigned to complete solution</td>
+<td>Math, code</td>
+</tr>
+<tr>
+<td><strong>PRM</strong> (Process Reward Model)</td>
+<td>Aggregated step-level scores</td>
+<td>Multi-step reasoning</td>
+</tr>
+<tr>
+<td><strong>LLM judge</strong></td>
+<td>Preference score</td>
+<td>Open-ended tasks</td>
+</tr>
+<tr>
+<td><strong>Test suite</strong></td>
+<td>pass@1 on held-out tests</td>
+<td>Code generation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scaling behavior:</strong> Best-of-N accuracy follows a log-linear relationship with <span class="arithmatex">\(N\)</span> — doubling <span class="arithmatex">\(N\)</span> gives a consistent additive improvement in accuracy. This is the empirical basis for test-time compute scaling.</p>
+<p>See <a href="../../reasoning_techniques/test_time_compute/orm_prm/">ORMs &amp; PRMs</a> for detailed coverage of reward-model verifiers.</p>
+<hr />
+<h2 id="4-functional-correctness">4. Functional Correctness<a class="headerlink" href="#4-functional-correctness" title="Permanent link">&para;</a></h2>
+<p>Code evaluation uses <em>functional correctness</em>: does the generated code produce the right output on a test suite?</p>
+<h3 id="humaneval">HumanEval<a class="headerlink" href="#humaneval" title="Permanent link">&para;</a></h3>
+<ul>
+<li>164 hand-written Python problems with docstrings and unit tests</li>
+<li>Metric: pass@k (k = 1, 10, 100)</li>
+<li><strong>Limitation:</strong> Small dataset; now saturated by frontier models</li>
+</ul>
+<h3 id="swe-bench-verified">SWE-bench Verified<a class="headerlink" href="#swe-bench-verified" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Real GitHub issues requiring understanding an existing codebase, identifying the root cause, and producing a patch that passes the repo's test suite</li>
+<li>Harder than HumanEval by an order of magnitude</li>
+<li><strong>Status (2025):</strong> Claude Opus 4.6 leads at ~80.8% resolve rate; considered the current gold standard for coding ability</li>
+</ul>
+<h3 id="livecodebench">LiveCodeBench<a class="headerlink" href="#livecodebench" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Continuously updated with new competitive programming problems post-training cutoff</li>
+<li>Addresses contamination by using only problems published after model training</li>
+<li>More reliable for frontier model comparisons than static HumanEval</li>
+</ul>
+<hr />
+<h2 id="5-reinforcement-learning-with-verifiable-rewards-rlvr">5. Reinforcement Learning with Verifiable Rewards (RLVR)<a class="headerlink" href="#5-reinforcement-learning-with-verifiable-rewards-rlvr" title="Permanent link">&para;</a></h2>
+<p><strong>Core idea:</strong> Use a deterministic verifier as the reward signal in RL training, eliminating the need for a trained reward model.</p>
+<p><strong>Training loop:</strong></p>
+<ol>
+<li>Model generates a chain-of-thought and final answer</li>
+<li>Verifier checks the answer against ground truth (or test cases)</li>
+<li>Binary or graded reward is returned</li>
+<li>Policy is updated (typically via GRPO or PPO)</li>
+</ol>
+<p><strong>Verifiable domains:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Verification method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mathematics</td>
+<td>Symbolic answer matching (e.g., <code>sympy.simplify(a - b) == 0</code>)</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>Test suite execution</td>
+</tr>
+<tr>
+<td>Formal proofs</td>
+<td>Proof assistant (Lean 4, Coq)</td>
+</tr>
+<tr>
+<td>Multiple-choice</td>
+<td>Exact string match</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why RLVR outperforms learned reward models for reasoning:</strong></p>
+<ul>
+<li>No reward hacking: the verifier is ground truth, not a learned approximation</li>
+<li>No distribution shift: verification is always accurate regardless of what the policy generates</li>
+<li>Cheap to scale: verification is computationally trivial compared to reward model inference</li>
+</ul>
+<p><strong>Used in:</strong> DeepSeek-R1, Qwen QwQ, recent o-series reasoning models.</p>
+<hr />
+<h2 id="6-process-level-verification">6. Process-Level Verification<a class="headerlink" href="#6-process-level-verification" title="Permanent link">&para;</a></h2>
+<p>Standard pass@k and functional correctness only check <em>answers</em>. Process-level metrics check whether the <em>reasoning steps</em> are correct.</p>
+<h3 id="cot-passk">CoT-Pass@k<a class="headerlink" href="#cot-passk" title="Permanent link">&para;</a></h3>
+<p>Extends pass@k by requiring both correct intermediate steps and a correct final answer. A model that reaches the right answer through invalid reasoning is marked incorrect.</p>
+<p><strong>Why it matters:</strong> Models can "shortcut" to correct answers via pattern matching without genuine reasoning. CoT-Pass@k penalizes this.</p>
+<h3 id="step-level-reward-prm-signal">Step-Level Reward (PRM Signal)<a class="headerlink" href="#step-level-reward-prm-signal" title="Permanent link">&para;</a></h3>
+<p>A PRM assigns a score <span class="arithmatex">\(r_t \in [0,1]\)</span> to each reasoning step <span class="arithmatex">\(t\)</span>. The aggregate score is:</p>
+<div class="arithmatex">\[R = \prod_{t=1}^{T} r_t \quad \text{(product aggregation)}\]</div>
+<p>or</p>
+<div class="arithmatex">\[R = \min_{t} r_t \quad \text{(min aggregation)}\]</div>
+<p>Min aggregation penalizes any single incorrect step; product aggregation penalizes chains with many weak steps. Both have been used in practice; min is more conservative.</p>
+<hr />
+<h2 id="7-math-benchmarks-as-verification-targets">7. Math Benchmarks as Verification Targets<a class="headerlink" href="#7-math-benchmarks-as-verification-targets" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Difficulty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GSM8K</td>
+<td>Elementary/middle school</td>
+<td>Saturated (~99% for frontier models)</td>
+</tr>
+<tr>
+<td>MATH-500</td>
+<td>Competition math (AMC/AIME)</td>
+<td>Symbolic + multi-step; still discriminative</td>
+</tr>
+<tr>
+<td>AIME 2025/2026</td>
+<td>High-school olympiad</td>
+<td>Current frontier; top models 85–94%</td>
+</tr>
+<tr>
+<td>GPQA Diamond</td>
+<td>PhD-level (bio/phys/chem)</td>
+<td>Google-proof; human experts ~65%</td>
+</tr>
+<tr>
+<td>HLE (Humanity's Last Exam)</td>
+<td>Expert-level, cross-domain</td>
+<td>Designed to be unsolvable by current LLMs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Saturation trajectory:</strong> Each generation of frontier models forces the community to a harder benchmark. GPQA Diamond and AIME are the current frontier; HLE is positioned as the next.</p>
+<hr />
+<h2 id="8-failure-modes-and-limitations">8. Failure Modes and Limitations<a class="headerlink" href="#8-failure-modes-and-limitations" title="Permanent link">&para;</a></h2>
+<h3 id="metric-gaming">Metric Gaming<a class="headerlink" href="#metric-gaming" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Models fine-tuned on RLVR can learn to produce answers matching the format the verifier expects without correct reasoning (e.g., guessing answer format for math)</li>
+<li>Mitigation: require full solution trace, use PRM to verify steps</li>
+</ul>
+<h3 id="test-suite-incompleteness">Test Suite Incompleteness<a class="headerlink" href="#test-suite-incompleteness" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A code solution can pass all provided test cases but fail on edge cases</li>
+<li>Mitigation: generate diverse tests (property-based testing, fuzzing)</li>
+</ul>
+<h3 id="contamination">Contamination<a class="headerlink" href="#contamination" title="Permanent link">&para;</a></h3>
+<ul>
+<li>If AIME 2024 problems appear in training data, pass@k on AIME 2024 is inflated</li>
+<li>Mitigation: use post-cutoff benchmarks (LiveBench, LiveCodeBench); track contamination with n-gram overlap detection</li>
+</ul>
 
 
 

@@ -1,117 +1,97 @@
+# Constitutional AI
+
 ## 1. Overview
 
-Constitutional AI is a training methodology developed by Anthropic for creating helpful, harmless, and honest AI systems. It uses a set of principles (the "constitution") to guide AI behavior through self-critique and revision, reducing the need for extensive human feedback labels.
+Constitutional AI (CAI) is a training methodology introduced by Anthropic (Bai et al., 2022) to produce helpful, harmless, and honest AI systems using AI-generated feedback guided by a set of explicit principles — the "constitution" — rather than relying exclusively on human preference labels for safety training.
+
+The technique has two stages:
+
+1. **SL-CAI** — Supervised learning: the model critiques and revises its own outputs using constitutional principles, then is fine-tuned on the revisions
+2. **RL-CAI** — RLHF with AI feedback: AI-generated preference labels (not human labels) train a reward model, which is then used for PPO-based RL fine-tuning
 
 ---
 
----
+## 2. The Constitution
 
-## 2. Core Concepts
+The constitution is a list of natural-language principles that encode desired behavior. Examples from the paper:
 
-### The Constitution
+- *"Choose the response that is least likely to contain harmful or unethical content."*
+- *"Choose the response that is most helpful, accurate, and non-deceptive."*
+- *"Choose the response that a thoughtful, senior Anthropic employee would consider optimal."*
 
-A set of principles or rules that define desired AI behavior. Examples include: "Choose the response that is most helpful, honest, and harmless" or "Avoid generating toxic content." The constitution serves as the normative framework for model behavior.
-
-### Two-Phase Training
-
-**1. Supervised Learning Phase (SL-CAI):**
-
-- Model generates multiple responses to harmful/problematic prompts
-- Self-critiques responses using constitutional principles
-- Revises responses based on critique
-- Fine-tuned on these revised responses
-
-**2. Reinforcement Learning Phase (RL-CAI):**
-
-- Model generates response pairs
-- AI evaluates which response better follows constitutional principles
-- Creates preference dataset from AI feedback (not human labels)
-- Trains reward model and applies RLHF using AI-generated preferences
+Principles are sampled randomly during training so no single principle dominates. This makes the behavioral constraints explicit and auditable — unlike RLHF where values are implicitly encoded in annotator preferences.
 
 ---
 
----
+## 3. Stage 1 — SL-CAI (Supervised Learning)
 
-## 3. Technical Architecture
+**Starting point:** A helpful-only model — trained to be useful but with no harmlessness training, so it will often comply with harmful requests.
 
-### Self-Critique Mechanism
+**The critique-revision loop** (repeated 1–4 times per example):
 
-The model evaluates its own outputs against constitutional principles through prompted self-reflection. This creates a feedback loop where the model identifies flaws and generates improved responses without human intervention.
+1. Generate an initial response to a potentially harmful prompt using the helpful-only model
+2. Sample a constitutional principle at random
+3. Prompt the model to critique its own response against that principle
+4. Prompt the model to revise the response to address the critique
 
-### AI Feedback (AIF)
+**Fine-tuning:** Collect the final revised responses and fine-tune the model on them *without* the constitutional principles in the input (context distillation). The model learns to produce aligned outputs without needing the constitution in every prompt.
 
-Instead of collecting human preferences (RLHF), CAI uses the AI itself to evaluate response quality based on constitutional principles. This approach is scalable and can handle nuanced trade-offs between different principles.
-
-### Chain-of-Thought Prompting
-
-Constitutional evaluations often use chain-of-thought reasoning where the model explains its reasoning before making a judgment. This increases transparency and improves evaluation quality.
-
----
+**Why start with a harmful-only model?** The paper deliberately uses a model that complies with harmful requests so that the critique-revision loop has meaningful work to do — starting from a safe model produces little signal for the supervised stage.
 
 ---
 
-## 4. Key Benefits
+## 4. Stage 2 — RL-CAI (RLHF with AI Feedback)
 
-- **Scalability:** Reduces dependence on human labelers for safety training
-- **Transparency:** Explicit constitutional principles make values interpretable
-- **Flexibility:** Constitution can be modified for different use cases or values
-- **Reduced Bias:** Less vulnerable to individual annotator biases
-- **Harmlessness:** Effectively reduces harmful outputs while maintaining helpfulness
+**Generating preference pairs:** Use the SL-CAI model to generate pairs of responses to a set of prompts.
 
----
+**AI labeling:** Present each pair to a feedback model (the SL-CAI model itself) along with a constitutional principle. The model reasons step-by-step (chain-of-thought) and then selects which response better follows the principle. This produces a large preference dataset at low cost.
 
----
+**Reward model training:** Train a preference model (PM) on the AI-generated preference labels using the standard Bradley-Terry objective.
 
-## 5. Challenges & Limitations
+**RL optimization:** Fine-tune the SL-CAI policy using PPO against the PM reward, with a KL penalty to prevent excessive drift from the supervised baseline:
 
-- Requires capable base models that can follow complex instructions and self-critique
-- Constitution design requires careful consideration of value trade-offs
-- May inherit biases present in the base model used for evaluation
-- Principles can conflict, requiring prioritization mechanisms
-- Not a complete solution—works best combined with other safety techniques
+$$r_\text{total} = r_\text{PM}(x, y) - \beta \cdot \mathrm{KL}(\pi_\theta \| \pi_\text{SL-CAI})$$
 
 ---
 
----
+## 5. Results
 
-## 6. Technical Implementation Details
-
-### Prompt Structure for Self-Critique
-
-Typical format includes:
-
-1. Original harmful/problematic prompt
-2. Model's initial response
-3. Constitutional principle to apply
-4. Critique request
-5. Revision request based on critique
-
-### Preference Model Training
-
-The preference model (PM) is trained on AI-generated comparisons. Given two responses, the model outputs a scalar score. Training uses binary cross-entropy loss on the pairwise preferences generated through constitutional evaluation.
-
-### RL Optimization
-
-Uses PPO (Proximal Policy Optimization) or similar algorithms. The reward signal comes from the trained preference model. A KL penalty term prevents the policy from deviating too far from the supervised fine-tuned model.
+- CAI models reduce harmful outputs substantially while **maintaining or improving helpfulness** relative to RLHF-only harmless models
+- Crowdworkers rated RL-CAI models as both more helpful *and* more harmless than prior RLHF baselines
+- Chain-of-thought AI labeling (reasoning before the preference label) improves label quality over direct preference elicitation
+- The explicit constitution makes the trade-offs transparent: researchers can inspect and modify what principles are being optimized
 
 ---
 
----
+## 6. Advantages and Limitations
 
-## 7. CAI vs Traditional RLHF
+**Advantages:**
 
-**RLHF (Reinforcement Learning from Human Feedback):**
+- **Scales harmlessness training without human labels** — critique and revision is automated
+- **Explicit values**: the constitution is readable and modifiable; RLHF values are implicit in annotator behavior
+- **Helpfulness preserved**: starting from a helpful-only model and applying principles separately avoids the over-refusal failure mode common in RLHF-only safety training
+- **Reduces annotator burden**: humans still label helpfulness data, but harmlessness data is AI-generated
 
-- Requires extensive human labeling of preferences
-- Subject to individual annotator biases and inconsistencies
-- Expensive and time-consuming to scale
+**Limitations:**
 
-**Constitutional AI:**
-
-- Uses AI-generated feedback based on explicit principles
-- More scalable and consistent
-- Values are explicit and modifiable through constitution
-
----
+- Requires a capable base model to perform meaningful self-critique — weak models produce low-quality critiques
+- Constitution design requires careful value trade-off decisions; conflicting principles need prioritization
+- The AI feedback model inherits the base model's biases — there is no external ground truth for whether a critique is correct
+- Still relies on human-written principles; the choice of constitution is a normative decision, not a technical one
 
 ---
+
+## 7. Relation to Other Techniques
+
+| Technique | Feedback source | Explicit values | Iterative refinement |
+|-----------|----------------|-----------------|---------------------|
+| RLHF | Human annotators | No | Yes (RL loop) |
+| RLAIF | AI judge | No | Yes (RL loop) |
+| Constitutional AI | AI judge + principles | Yes | Yes (critique-revise + RL) |
+| Context distillation | Prompted model outputs | Implicit in prompt | No |
+
+CAI is effectively RLAIF with the addition of explicit constitutional principles and the supervised critique-revision stage. Context distillation is used within SL-CAI as the fine-tuning mechanism.
+
+---
+
+*Source: Bai et al. (2022) — Constitutional AI: Harmlessness from AI Feedback [[arXiv:2212.08073]](https://arxiv.org/abs/2212.08073)*

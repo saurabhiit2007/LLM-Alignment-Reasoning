@@ -1,122 +1,79 @@
+# Context Distillation
+
 ## 1. Overview
 
-Context distillation is an alignment technique that transfers desired behaviors from a larger model (teacher) or prompt-based system into a smaller, more efficient model (student) without requiring the explicit prompts at inference time. The goal is to internalize behavioral constraints and preferences directly into model weights.
+Context distillation is a technique that internalizes the behavior induced by a system prompt directly into a model's weights, eliminating the need to include that prompt at inference time. It was introduced by Bai et al. (2022) as a component of the Constitutional AI pipeline.
+
+**Core idea:** A model conditioned on an alignment prompt (e.g., "Be helpful, harmless, and honest") produces better outputs than the same model without it. Context distillation fine-tunes the model on those better outputs — but *without* the prompt as input — so the model learns to behave as if the alignment prompt is always present.
+
+This is distinct from **knowledge distillation** (compressing a larger model into a smaller one). In context distillation, the teacher and student are the same base model; the only difference is whether the alignment prompt is in the input.
 
 ---
 
----
+## 2. How It Works
 
-## 2. Core Concept
+**Step 1 — Generate aligned responses:**
 
-Instead of relying on lengthy system prompts or few-shot examples at inference, context distillation "bakes in" the desired behavior by:
+Sample responses from the model conditioned on an alignment context $c$ (a system prompt encoding desired behavior):
 
-1. **Generating synthetic data** using the teacher model with alignment prompts
-2. **Training the student model** on input-output pairs where outputs reflect aligned behavior
-3. **Removing the need** for explicit prompts during deployment
+$$y \sim p_\theta(y \mid x, c)$$
 
----
+**Step 2 — Fine-tune without the context:**
 
----
+Train the model to produce those same responses given only the raw input $x$:
 
-## 3. Technical Details
+$$\mathcal{L} = -\mathbb{E}_{(x,y)}\left[\log p_\theta(y \mid x)\right]$$
 
-### Basic Pipeline
+The objective is to minimize the KL divergence between the prompted and unprompted distributions:
 
-```
-Teacher Model + Alignment Prompt → Generate Responses → Train Student Model
-```
+$$\min_\theta\; \mathrm{KL}\!\left[p(y \mid x, c)\;\|\; p_\theta(y \mid x)\right]$$
 
----
+**Step 3 — Deploy without the context prompt:**
 
-### Key Components
-
-**1. Data Generation**
-
-- Use teacher model with system prompts defining desired behavior (safety, helpfulness, honesty)
-- Generate responses to diverse queries
-- Create dataset: `{(query, aligned_response)}`
-
-**2. Training Objective**
-
-- Standard supervised fine-tuning (SFT) on generated data
-- Student learns: `P(response | query)` instead of `P(response | query, prompt)`
-- Loss function: Cross-entropy on token predictions
-
-**3. Advantages**
-
-- **Efficiency**: No prompt overhead at inference
-- **Consistency**: Behavior encoded in weights
-- **Scalability**: Deploy smaller, faster models
-- **Security**: Reduces prompt injection vulnerabilities
+The fine-tuned model produces aligned outputs without needing $c$ in every request.
 
 ---
 
-### Mathematical Formulation
+## 3. Role in Constitutional AI
 
-Traditional prompting: $p(y|x, c)$ where c = context/prompt
+In Bai et al. (2022), context distillation is used in the **SL-CAI** (Supervised Learning — Constitutional AI) stage:
 
-Context distillation: Train student to approximate $p(y|x)$ by distilling $p(y|x,c)$
+1. Generate responses using a helpful-only model prompted with a set of principles (the "constitution")
+2. Ask the model to critique and revise those responses (also prompted)
+3. Fine-tune the model on the final revised responses *without* the constitution in the input
 
-Objective: Minimize `KL[p_teacher(y|x,c) || p_student(y|x)]`
-
----
-
----
-
-## 4. Recent Developments (2024-2025)
-
-### 1. **Multi-Task Context Distillation**
-
-- Distilling multiple alignment objectives simultaneously (safety + helpfulness + factuality)
-- Better generalization across diverse behavioral requirements
-
-### 2. **Constitutional AI Integration**
-
-- Combining context distillation with constitutional methods
-- Self-critique and revision steps before distillation
-- Improved robustness to adversarial queries
-
-### 3. **Iterative Refinement**
-
-- Multi-stage distillation where student becomes teacher
-- Progressive capability and alignment improvement
-- Used in models like Claude and GPT-4
-
-### 4. **Context Distillation for RLHF**
-
-- Distilling reward model preferences into policy
-- Hybrid approaches combining distillation with PPO
-- Reduced computational cost of RLHF deployment
-
-### 5. **Prompt-Specific Distillation**
-
-- Domain-specific alignment (medical, legal, coding)
-- Specialized models without runtime prompt engineering
-- Transfer learning from general to specialized alignment
+The result is a model that follows constitutional principles in its weights, not just its context window. This supervised stage precedes the RLHF stage in the full CAI pipeline.
 
 ---
 
----
+## 4. Advantages and Limitations
 
-## 5. Implementation Considerations
+**Advantages:**
 
-### Challenges
+- **Inference efficiency**: No prompt overhead on every request — reduces latency and token cost
+- **Consistency**: Behavioral constraints are in weights, not in a prompt that could be overridden or injected against
+- **Reduced prompt injection risk**: Attackers cannot override safety behaviors by manipulating the context if those behaviors are weight-encoded
 
-- **Distribution shift**: Student may not generalize beyond teacher's training distribution
-- **Capability degradation**: Risk of losing capabilities during distillation
-- **Quality-diversity tradeoff**: Generating diverse, high-quality training data
-- **Evaluation**: Measuring alignment retention vs. capability
+**Limitations:**
 
----
-
-### Best Practices
-
-1. **Diverse prompt set**: Use varied alignment prompts during generation
-2. **Quality filtering**: Remove low-quality or misaligned generations
-3. **Balanced datasets**: Ensure coverage of edge cases and challenging queries
-4. **Iterative evaluation**: Test student behavior on held-out adversarial examples
-5. **Capability preservation**: Include capability-focused examples alongside alignment data
+- **Generalization bounds**: The student model only learns what the teacher's prompted distribution covers — rare or out-of-distribution queries may not generalize
+- **Static alignment**: Changes to the desired behavior require retraining; prompt-based systems can be updated instantly
+- **Capability risk**: SFT on a narrow distribution can degrade the model's broader capabilities if the dataset isn't diverse enough
+- **No explicit reward signal**: Unlike RLHF, there is no mechanism to push responses beyond the quality ceiling of the prompted teacher outputs
 
 ---
 
+## 5. Comparison with Related Techniques
+
+| Technique | Alignment signal | Prompt at inference | Iterative improvement |
+|-----------|-----------------|--------------------|-----------------------|
+| Prompt engineering | System prompt | Yes | No |
+| Context distillation | System prompt → SFT | No | No |
+| RLHF | Human preferences → RM | Optional | Yes (RL loop) |
+| Constitutional AI | AI self-critique + SFT/RLHF | No | Yes |
+
+Context distillation sits between pure prompting (fragile, reversible) and full RLHF (expensive, iterative). It is most useful as a preprocessing step that creates a well-initialized policy before RLHF, or as a standalone technique when RLHF is too expensive.
+
 ---
+
+*Source: Bai et al. (2022) — Constitutional AI: Harmlessness from AI Feedback [[arXiv:2212.08073]](https://arxiv.org/abs/2212.08073)*

@@ -69,6 +69,7 @@
 * **Christiano et al. (2017)** — *Deep Reinforcement Learning from Human Preferences.* (NeurIPS 2017) [[arXiv:1706.03741]](https://arxiv.org/abs/1706.03741)
 * **Ouyang et al. (2022)** — *Training Language Models to Follow Instructions with Human Feedback (InstructGPT).* [[arXiv:2203.02155]](https://arxiv.org/abs/2203.02155)
 * **Bai et al. (2022)** — *Training a Helpful and Harmless Assistant with RLHF.* [[arXiv:2204.05862]](https://arxiv.org/abs/2204.05862)
+* **Bai et al. (2022)** — *Constitutional AI: Harmlessness from AI Feedback.* (Anthropic) [[arXiv:2212.08073]](https://arxiv.org/abs/2212.08073)
 * **Lee et al. (2023)** — *RLAIF: Scaling Reinforcement Learning from Human Feedback with AI Feedback.* [[arXiv:2309.00267]](https://arxiv.org/abs/2309.00267)
 * **Yuan et al. (2024)** — *Self-Rewarding Language Models.* (Meta AI) [[arXiv:2401.10020]](https://arxiv.org/abs/2401.10020)
 

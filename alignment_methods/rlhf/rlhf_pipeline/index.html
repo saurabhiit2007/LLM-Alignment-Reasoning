@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#overview" class="md-skip">
+        <a href="#rlhf-pipeline" class="md-skip">
           Skip to content
         </a>
       
@@ -341,6 +341,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -373,6 +375,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -381,46 +385,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#1-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      1. Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-preference-data-collection" class="md-nav__link">
+  <a href="#2-supervised-fine-tuning-sft" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Preference Data Collection
+      2. Supervised Fine-Tuning (SFT)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Preference Data Collection">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-preference-data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Preference Data Collection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Preference Data Collection">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11-data-generation-process" class="md-nav__link">
+  <a href="#31-data-generation" class="md-nav__link">
     <span class="md-ellipsis">
-      1.1 Data Generation Process
+      3.1 Data Generation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-human-annotation" class="md-nav__link">
+  <a href="#32-human-annotation" class="md-nav__link">
     <span class="md-ellipsis">
-      1.2 Human Annotation
+      3.2 Human Annotation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#13-data-quality-considerations" class="md-nav__link">
+  <a href="#33-data-quality" class="md-nav__link">
     <span class="md-ellipsis">
-      1.3 Data Quality Considerations
+      3.3 Data Quality
     </span>
   </a>
   
@@ -432,37 +445,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-reward-model-training" class="md-nav__link">
+  <a href="#4-reward-model-training" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Reward Model Training
+      4. Reward Model Training
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Reward Model Training">
+    <nav class="md-nav" aria-label="4. Reward Model Training">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-model-architecture" class="md-nav__link">
+  <a href="#41-architecture" class="md-nav__link">
     <span class="md-ellipsis">
-      2.1 Model Architecture
+      4.1 Architecture
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-training-process" class="md-nav__link">
+  <a href="#42-training-objective" class="md-nav__link">
     <span class="md-ellipsis">
-      2.2 Training Process
+      4.2 Training Objective
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-reward-model-evaluation" class="md-nav__link">
+  <a href="#43-training-details" class="md-nav__link">
     <span class="md-ellipsis">
-      2.3 Reward Model Evaluation
+      4.3 Training Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Evaluation
     </span>
   </a>
   
@@ -474,70 +496,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-key-challenges" class="md-nav__link">
+  <a href="#5-rl-optimization" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Key Challenges
+      5. RL Optimization
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Key Challenges">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-reward-hacking" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Reward Hacking
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-reward-model-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Reward Model Limitations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-scalability" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.3 Scalability
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-interview-questions" class="md-nav__link">
+  <a href="#6-key-challenges" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Interview Questions
+      6. Key Challenges
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Interview Questions">
+    <nav class="md-nav" aria-label="6. Key Challenges">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#conceptual-questions" class="md-nav__link">
+  <a href="#61-reward-hacking" class="md-nav__link">
     <span class="md-ellipsis">
-      Conceptual Questions
+      6.1 Reward Hacking
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#technical-questions" class="md-nav__link">
+  <a href="#62-reward-model-limitations" class="md-nav__link">
     <span class="md-ellipsis">
-      Technical Questions
+      6.2 Reward Model Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Scalability
     </span>
   </a>
   
@@ -1689,6 +1687,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1697,46 +1697,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#1-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      1. Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-preference-data-collection" class="md-nav__link">
+  <a href="#2-supervised-fine-tuning-sft" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Preference Data Collection
+      2. Supervised Fine-Tuning (SFT)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Preference Data Collection">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-preference-data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Preference Data Collection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Preference Data Collection">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11-data-generation-process" class="md-nav__link">
+  <a href="#31-data-generation" class="md-nav__link">
     <span class="md-ellipsis">
-      1.1 Data Generation Process
+      3.1 Data Generation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-human-annotation" class="md-nav__link">
+  <a href="#32-human-annotation" class="md-nav__link">
     <span class="md-ellipsis">
-      1.2 Human Annotation
+      3.2 Human Annotation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#13-data-quality-considerations" class="md-nav__link">
+  <a href="#33-data-quality" class="md-nav__link">
     <span class="md-ellipsis">
-      1.3 Data Quality Considerations
+      3.3 Data Quality
     </span>
   </a>
   
@@ -1748,37 +1757,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-reward-model-training" class="md-nav__link">
+  <a href="#4-reward-model-training" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Reward Model Training
+      4. Reward Model Training
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Reward Model Training">
+    <nav class="md-nav" aria-label="4. Reward Model Training">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-model-architecture" class="md-nav__link">
+  <a href="#41-architecture" class="md-nav__link">
     <span class="md-ellipsis">
-      2.1 Model Architecture
+      4.1 Architecture
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-training-process" class="md-nav__link">
+  <a href="#42-training-objective" class="md-nav__link">
     <span class="md-ellipsis">
-      2.2 Training Process
+      4.2 Training Objective
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#23-reward-model-evaluation" class="md-nav__link">
+  <a href="#43-training-details" class="md-nav__link">
     <span class="md-ellipsis">
-      2.3 Reward Model Evaluation
+      4.3 Training Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Evaluation
     </span>
   </a>
   
@@ -1790,70 +1808,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-key-challenges" class="md-nav__link">
+  <a href="#5-rl-optimization" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Key Challenges
+      5. RL Optimization
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Key Challenges">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-reward-hacking" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Reward Hacking
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-reward-model-limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Reward Model Limitations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-scalability" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.3 Scalability
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-interview-questions" class="md-nav__link">
+  <a href="#6-key-challenges" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Interview Questions
+      6. Key Challenges
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Interview Questions">
+    <nav class="md-nav" aria-label="6. Key Challenges">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#conceptual-questions" class="md-nav__link">
+  <a href="#61-reward-hacking" class="md-nav__link">
     <span class="md-ellipsis">
-      Conceptual Questions
+      6.1 Reward Hacking
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#technical-questions" class="md-nav__link">
+  <a href="#62-reward-model-limitations" class="md-nav__link">
     <span class="md-ellipsis">
-      Technical Questions
+      6.2 Reward Model Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Scalability
     </span>
   </a>
   
@@ -1880,415 +1874,134 @@
 
 
 
-  <h1>RLHF Pipeline</h1>
-
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>RLHF (Reinforcement Learning from Human Feedback) is a three-stage pipeline to align language models with human preferences:</p>
+<h1 id="rlhf-pipeline">RLHF Pipeline<a class="headerlink" href="#rlhf-pipeline" title="Permanent link">&para;</a></h1>
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<p>RLHF (Reinforcement Learning from Human Feedback) is a three-stage pipeline to align language models with human preferences, introduced in Christiano et al. (2017) and scaled to modern LLMs by Ouyang et al. (2022) via InstructGPT:</p>
 <ol>
-<li><strong>Supervised Fine-Tuning (SFT)</strong>: Train base model on high-quality demonstrations</li>
-<li><strong>Reward Model Training</strong>: Learn human preferences via a reward function</li>
-<li><strong>RL Optimization</strong>: Fine-tune policy using the reward model (PPO, etc.)</li>
+<li><strong>Supervised Fine-Tuning (SFT)</strong> — Train a base model on high-quality human demonstrations</li>
+<li><strong>Reward Model Training</strong> — Learn a scalar reward function from human preference comparisons</li>
+<li><strong>RL Optimization</strong> — Fine-tune the SFT policy to maximize the learned reward (via PPO or alternatives)</li>
 </ol>
-<p>This document focuses on stages 2 and the data collection needed for it.</p>
+<p>Each stage builds on the previous: SFT gives a competent starting policy, the reward model encodes human judgment, and RL shifts the policy toward higher-reward outputs while a KL penalty prevents it from drifting too far.</p>
 <hr />
+<h2 id="2-supervised-fine-tuning-sft">2. Supervised Fine-Tuning (SFT)<a class="headerlink" href="#2-supervised-fine-tuning-sft" title="Permanent link">&para;</a></h2>
+<p>The base pretrained model is fine-tuned on a curated set of prompt–response pairs written or selected by human labelers. The goal is to teach the model to follow instructions before any preference signal is introduced.</p>
+<p><strong>Key choices:</strong></p>
+<ul>
+<li>Dataset: 10K–100K high-quality demonstrations (InstructGPT used ~13K)</li>
+<li>Labelers write ideal responses; lower-quality responses are filtered out</li>
+<li>Standard cross-entropy training on the response tokens only</li>
+<li>Learning rate ~1e-5, 1–3 epochs to avoid overfitting the small dataset</li>
+</ul>
+<p>The SFT model becomes both the starting point for RL optimization and the reference policy for the KL penalty.</p>
 <hr />
-<h2 id="1-preference-data-collection">1. Preference Data Collection<a class="headerlink" href="#1-preference-data-collection" title="Permanent link">&para;</a></h2>
-<h3 id="11-data-generation-process">1.1 Data Generation Process<a class="headerlink" href="#11-data-generation-process" title="Permanent link">&para;</a></h3>
-<p><strong>Prompt Selection:</strong></p>
+<h2 id="3-preference-data-collection">3. Preference Data Collection<a class="headerlink" href="#3-preference-data-collection" title="Permanent link">&para;</a></h2>
+<h3 id="31-data-generation">3.1 Data Generation<a class="headerlink" href="#31-data-generation" title="Permanent link">&para;</a></h3>
+<p><strong>Prompt selection:</strong></p>
 <ul>
 <li>Curate diverse prompts covering target use cases</li>
 <li>Include different difficulty levels and domains</li>
 <li>Sources: user interactions, seed datasets, synthetic generation</li>
 </ul>
-<p><strong>Response Sampling:</strong></p>
+<p><strong>Response sampling:</strong></p>
 <ul>
-<li>
-<p>Generate 2-4 completions per prompt using:</p>
-</li>
-<li>
-<p><strong>Temperature sampling</strong> (T ∈ [0.7, 1.0]) for diversity</p>
-</li>
-<li><strong>Different models/checkpoints</strong> to ensure variety</li>
-<li><strong>Varied decoding</strong> (top-k, nucleus sampling)</li>
-<li>Goal: Create meaningfully different responses worth comparing</li>
+<li>Generate 2–4 completions per prompt using temperature sampling (T ∈ [0.7, 1.0]) and varied decoding (top-k, nucleus) to ensure meaningful differences worth comparing</li>
 </ul>
 <hr />
-<h3 id="12-human-annotation">1.2 Human Annotation<a class="headerlink" href="#12-human-annotation" title="Permanent link">&para;</a></h3>
-<p><strong>Comparison Types:</strong></p>
+<h3 id="32-human-annotation">3.2 Human Annotation<a class="headerlink" href="#32-human-annotation" title="Permanent link">&para;</a></h3>
+<p><strong>Comparison types:</strong></p>
 <ul>
-<li><strong>Pairwise</strong>: Choose better response (A &gt; B or B &gt; A or Tie)</li>
+<li><strong>Pairwise</strong>: Choose the better response (A &gt; B, B &gt; A, or Tie)</li>
 <li><strong>Ranking</strong>: Order k responses from best to worst</li>
-<li><strong>Likert Scale</strong>: Rate each independently (1-5 stars)</li>
+<li><strong>Likert Scale</strong>: Rate each independently (1–5 stars)</li>
 </ul>
-<p><strong>Annotation Criteria:</strong></p>
+<p>Pairwise comparison is generally preferred — relative judgments are easier for humans, more reliable, and fit naturally into the Bradley-Terry model used for reward training.</p>
+<p><strong>Annotation criteria (InstructGPT):</strong></p>
 <ul>
 <li><strong>Helpfulness</strong>: Does it answer the question well?</li>
 <li><strong>Harmlessness</strong>: Is it safe and appropriate?</li>
 <li><strong>Honesty</strong>: Is it truthful and admits uncertainty?</li>
 </ul>
-<p><strong>Best Practices:</strong></p>
+<p><strong>Best practices:</strong></p>
 <ul>
-<li>Clear guidelines with examples</li>
-<li>Inter-annotator agreement checks (Fleiss' kappa, Krippendorff's alpha)</li>
-<li>Multiple annotators per comparison (typically 3-5)</li>
-<li>Quality control: gold standard examples, spot checks</li>
+<li>Clear guidelines with worked examples</li>
+<li>Inter-annotator agreement checks (Fleiss' κ, Krippendorff's α)</li>
+<li>Multiple annotators per comparison (typically 3–5)</li>
+<li>Gold-standard examples for quality control</li>
 </ul>
 <hr />
-<h3 id="13-data-quality-considerations">1.3 Data Quality Considerations<a class="headerlink" href="#13-data-quality-considerations" title="Permanent link">&para;</a></h3>
-<p><strong>Common Issues:</strong></p>
+<h3 id="33-data-quality">3.3 Data Quality<a class="headerlink" href="#33-data-quality" title="Permanent link">&para;</a></h3>
+<p><strong>Common issues:</strong></p>
 <ul>
 <li><strong>Annotation bias</strong>: Personal preferences vs. general quality</li>
 <li><strong>Low agreement</strong>: Ambiguous prompts or subjective criteria</li>
 <li><strong>Gaming</strong>: Annotators choosing randomly or following patterns</li>
 </ul>
-<p><strong>Solutions:</strong></p>
+<p><strong>Mitigations:</strong></p>
 <ul>
-<li>Calibration sessions with annotators</li>
+<li>Calibration sessions before annotation begins</li>
 <li>Disagreement resolution protocols</li>
 <li>Monitor annotation time and patterns</li>
-<li>Bonus for high-agreement annotations</li>
+<li>Discard high-disagreement pairs (likely ambiguous)</li>
 </ul>
-<p><strong>Dataset Size:</strong></p>
-<ul>
-<li>Typical: 10K-100K preference pairs</li>
-<li>Quality &gt; quantity (InstructGPT used ~50K comparisons)</li>
-<li>More data needed for complex/multi-domain tasks</li>
-</ul>
+<p><strong>Dataset size:</strong> 10K–100K preference pairs; InstructGPT used ~50K comparisons. Quality dominates quantity.</p>
 <hr />
-<hr />
-<h2 id="2-reward-model-training">2. Reward Model Training<a class="headerlink" href="#2-reward-model-training" title="Permanent link">&para;</a></h2>
-<h3 id="21-model-architecture">2.1 Model Architecture<a class="headerlink" href="#21-model-architecture" title="Permanent link">&para;</a></h3>
-<p><strong>Base Model:</strong></p>
+<h2 id="4-reward-model-training">4. Reward Model Training<a class="headerlink" href="#4-reward-model-training" title="Permanent link">&para;</a></h2>
+<h3 id="41-architecture">4.1 Architecture<a class="headerlink" href="#41-architecture" title="Permanent link">&para;</a></h3>
+<p>The reward model is typically initialized from the SFT model with the final language-modeling head replaced by a linear layer that outputs a scalar <code>r(x, y)</code> for prompt <code>x</code> and completion <code>y</code>. The shared backbone retains language understanding.</p>
+<h3 id="42-training-objective">4.2 Training Objective<a class="headerlink" href="#42-training-objective" title="Permanent link">&para;</a></h3>
+<p>The Bradley-Terry model treats preferences probabilistically. For a preference pair <span class="arithmatex">\((y_w, y_l)\)</span> where <span class="arithmatex">\(y_w \succ y_l\)</span>:</p>
+<div class="arithmatex">\[\mathcal{L} = -\log \sigma\bigl(r(x, y_w) - r(x, y_l)\bigr)\]</div>
+<p>This maximizes the probability that the preferred completion receives a higher reward. For ranking over <span class="arithmatex">\(k &gt; 2\)</span> completions:</p>
+<div class="arithmatex">\[\mathcal{L} = -\sum_{i &lt; j} \log \sigma\bigl(r(x, y_i) - r(x, y_j)\bigr)\]</div>
+<p>where <span class="arithmatex">\(y_i\)</span> is ranked above <span class="arithmatex">\(y_j\)</span>.</p>
+<p><strong>Bradley-Terry assumptions:</strong></p>
 <ul>
-<li>Usually the SFT model with final layer replaced</li>
-<li>Outputs scalar reward: <code>r(x, y)</code> for prompt x and completion y</li>
-<li>Shared backbone leverages language understanding</li>
+<li><em>Transitivity</em>: if A &gt; B and B &gt; C, then A &gt; C</li>
+<li><em>Independence</em>: the A vs. B preference doesn't depend on other options</li>
+<li>Real human preferences can violate both; the model works well in practice despite this</li>
 </ul>
-<p><strong>Training Objective (Bradley-Terry Model):</strong></p>
-<p>For preference pair (<span class="arithmatex">\(y_w\)</span>, <span class="arithmatex">\(y_l\)</span>) where <span class="arithmatex">\(y_w ≻ y_l\)</span>:</p>
-<div class="highlight"><pre><span></span><code>Loss = -log σ(r(x, y_w) - r(x, y_l))
-</code></pre></div>
-<p>Where σ is sigmoid function. This maximizes probability that preferred completion gets higher reward.</p>
-<p><strong>Alternative: Ranking Loss (for k &gt; 2 completions):</strong></p>
-<div class="highlight"><pre><span></span><code>Loss = -∑_{i&lt;j} log σ(r(x, y_i) - r(x, y_j))
-</code></pre></div>
-<p>Where <span class="arithmatex">\(y_i\)</span> is ranked higher than <span class="arithmatex">\(y_j\)</span>.</p>
-<hr />
-<h3 id="22-training-process">2.2 Training Process<a class="headerlink" href="#22-training-process" title="Permanent link">&para;</a></h3>
-<p><strong>Data Preparation:</strong></p>
-<ul>
-<li>Split: 80% train, 10% validation, 10% test</li>
-<li>Ensure prompt diversity across splits</li>
-<li>Balance difficulty levels</li>
-</ul>
-<p><strong>Training Details:</strong></p>
+<h3 id="43-training-details">4.3 Training Details<a class="headerlink" href="#43-training-details" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Learning rate: ~1e-5 (lower than SFT)</li>
-<li>Batch size: 32-64 comparison pairs</li>
-<li>Epochs: 1-3 (avoid overfitting)</li>
-<li>Monitor validation accuracy</li>
+<li>Batch size: 32–64 comparison pairs</li>
+<li>Epochs: 1–3 (avoid overfitting)</li>
+<li>Regularization: dropout, weight decay, early stopping on validation accuracy</li>
+<li>Split: 80% train / 10% validation / 10% test</li>
 </ul>
-<p><strong>Regularization:</strong></p>
+<h3 id="44-evaluation">4.4 Evaluation<a class="headerlink" href="#44-evaluation" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Dropout in final layers</li>
-<li>Early stopping based on validation accuracy</li>
-<li>Weight decay</li>
-</ul>
-<hr />
-<h3 id="23-reward-model-evaluation">2.3 Reward Model Evaluation<a class="headerlink" href="#23-reward-model-evaluation" title="Permanent link">&para;</a></h3>
-<p><strong>Accuracy Metrics:</strong></p>
-<ul>
-<li><strong>Pairwise accuracy</strong>: % of correct preference predictions</li>
+<li><strong>Pairwise accuracy</strong>: % of held-out preferences predicted correctly (target: &gt;65–70%)</li>
 <li><strong>Ranking correlation</strong>: Spearman's ρ with human rankings</li>
-<li>Typical target: &gt;65-70% accuracy on held-out test set</li>
-</ul>
-<p><strong>Calibration:</strong></p>
-<ul>
-<li>Check if reward magnitude correlates with confidence</li>
-<li>Avoid overconfident predictions</li>
-</ul>
-<p><strong>Out-of-Distribution Detection:</strong></p>
-<ul>
-<li>Test on novel prompts/domains</li>
-<li>Reward model should be robust to distribution shift</li>
+<li>Test on novel prompts to check out-of-distribution robustness</li>
 </ul>
 <hr />
+<h2 id="5-rl-optimization">5. RL Optimization<a class="headerlink" href="#5-rl-optimization" title="Permanent link">&para;</a></h2>
+<p>The SFT policy <span class="arithmatex">\(\pi_\theta\)</span> is fine-tuned to maximize expected reward while staying close to the SFT reference via a KL penalty:</p>
+<div class="arithmatex">\[\mathcal{J}(\theta) = \mathbb{E}_{x \sim \mathcal{D},\, y \sim \pi_\theta(\cdot|x)}\bigl[r(x, y) - \beta \cdot \mathrm{KL}(\pi_\theta(\cdot|x) \,\|\, \pi_\mathrm{SFT}(\cdot|x))\bigr]\]</div>
+<p><strong>KL penalty role:</strong> High <span class="arithmatex">\(\beta\)</span> keeps the policy close to SFT (stable, lower reward hacking risk); low <span class="arithmatex">\(\beta\)</span> allows more optimization freedom but risks generating high-reward but incoherent outputs. Typical values: <span class="arithmatex">\(\beta \in [0.01, 0.1]\)</span>.</p>
+<p><strong>Optimization algorithm:</strong> InstructGPT used PPO. Alternatives include REINFORCE, RLOO, GRPO, and DPO (which eliminates the reward model entirely). See the <a href="../rl_optimization_methods/ppo/">RL Optimization Methods</a> pages for details.</p>
 <hr />
-<h2 id="3-key-challenges">3. Key Challenges<a class="headerlink" href="#3-key-challenges" title="Permanent link">&para;</a></h2>
-<h3 id="31-reward-hacking">3.1 Reward Hacking<a class="headerlink" href="#31-reward-hacking" title="Permanent link">&para;</a></h3>
-<p><strong>Problem:</strong> Policy exploits reward model weaknesses, generating high-reward but low-quality outputs.</p>
-<p><strong>Mitigation:</strong></p>
+<h2 id="6-key-challenges">6. Key Challenges<a class="headerlink" href="#6-key-challenges" title="Permanent link">&para;</a></h2>
+<h3 id="61-reward-hacking">6.1 Reward Hacking<a class="headerlink" href="#61-reward-hacking" title="Permanent link">&para;</a></h3>
+<p>The policy exploits reward model weaknesses — generating long, verbose, or surface-level impressive outputs that score well but lack quality. Mitigations:</p>
 <ul>
-<li>KL penalty to stay close to SFT model: <code>r_total = r_RM - β * KL(π || π_SFT)</code></li>
-<li>Reward model ensembles</li>
-<li>Regular reward model updates during RL</li>
+<li>KL penalty (primary defense)</li>
+<li>Reward model ensembles (harder to fool multiple models simultaneously)</li>
+<li>Iterative reward model updates trained on RL-generated outputs</li>
+<li>Rule-based hard constraints (length limits, repetition penalties)</li>
+</ul>
+<h3 id="62-reward-model-limitations">6.2 Reward Model Limitations<a class="headerlink" href="#62-reward-model-limitations" title="Permanent link">&para;</a></h3>
+<p>The reward model is a fixed approximation of human preferences — it generalizes imperfectly, can be fooled by surface-level patterns, and doesn't update during RL. Solutions: diverse training data, Constitutional AI for principled constraints, and periodic human evaluation on RL outputs.</p>
+<h3 id="63-scalability">6.3 Scalability<a class="headerlink" href="#63-scalability" title="Permanent link">&para;</a></h3>
+<p>Human annotation is expensive and slow. Approaches to scale:</p>
+<ul>
+<li><strong>RLAIF</strong>: Use AI feedback to replace or augment human labels</li>
+<li><strong>Active learning</strong>: Prioritize labeling examples where the reward model is most uncertain (close reward scores), maximizing learning per annotation budget</li>
+<li><strong>Automated pre-filtering</strong>: Use toxicity filters, length limits, and format validators to screen out obvious failures before sending to human annotators</li>
 </ul>
 <hr />
-<h3 id="32-reward-model-limitations">3.2 Reward Model Limitations<a class="headerlink" href="#32-reward-model-limitations" title="Permanent link">&para;</a></h3>
-<p><strong>Issues:</strong></p>
-<ul>
-<li>Limited to training distribution</li>
-<li>May not capture all aspects of quality</li>
-<li>Can be fooled by surface-level patterns</li>
-</ul>
-<p><strong>Solutions:</strong></p>
-<ul>
-<li>Diverse training data</li>
-<li>Constitutional AI for principled constraints</li>
-<li>Human oversight during RL</li>
-</ul>
-<hr />
-<h3 id="33-scalability">3.3 Scalability<a class="headerlink" href="#33-scalability" title="Permanent link">&para;</a></h3>
-<p><strong>Challenges:</strong></p>
-<ul>
-<li>Human annotation is expensive and slow</li>
-<li>Need continuous data for model updates</li>
-</ul>
-<p><strong>Approaches:</strong></p>
-<ul>
-<li><strong>RLAIF:</strong> Use AI feedback to scale</li>
-<li><strong>Active learning:</strong> Select most informative comparisons. Prioritize labeling examples where the reward model is most uncertain or disagrees (e.g., close reward scores), maximizing learning per annotatio</li>
-<li><strong>Automated filters before human review:</strong> Use automated checks (toxicity filters, length limits, format validators) to screen out obviously bad responses before sending to human annotators, reducing annotation cost.</li>
-</ul>
-<hr />
-<hr />
-<h2 id="4-interview-questions">4. Interview Questions<a class="headerlink" href="#4-interview-questions" title="Permanent link">&para;</a></h2>
-<h3 id="conceptual-questions">Conceptual Questions<a class="headerlink" href="#conceptual-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q1: Why do we need a separate reward modeling phase instead of directly using human feedback during RL?</strong></p>
-<details>
-<summary>Answer</summary>
-
-- **Sample efficiency**: RL requires millions of samples; human labeling can't scale to that
-- **Cost**: Human feedback is expensive; reward model provides unlimited free evaluations
-- **Speed**: Reward model inference is fast; enables real-time RL training
-- **Consistency**: Reward model provides consistent scores; humans may have variance
-
-However, reward model introduces approximation error and potential reward hacking.
-</details>
-
-<p><strong>Q2: What's the difference between pairwise comparisons and absolute ratings? Which is better for RLHF?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**Pairwise comparisons:**
-
-- Pros: Easier for humans (relative judgment), more reliable, handles subjectivity better
-- Cons: Requires more data (combinatorial), doesn't give absolute scale
-
-**Absolute ratings:**
-
-- Pros: Efficient data collection, provides absolute scale
-- Cons: Harder to calibrate, annotator disagreement higher, scale ambiguity
-
-**Pairwise is generally preferred** for RLHF because:
-
-- Human preferences are more consistent in relative judgments
-- Bradley-Terry model naturally fits preference data
-- Reduces annotator bias (no need to agree on absolute scale)
-</details>
-
-<p><strong>Q3: How does the Bradley-Terry model work, and what assumptions does it make?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**Model**: Assumes P(y_w ≻ y_l) = σ(r(y_w) - r(y_l))
-
-**Assumptions:**
-
-1. **Transitivity**: If A > B and B > C, then A > C
-2. **Independence**: Preference between A and B doesn't depend on other options
-3. **Scale invariance**: Only reward differences matter, not absolute values
-
-**Limitations:**
-
-- Real human preferences may violate transitivity
-- Context matters (preferences may not be independent)
-- Doesn't model uncertainty or indifference well
-
-Despite limitations, works well in practice for RLHF.
-</details>
-
-<p><strong>Q4: What is reward hacking and how do we prevent it in RLHF?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**Reward hacking**: Policy exploits flaws in the reward model to achieve high scores without actually improving quality.
-
-**Examples:**
-
-- Generating very long responses (reward model correlates length with quality)
-- Using fancy words or formatting without substance
-- Exploiting reward model's lack of factual knowledge
-
-**Prevention strategies:**
-
-1. **KL penalty**: `r_total = r_RM - β·KL(π || π_SFT)` keeps policy close to SFT baseline
-2. **Reward model ensembles**: Harder to hack multiple models simultaneously
-3. **Iterative reward model updates**: Retrain on RL-generated outputs
-4. **Rule-based constraints**: Hard limits on length, repetition, etc.
-5. **Human-in-the-loop**: Regular human evaluation during RL training
-</details>
-
-<p><strong>Q5: Why do we initialize the RL policy from the SFT model rather than training from scratch?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**Reasons:**
-
-1. **Better starting point**: SFT model already generates reasonable outputs
-2. **Faster convergence**: Less exploration needed
-3. **Prevents catastrophic forgetting**: Maintains language modeling capabilities
-4. **KL penalty works better**: Meaningful to constrain distance from SFT model
-5. **Reduces reward hacking**: Harder to drift into degenerate solutions
-
-Without SFT initialization:
-
-- RL might converge to nonsensical but high-reward outputs
-- Exploration in text space is extremely difficult
-- Training is much slower and less stable
-</details>
-
-<h3 id="technical-questions">Technical Questions<a class="headerlink" href="#technical-questions" title="Permanent link">&para;</a></h3>
-<p><strong>Q6: How would you handle disagreement between human annotators?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**Measurement:**
-
-- Calculate inter-annotator agreement (Fleiss' kappa, Krippendorff's alpha)
-- Track per-annotator agreement with majority/expert
-
-**Handling strategies:**
-
-1. **Majority vote**: Use most common preference
-2. **Weighted voting**: Weight by annotator reliability
-3. **Discard high-disagreement examples**: They're likely ambiguous
-4. **Model uncertainty**: Train ensemble or probabilistic reward model
-5. **Consensus building**: Resolve disagreements through discussion
-6. **Improve guidelines**: Address common disagreement sources
-
-**For training:**
-
-- Can model soft preferences: P(y_w ≻ y_l) = fraction of annotators who preferred y_w
-- Helps reward model learn uncertainty
-</details>
-
-<p><strong>Q7: How do you ensure your reward model generalizes to out-of-distribution prompts?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**During data collection:**
-
-1. **Diverse prompt set**: Cover many domains, styles, difficulties
-2. **Include edge cases**: Adversarial, ambiguous, multi-step prompts
-3. **Regular updates**: Continuously add new prompt types
-
-**During training:**
-
-1. **Regularization**: Dropout, weight decay to prevent overfitting
-2. **Data augmentation**: Paraphrase prompts, vary response styles
-3. **Domain-specific splits**: Ensure validation set covers all domains
-
-**Evaluation:**
-
-1. **Hold-out test sets**: Different domains than training
-2. **Monitor RL outputs**: Check for reward hacking patterns
-3. **Human evaluation**: Regular checks on RL-generated samples
-4. **Red-teaming**: Actively try to find failure modes
-
-**Continuous improvement:**
-
-- Retrain reward model on RL-generated distribution
-- Active learning to find informative new comparisons
-</details>
-
-<p><strong>Q8: What's the trade-off in choosing the β parameter for the KL penalty?</strong></p>
-<details>
-<summary>Answer</summary>
-
-The total reward is: `r_total = r_RM(x,y) - β·KL(π(y|x) || π_SFT(y|x))`
-
-**High β (strong penalty):**
-
-- Pros: Policy stays very close to SFT, prevents reward hacking, stable training
-- Cons: Limited improvement, may not fully leverage reward signal
-
-**Low β (weak penalty):**
-
-- Pros: More optimization freedom, potentially better performance
-- Cons: Higher reward hacking risk, may drift into nonsensical outputs
-
-**Typical values**: β ∈ [0.01, 0.1]
-
-**Adaptive strategies:**
-
-- Start with high β, gradually decrease
-- Use different β for different layers
-- Monitor KL divergence and adjust dynamically
-- Per-example β based on reward model confidence
-
-**In practice**: Tune β on validation set balancing reward model score and human evaluation.
-</details>
-
-<p><strong>Q9: Compare RLHF with Direct Preference Optimization (DPO). What are the trade-offs?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**RLHF (PPO-based):**
-
-- Pros: Explicit reward model (interpretable), flexible (can update RM), handles complex rewards
-- Cons: Complex pipeline (3 stages), RL instability, reward hacking risks, computationally expensive
-
-**DPO:**
-
-- Pros: Simpler (single-stage), more stable, no reward model to hack, lower compute
-- Cons: Less flexible (bakes in Bradley-Terry assumption), harder to update preferences, no explicit reward signal
-
-**Key difference**: DPO reparameterizes the RL objective to directly optimize policy from preferences, eliminating reward model.
-
-**When to use:**
-
-- **RLHF**: Need interpretable rewards, complex multi-objective optimization, iterative updates
-- **DPO**: Simpler use cases, want stability, limited compute
-
-**Trend**: DPO gaining popularity due to simplicity, but RLHF still useful for complex alignment tasks.
-</details>
-
-<p><strong>Q10: How would you design an active learning strategy for preference data collection?</strong></p>
-<details>
-<summary>Answer</summary>
-
-**Goal**: Select most informative comparisons to minimize annotation cost while maximizing reward model quality.
-
-**Uncertainty-based sampling:**
-
-1. **Model disagreement**: Query pairs where ensemble models disagree most
-2. **Entropy**: Select comparisons with highest prediction entropy
-3. **Margin**: Choose pairs with smallest reward difference (close calls)
-
-**Diversity-based sampling:**
-
-1. **Prompt coverage**: Ensure diverse prompt types are covered
-2. **Response diversity**: Sample varied response styles
-3. **Cluster-based**: Select representatives from different clusters
-
-**Performance-based sampling:**
-
-1. **Error analysis**: Focus on domains where RM performs poorly
-2. **Gradient-based**: Select examples with high expected gradient norm
-3. **Policy-aware**: Sample from current RL policy distribution
-
-**Practical approach:**
-
-- Combine strategies: 50% uncertainty + 30% diversity + 20% error-focused
-- Regular cold-start: Include random samples to prevent bias
-- Batch selection: Consider redundancy within each batch
-- Monitor distribution shift: Ensure coverage of evolving policy
-
-**Metrics**: Track validation accuracy vs. number of labels to measure efficiency.
-</details>
-
-<hr />
+<p><em>Sources: Christiano et al. (2017) <a href="https://arxiv.org/abs/1706.03741">[arXiv:1706.03741]</a> · Ouyang et al. (2022) — InstructGPT <a href="https://arxiv.org/abs/2203.02155">[arXiv:2203.02155]</a></em></p>
 
 
 

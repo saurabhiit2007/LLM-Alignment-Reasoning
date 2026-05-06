@@ -1,8 +1,8 @@
+# Red Teaming
+
 ## 1. What is Red Teaming?
 
 **Red Teaming** is the practice of deliberately attempting to break, exploit, or find weaknesses in a system by simulating adversarial attacks. In the context of Large Language Models (LLMs), red teaming involves systematically probing AI models to identify harmful outputs, biases, vulnerabilities, and alignment failures.
-
----
 
 ---
 
@@ -25,8 +25,6 @@ Training → Safety Testing → Red Teaming → Refinement → Deployment
 3. **Find Jailbreaks**: Uncover prompt injection techniques that bypass safety measures
 4. **Evaluate Robustness**: Test model behavior under adversarial conditions
 5. **Improve Alignment**: Use findings to refine training and safety mechanisms
-
----
 
 ---
 
@@ -75,8 +73,6 @@ Probing for discriminatory outputs:
 
 ---
 
----
-
 ## 4. Red Teaming Process
 
 ### 1. Planning
@@ -107,8 +103,6 @@ Probing for discriminatory outputs:
 
 ---
 
----
-
 ## 5. Types of Harms Tested
 
 | Category | Examples |
@@ -122,8 +116,6 @@ Probing for discriminatory outputs:
 
 ---
 
----
-
 ## 6. Key Challenges
 
 1. **Creativity Gap**: Adversaries constantly develop new attack vectors
@@ -132,8 +124,6 @@ Probing for discriminatory outputs:
 4. **Evolution**: Models and attacks co-evolve rapidly
 5. **Subjectivity**: Defining "harm" varies across cultures and contexts
 6. **Trade-offs**: Strict safety can reduce model helpfulness
-
----
 
 ---
 
@@ -155,8 +145,6 @@ Probing for discriminatory outputs:
 
 ---
 
----
-
 ## 8. Best Practices
 
 ### For Organizations Deploying LLMs
@@ -168,7 +156,5 @@ Probing for discriminatory outputs:
 5. **Transparency**: Publish findings and mitigations (within reason)
 6. **Layered Defense**: Combine multiple safety mechanisms
 7. **User Reporting**: Enable and respond to user feedback
-
----
 
 ---

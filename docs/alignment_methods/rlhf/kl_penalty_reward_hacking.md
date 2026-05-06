@@ -1,3 +1,5 @@
+# KL Penalty and Reward Hacking
+
 ## Part 1: KL Penalty in Policy Optimization
 
 ### What is KL Divergence?
@@ -88,19 +90,6 @@ All use KL as a **trust-region constraint** to ensure stable optimization near a
 ---
 
 ### Implementation Example
-
-```python
-# Get log-probabilities from both models
-logprobs = policy_model.log_prob(actions)
-ref_logprobs = ref_model.log_prob(actions)
-
-# Compute KL divergence
-kl_div = (logprobs - ref_logprobs).mean()
-
-# Apply penalty to loss
-loss = -(rewards - beta * kl_div)
-loss.backward()
-```
 
 ---
 
@@ -204,17 +193,8 @@ All maximize surrogate reward without improving actual alignment.
 ### Detection Strategies
 
 **1. Reward-Human Correlation**
-```python
-# Monitor Spearman/Pearson correlation
-correlation = compute_correlation(reward_scores, human_scores)
-# Declining correlation → potential gaming
-```
 
 **2. KL Divergence Monitoring**
-```python
-kl_div = compute_kl(policy, reference)
-# Excessive divergence → suspicious behavior
-```
 
 **3. Diversity Metrics**
 
@@ -244,10 +224,6 @@ kl_div = compute_kl(policy, reference)
 - Retrain reward model on exploited cases
 
 **Ensemble methods:**
-```python
-# Use mean - std for conservative scoring
-reward = ensemble_mean - beta * ensemble_std
-```
 
 **Calibration:**
 
@@ -258,19 +234,10 @@ reward = ensemble_mean - beta * ensemble_std
 #### B. Policy Regularization
 
 **KL penalty** (primary defense):
-```python
-loss = rewards - beta * kl_divergence
-```
 
 **Entropy bonus:**
-```python
-loss = rewards - beta * kl_div + alpha * entropy
-```
 
 **Behavior cloning anchor:**
-```python
-loss = rewards - beta * kl_div + gamma * bc_loss
-```
 
 #### C. Training Practices
 

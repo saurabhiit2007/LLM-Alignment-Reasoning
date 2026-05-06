@@ -1,3 +1,5 @@
+# REINFORCE
+
 ## 1. Overview
 
 **REINFORCE** is the foundational policy gradient algorithm (Williams, 1992) and the conceptual basis for all modern RL-based LLM fine-tuning. It directly optimizes the expected reward by following the gradient of the log-probability of generated sequences, weighted by their reward.

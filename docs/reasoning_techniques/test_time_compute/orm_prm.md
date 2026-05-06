@@ -1,3 +1,5 @@
+# Outcome and Process Reward Models (ORM / PRM)
+
 ## 1. Overview
 
 **ORM (Outcome Reward Model)** and **PRM (Process Reward Model)** are two paradigms for scoring model outputs during test-time compute. They differ in granularity: ORMs judge the final answer only; PRMs judge each intermediate reasoning step.

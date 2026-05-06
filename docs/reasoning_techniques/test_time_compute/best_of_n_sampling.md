@@ -1,3 +1,5 @@
+# Best-of-N Sampling
+
 ## 1. Overview
 
 Best-of-N (BoN) sampling generates N candidate outputs from a model and selects the best one using a reward model or scoring function. It is the simplest form of test-time compute scaling.

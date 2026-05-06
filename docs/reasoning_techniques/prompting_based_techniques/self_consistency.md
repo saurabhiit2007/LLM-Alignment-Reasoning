@@ -1,10 +1,10 @@
+# Self-Consistency
+
 ## 1. Overview
 
 Self-consistency is a prompting technique that improves the reliability and accuracy of large language models (LLMs) by generating multiple reasoning paths and selecting the most consistent answer through majority voting.
 
 **Key Idea**: Instead of relying on a single greedy decode path, generate diverse reasoning paths and marginalize out the reasoning process to arrive at the most consistent final answer.
-
----
 
 ---
 
@@ -27,8 +27,6 @@ Self-consistency is a prompting technique that improves the reliability and accu
 **Sample 3**: "3 cars plus 2 cars equals 5 cars total" → **Answer: 5**
 
 **Final Answer**: 5 (unanimous)
-
----
 
 ---
 
@@ -64,8 +62,6 @@ Where:
 
 ---
 
----
-
 ## 4. Advantages
 
 - **Improved Accuracy**: 10-20% boost on arithmetic and commonsense reasoning tasks
@@ -75,16 +71,12 @@ Where:
 
 ---
 
----
-
 ## 5. Limitations
 
 - **Computational Cost**: N times more expensive than single inference
 - **Latency**: Parallel processing helps but still slower than greedy decode
 - **Answer Extraction**: Requires reliable parsing of diverse outputs
 - **Not Universal**: Most effective for tasks with discrete, verifiable answers
-
----
 
 ---
 
@@ -113,53 +105,5 @@ Where:
 - Self-consistency over tool-augmented reasoning paths
 - Multiple execution paths with external APIs/calculators
 - Verification through diverse computational approaches
-
----
-
----
-
-## 8. Implementation Example
-
-```python
-def self_consistency(prompt, model, n_samples=10, temperature=0.7):
-    """
-    Implement self-consistency for LLM reasoning
-    """
-    # Generate diverse reasoning paths
-    responses = []
-    for _ in range(n_samples):
-        response = model.generate(
-            prompt=prompt,
-            temperature=temperature,
-            max_tokens=256
-        )
-        responses.append(response)
-    
-    # Extract answers
-    answers = [extract_answer(r) for r in responses]
-    
-    # Majority vote
-    from collections import Counter
-    vote_counts = Counter(answers)
-    most_common_answer = vote_counts.most_common(1)[0][0]
-    confidence = vote_counts[most_common_answer] / n_samples
-    
-    return most_common_answer, confidence
-
-def extract_answer(response):
-    """Extract final answer from reasoning path"""
-    # Pattern matching for common formats
-    import re
-    patterns = [
-        r"(?:answer is|answer:|final answer:)\s*([^\n]+)",
-        r"#### ([^\n]+)",  # Common in math problems
-        r"\n\n([^\n]+)$"  # Last line
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, response, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
-    return response.strip()
-```
 
 ---

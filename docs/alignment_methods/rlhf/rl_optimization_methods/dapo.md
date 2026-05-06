@@ -1,3 +1,5 @@
+# DAPO
+
 ## 1. Overview
 
 **DAPO** (Decoupled Clip and Dynamic Sampling Policy Optimization) is an RL fine-tuning algorithm for LLMs developed by ByteDance Seed and Tsinghua AIR (Yu et al., 2025). It extends GRPO with four targeted fixes that address failure modes observed when scaling RL to long chain-of-thought (CoT) reasoning tasks.
@@ -114,54 +116,7 @@ Responses that exceed $L_{\max}$ receive a gradually increasing penalty rather t
 
 ---
 
-## 5. Implementation Sketch
-
-```python
-# DAPO training step
-def dapo_step(policy, policy_old, reward_fn, prompts, G,
-              eps_low=0.2, eps_high=0.28):
-
-    effective_groups = []
-    for prompt in prompts:
-        # Sample G responses
-        responses = [policy_old.generate(prompt) for _ in range(G)]
-        rewards = [reward_fn(prompt, r) for r in responses]
-
-        # Dynamic sampling: skip trivial groups
-        accuracy = sum(r > 0 for r in rewards) / G
-        if accuracy == 0.0 or accuracy == 1.0:
-            continue
-        effective_groups.append((prompt, responses, rewards))
-
-    total_loss = 0.0
-    total_tokens = 0
-
-    for prompt, responses, rewards in effective_groups:
-        mean_r = sum(rewards) / len(rewards)
-        std_r = torch.std(torch.tensor(rewards)) + 1e-8
-        advantages = [(r - mean_r) / std_r for r in rewards]
-
-        for resp, adv in zip(responses, advantages):
-            tokens = tokenize(prompt, resp)
-            for t, token in enumerate(tokens):
-                # Token-level policy gradient
-                ratio = (policy.log_prob_token(token) -
-                         policy_old.log_prob_token(token)).exp()
-
-                # Asymmetric clip
-                clipped = torch.clamp(ratio, 1 - eps_low, 1 + eps_high)
-                pg = -torch.min(ratio * adv, clipped * adv)
-
-                total_loss += pg
-                total_tokens += 1
-
-    # Token-level normalization
-    return total_loss / total_tokens
-```
-
----
-
-## 6. DAPO vs GRPO vs PPO
+## 5. DAPO vs GRPO vs PPO
 
 | Aspect | DAPO | GRPO | PPO |
 |--------|------|------|-----|
@@ -176,7 +131,7 @@ def dapo_step(policy, policy_old, reward_fn, prompts, G,
 
 ---
 
-## 7. Limitations
+## 6. Limitations
 
 **More hyperparameters:** $\varepsilon_{\text{low}}$, $\varepsilon_{\text{high}}$, dynamic sampling thresholds, overlong shaping parameters — each adds a tuning dimension. The original paper provides defaults but these may not transfer across model families.
 

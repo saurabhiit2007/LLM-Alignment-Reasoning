@@ -1,3 +1,5 @@
+# RLOO (REINFORCE Leave-One-Out)
+
 ## 1. Overview
 
 **REINFORCE Leave-One-Out (RLOO)** is a multi-sample variant of REINFORCE that uses the mean reward of the *other* samples in a group as the baseline for each individual sample. It was applied to LLM fine-tuning by Ahmadian et al. (2024) in *"Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs"* (ACL 2024).

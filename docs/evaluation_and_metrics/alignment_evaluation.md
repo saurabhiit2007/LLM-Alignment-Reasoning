@@ -1,3 +1,5 @@
+# Alignment Evaluation
+
 ## Overview
 
 Evaluating whether an LLM is truly *aligned* is fundamentally harder than measuring raw capability. A model that scores well on academic benchmarks may still refuse reasonable requests, hallucinate facts, or produce subtly harmful outputs. This page covers the frameworks and benchmarks used to measure alignment.

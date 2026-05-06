@@ -1,3 +1,5 @@
+# Verification Metrics
+
 ## Overview
 
 Verification metrics measure whether a model's output can be checked for correctness without human judgment. They are the backbone of scalable evaluation for coding, mathematics, and formal reasoning — and increasingly, the reward signal in RL training pipelines.

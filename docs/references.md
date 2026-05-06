@@ -118,3 +118,15 @@
 
 * **Irving et al. (2018)** — *AI Safety via Debate.* (OpenAI) [[arXiv:1805.00899]](https://arxiv.org/abs/1805.00899)
 * **Du et al. (2023)** — *Improving Factuality and Reasoning in Language Models through Multiagent Debate.* [[arXiv:2305.14325]](https://arxiv.org/abs/2305.14325)
+
+---
+
+### 🛡️ 11. Safety Evaluation & Adversarial Testing
+
+* **Lin et al. (2022)** — *TruthfulQA: Measuring How Models Mimic Human Falsehoods.* [[arXiv:2109.07958]](https://arxiv.org/abs/2109.07958)
+* **Parrish et al. (2022)** — *BBQ: A Hand-Built Bias Benchmark for Question Answering.* [[arXiv:2110.08193]](https://arxiv.org/abs/2110.08193)
+* **Mazeika et al. (2024)** — *HarmBench: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal.* [[arXiv:2402.04249]](https://arxiv.org/abs/2402.04249)
+* **Liang et al. (2022)** — *Holistic Evaluation of Language Models (HELM).* [[arXiv:2211.09110]](https://arxiv.org/abs/2211.09110)
+* **Perez & Ribeiro (2022)** — *Ignore Previous Prompt: Attack Techniques For Language Models.* [[arXiv:2211.09527]](https://arxiv.org/abs/2211.09527)
+* **Zou et al. (2023)** — *Universal and Transferable Adversarial Attacks on Aligned Language Models (GCG).* [[arXiv:2307.15043]](https://arxiv.org/abs/2307.15043)
+* **Anil et al. (2024)** — *Many-Shot Jailbreaking.* (Anthropic) [[Research Post]](https://www.anthropic.com/research/many-shot-jailbreaking)

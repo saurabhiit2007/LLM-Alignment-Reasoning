@@ -1,3 +1,5 @@
+# DeepSeek-R1: RL Fine-Tuning Case Study
+
 ## 1. Overview
 
 This document provides a comprehensive overview of the DeepSeek-R1 strategy for fine-tuning and preference-tuning large language models (LLMs). It covers the RL methods, distinctions from traditional approaches, the GRPO optimization algorithm, multi-stage training pipeline, reward design, model distillation, and additional technical details.
@@ -8,8 +10,6 @@ DeepSeek-R1 introduces a novel approach to improving reasoning capabilities and 
 
 - **DeepSeek-R1-Zero**: RL-only variant without initial supervised fine-tuning (SFT). Uses verifiable reasoning tasks (e.g., math, code, logic) with automatically computable reward signals.
 - **DeepSeek-R1**: Multi-stage pipeline starting with a "cold-start" SFT, followed by reasoning-oriented RL, generation of an SFT dataset from high-quality RL outputs, further SFT fine-tuning, and then a second RL stage for broader instruction-following.
-
----
 
 ---
 
@@ -38,8 +38,6 @@ Instead of using a value network (critic) as in PPO, GRPO operates by sampling m
 
 ---
 
----
-
 ## 3. Reward Design
 
 DeepSeek divides reward design into two main domains: reasoning-oriented tasks and general instruction-following tasks.
@@ -65,8 +63,6 @@ For broader tasks, DeepSeek employs:
 
 ---
 
----
-
 ## 4. Multi-Stage Training Pipeline
 
 The DeepSeek-R1 training strategy follows a systematic multi-stage approach:
@@ -88,8 +84,6 @@ The DeepSeek-R1 training strategy follows a systematic multi-stage approach:
 
 ---
 
----
-
 
 ## 5. Distinctive Features Compared to Traditional Methods
 
@@ -102,8 +96,6 @@ The DeepSeek-R1 training strategy follows a systematic multi-stage approach:
 | **Post-RL Dataset Generation** | Sometimes limited | RL outputs → filtered → SFT dataset → distillation |
 | **Distillation to Smaller Models** | Optional / less emphasized | Explicit large → dataset → smaller models path |
 | **Emergence of Reasoning** | Often via SFT + RL; may require large annotated data | Demonstrated via RL alone (R1-Zero), then refined by SFT + RL |
-
----
 
 ---
 
@@ -146,8 +138,6 @@ The distillation process leverages the high-capability teacher model to generate
 
 ---
 
----
-
 ## 7. Summary Table
 
 | Component | Role | Example / Notes |
@@ -161,8 +151,6 @@ The distillation process leverages the high-capability teacher model to generate
 | **Training Pipeline** | Multi-stage (Cold-SFT → RL → SFT → RL → Distill) | Reasoning first, then broad instruction |
 | **Distillation** | Transfer reasoning to smaller models | Student models 1.5B–70B params |
 | **Goal** | Efficient reasoning/instruction fine-tuning | Stable RL fine-tuning for large LLMs |
-
----
 
 ---
 
